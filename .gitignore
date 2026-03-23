@@ -1,0 +1,13 @@
+# Binaries
+myteams_cli
+myteams_server
+*.a
+*.o
+*.out
+
+# Cache
+.cache
+compile_commands.json
+
+# VSCode
+.vscode
