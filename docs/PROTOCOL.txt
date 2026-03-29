@@ -1,0 +1,112 @@
+
+
+
+
+Network Working Group                                          M. MAICHE
+Internet-Draft                                             30 March 2026
+Intended status: Informational                                          
+Expires: 1 October 2026
+
+
+                            MAICHE Protocol
+                            draft-maiche-00
+
+Abstract
+
+   This document describes the protocol that will be in use for the
+   my_teams project.
+
+Status of This Memo
+
+   This Internet-Draft is submitted in full conformance with the
+   provisions of BCP 78 and BCP 79.
+
+   Internet-Drafts are working documents of the Internet Engineering
+   Task Force (IETF).  Note that other groups may also distribute
+   working documents as Internet-Drafts.  The list of current Internet-
+   Drafts is at https://datatracker.ietf.org/drafts/current/.
+
+   Internet-Drafts are draft documents valid for a maximum of six months
+   and may be updated, replaced, or obsoleted by other documents at any
+   time.  It is inappropriate to use Internet-Drafts as reference
+   material or to cite them other than as "work in progress."
+
+   This Internet-Draft will expire on 1 October 2026.
+
+Copyright Notice
+
+   Copyright (c) 2026 IETF Trust and the persons identified as the
+   document authors.  All rights reserved.
+
+   This document is subject to BCP 78 and the IETF Trust's Legal
+   Provisions Relating to IETF Documents (https://trustee.ietf.org/
+   license-info) in effect on the date of publication of this document.
+   Please review these documents carefully, as they describe your rights
+   and restrictions with respect to this document.  Code Components
+   extracted from this document must include Revised BSD License text as
+   described in Section 4.e of the Trust Legal Provisions and are
+   provided without warranty as described in the Revised BSD License.
+
+
+
+
+
+
+
+MAICHE                   Expires 1 October 2026                 [Page 1]
+
+Internet-Draft               MAICHE Protocol                  March 2026
+
+
+Table of Contents
+
+   1.  Introduction  . . . . . . . . . . . . . . . . . . . . . . . .   2
+   2.  Context . . . . . . . . . . . . . . . . . . . . . . . . . . .   2
+
+1.  Introduction
+
+   The goal of the my_teams project is to create our CLI (client) and a
+   server.
+
+   For this, we must also create a protocol to handle the events between
+   the client and the server.
+
+2.  Context
+
+   According to the subject:
+
+   |  A collaborative communication application is a service able to
+   |  manage several communication teams, where discussion are organised
+   |  like following:
+   |  
+   |  *  threads (initial post and additional comments) in a specific
+   |     channel
+   |  *  discussion (personal messages)
+   |  
+   |  Here are the features intended to be implemented:
+   |  
+   |  *  Creating/Joining/Leaving a team
+   |  *  Creating a user
+   |  *  Creating a channel in a team
+   |  *  Creating a thread in a channel
+   |  *  Creating a comment in a thread
+   |  *  Saving & restoring users, teams, channels, threads & associated
+   |     comments
+   |  *  Personal discussion (from a user to an other)
+   |  *  Saving & restoring personal discussion
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+MAICHE                   Expires 1 October 2026                 [Page 2]
