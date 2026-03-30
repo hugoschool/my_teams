@@ -62,13 +62,15 @@ Table of Contents
 
    1.  Introduction  . . . . . . . . . . . . . . . . . . . . . . . .   2
    2.  Context . . . . . . . . . . . . . . . . . . . . . . . . . . .   2
-   3.  Ending sequence . . . . . . . . . . . . . . . . . . . . . . .   2
+   3.  Ending sequence . . . . . . . . . . . . . . . . . . . . . . .   3
    4.  Client input  . . . . . . . . . . . . . . . . . . . . . . . .   3
    5.  Server response . . . . . . . . . . . . . . . . . . . . . . .   3
      5.1.  Status codes  . . . . . . . . . . . . . . . . . . . . . .   3
-   6.  User-related events . . . . . . . . . . . . . . . . . . . . .   3
-     6.1.  Connection of a user  . . . . . . . . . . . . . . . . . .   3
+   6.  User-related events . . . . . . . . . . . . . . . . . . . . .   4
+     6.1.  Connection of a user  . . . . . . . . . . . . . . . . . .   4
      6.2.  Disconnection of a user . . . . . . . . . . . . . . . . .   4
+     6.3.  Retrieve a list of all users  . . . . . . . . . . . . . .   5
+     6.4.  Retrieve information about a specific user  . . . . . . .   6
 
 1.  Introduction
 
@@ -102,10 +104,8 @@ Table of Contents
    |  *  Personal discussion (from a user to an other)
    |  *  Saving & restoring personal discussion
 
-3.  Ending sequence
 
-   All communications from the client and from the server must end with
-   an ending sequence.
+
 
 
 
@@ -113,6 +113,11 @@ MAICHE                   Expires 1 October 2026                 [Page 2]
 
 Internet-Draft               MAICHE Protocol                  March 2026
 
+
+3.  Ending sequence
+
+   All communications from the client and from the server must end with
+   an ending sequence.
 
    In our case, the chosen ending sequence is CRLF, Carriage Return Line
    Feed (\r\n).
@@ -143,6 +148,7 @@ Internet-Draft               MAICHE Protocol                  March 2026
 
    Success:
 
+   *  200 Success.
    *  250 User logged in.
    *  251 User logged out.
 
@@ -155,12 +161,6 @@ Internet-Draft               MAICHE Protocol                  March 2026
 
    *  500 Server failure.
 
-6.  User-related events
-
-6.1.  Connection of a user
-
-   On the client, connecting as a user is done via the /login command
-   and does not require authentication using a password.
 
 
 
@@ -169,6 +169,13 @@ MAICHE                   Expires 1 October 2026                 [Page 3]
 
 Internet-Draft               MAICHE Protocol                  March 2026
 
+
+6.  User-related events
+
+6.1.  Connection of a user
+
+   On the client, connecting as a user is done via the /login command
+   and does not require authentication using a password.
 
    Citing the subject:
 
@@ -179,6 +186,9 @@ Internet-Draft               MAICHE Protocol                  March 2026
 
    A user can only be logged in once.  You cannot login as the same user
    in another window.
+
+   If the username doesn't exist on the server, the server must add the
+   user to its database and associate it with a newly created UUID.
 
    Example:
 
@@ -208,6 +218,14 @@ Internet-Draft               MAICHE Protocol                  March 2026
    On the server, disconnecting from the server is done using the LOGOUT
    command.
 
+
+
+
+MAICHE                   Expires 1 October 2026                 [Page 4]
+
+Internet-Draft               MAICHE Protocol                  March 2026
+
+
    This command can error out in case the user isn't logged in.
 
    Example:
@@ -218,14 +236,6 @@ Internet-Draft               MAICHE Protocol                  March 2026
    |  
    |  In case user isn't logged in:
    |  
-
-
-
-MAICHE                   Expires 1 October 2026                 [Page 4]
-
-Internet-Draft               MAICHE Protocol                  March 2026
-
-
    |  LOGOUT
    |  
    |  435 User isn't logged in.
@@ -238,43 +248,89 @@ Internet-Draft               MAICHE Protocol                  March 2026
    |  
    |  <- 435
 
+6.3.  Retrieve a list of all users
 
+   A user can request a list of all the user with their usernames and
+   matching UUIDs.
 
+   On the client, this is the /users command.
 
+   This is done using the USERS command.
 
+   What is returned is a list of all the users with their usernames,
+   their UUIDs and their status.
 
+   Their status is 0 if logged out and 1 if logged in.
 
+   This command can error out in case the user isn't logged in.
 
+   Example:
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+   |  USERS
+   |  
+   |  200 Success.  [Ending sequence]
+   |  
+   |  USERNAME uuid 0 [newline]
+   |  
+   |  USERNAME uuid 1 [newline]
+   |  
 
 
 
 MAICHE                   Expires 1 October 2026                 [Page 5]
+
+Internet-Draft               MAICHE Protocol                  March 2026
+
+
+   |  USERNAME uuid 0 [newline]
+   |  
+   |  In case user isn't logged in:
+   |  
+   |  USERS
+   |  
+   |  435 User isn't logged in.
+
+6.4.  Retrieve information about a specific user
+
+   A user can request information about a specific user given its UUID.
+
+   On the client, this is the /user [uuid] command.
+
+   This is done using the USER uuid command.
+
+   What is returned is the users username, uuid and status.
+
+   Their status is 0 if logged out and 1 if logged in.
+
+   This command can error out in case the user isn't logged in.
+
+   Example:
+
+   |  USER [uuid]
+   |  
+   |  200 Success.  [Ending sequence]
+   |  
+   |  USERNAME uuid 0 [newline]
+   |  
+   |  In case user isn't logged in:
+   |  
+   |  USER [UUID]
+   |  
+   |  435 User isn't logged in.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+MAICHE                   Expires 1 October 2026                 [Page 6]

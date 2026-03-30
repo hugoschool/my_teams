@@ -76,6 +76,7 @@ All status codes, classed by category:
 
 Success:
 
+- 200 Success.
 - 250 User logged in.
 - 251 User logged out.
 
@@ -101,6 +102,8 @@ Citing the subject:
 Connecting as a user should be done using the `LOGIN username` command.
 
 A user can only be logged in once. You cannot login as the same user in another window.
+
+If the username doesn't exist on the server, the server must add the user to its database and associate it with a newly created UUID.
 
 Example:
 > LOGIN username
@@ -145,5 +148,63 @@ Resume:
 > <- 251
 >
 > <- 435
+
+## Retrieve a list of all users
+
+A user can request a list of all the user with their usernames and matching UUIDs.
+
+On the client, this is the `/users` command.
+
+This is done using the `USERS` command.
+
+What is returned is a list of all the users with their usernames, their UUIDs and their status.
+
+Their status is 0 if logged out and 1 if logged in.
+
+This command can error out in case the user isn't logged in.
+
+Example:
+> USERS
+>
+> 200 Success. [Ending sequence]
+>
+> USERNAME uuid 0 [newline]
+>
+> USERNAME uuid 1 [newline]
+>
+> USERNAME uuid 0 [newline]
+>
+> In case user isn't logged in:
+>
+> USERS
+>
+> 435 User isn't logged in.
+
+## Retrieve information about a specific user
+
+A user can request information about a specific user given its UUID.
+
+On the client, this is the `/user [uuid]` command.
+
+This is done using the `USER uuid` command.
+
+What is returned is the users username, uuid and status.
+
+Their status is 0 if logged out and 1 if logged in.
+
+This command can error out in case the user isn't logged in.
+
+Example:
+> USER [uuid]
+>
+> 200 Success. [Ending sequence]
+>
+> USERNAME uuid 0 [newline]
+>
+> In case user isn't logged in:
+>
+> USER [UUID]
+>
+> 435 User isn't logged in.
 
 <!-- TODO: rest of the docs -->
