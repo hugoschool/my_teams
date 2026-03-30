@@ -88,4 +88,62 @@ Server failure:
 
 - 500 Server failure.
 
+# User-related events
+
+## Connection of a user
+
+On the client, connecting as a user is done via the `/login` command and does not require authentication using a password.
+
+Citing the subject:
+
+> There is no password authentication required for this subject but you should always develop with security in mind.
+
+Connecting as a user should be done using the `LOGIN username` command.
+
+A user can only be logged in once. You cannot login as the same user in another window.
+
+Example:
+> LOGIN username
+>
+> 250 User logged in.
+>
+> In case user is already logged in:
+>
+> LOGIN username
+>
+> 430 User already logged in.
+
+Resume:
+> LOGIN username ->
+>
+> <- 250
+>
+> <- 430
+
+## Disconnection of a user
+
+A user can disconnect from the server using the `/logout` command on the client.
+
+On the server, disconnecting from the server is done using the `LOGOUT` command.
+
+This command can error out in case the user isn't logged in.
+
+Example:
+> LOGOUT
+>
+> 251 User logged out.
+>
+> In case user isn't logged in:
+>
+> LOGOUT
+>
+> 435 User isn't logged in.
+
+Resume:
+> LOGOUT ->
+>
+> <- 251
+>
+> <- 435
+
 <!-- TODO: rest of the docs -->

@@ -66,6 +66,9 @@ Table of Contents
    4.  Client input  . . . . . . . . . . . . . . . . . . . . . . . .   3
    5.  Server response . . . . . . . . . . . . . . . . . . . . . . .   3
      5.1.  Status codes  . . . . . . . . . . . . . . . . . . . . . .   3
+   6.  User-related events . . . . . . . . . . . . . . . . . . . . .   3
+     6.1.  Connection of a user  . . . . . . . . . . . . . . . . . .   3
+     6.2.  Disconnection of a user . . . . . . . . . . . . . . . . .   4
 
 1.  Introduction
 
@@ -104,15 +107,15 @@ Table of Contents
    All communications from the client and from the server must end with
    an ending sequence.
 
-   In our case, the chosen ending sequence is CRLF, Carriage Return Line
-   Feed (\r\n).
-
 
 
 MAICHE                   Expires 1 October 2026                 [Page 2]
 
 Internet-Draft               MAICHE Protocol                  March 2026
 
+
+   In our case, the chosen ending sequence is CRLF, Carriage Return Line
+   Feed (\r\n).
 
 4.  Client input
 
@@ -152,17 +155,126 @@ Internet-Draft               MAICHE Protocol                  March 2026
 
    *  500 Server failure.
 
+6.  User-related events
 
+6.1.  Connection of a user
 
-
-
-
-
-
-
-
+   On the client, connecting as a user is done via the /login command
+   and does not require authentication using a password.
 
 
 
 
 MAICHE                   Expires 1 October 2026                 [Page 3]
+
+Internet-Draft               MAICHE Protocol                  March 2026
+
+
+   Citing the subject:
+
+   |  There is no password authentication required for this subject but
+   |  you should always develop with security in mind.
+
+   Connecting as a user should be done using the LOGIN username command.
+
+   A user can only be logged in once.  You cannot login as the same user
+   in another window.
+
+   Example:
+
+   |  LOGIN username
+   |  
+   |  250 User logged in.
+   |  
+   |  In case user is already logged in:
+   |  
+   |  LOGIN username
+   |  
+   |  430 User already logged in.
+
+   Resume:
+
+   |  LOGIN username ->
+   |  
+   |  <- 250
+   |  
+   |  <- 430
+
+6.2.  Disconnection of a user
+
+   A user can disconnect from the server using the /logout command on
+   the client.
+
+   On the server, disconnecting from the server is done using the LOGOUT
+   command.
+
+   This command can error out in case the user isn't logged in.
+
+   Example:
+
+   |  LOGOUT
+   |  
+   |  251 User logged out.
+   |  
+   |  In case user isn't logged in:
+   |  
+
+
+
+MAICHE                   Expires 1 October 2026                 [Page 4]
+
+Internet-Draft               MAICHE Protocol                  March 2026
+
+
+   |  LOGOUT
+   |  
+   |  435 User isn't logged in.
+
+   Resume:
+
+   |  LOGOUT ->
+   |  
+   |  <- 251
+   |  
+   |  <- 435
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+MAICHE                   Expires 1 October 2026                 [Page 5]
