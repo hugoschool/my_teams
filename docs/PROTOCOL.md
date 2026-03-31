@@ -54,23 +54,15 @@ All communications from the client and from the server must end with an ending s
 
 In our case, the chosen ending sequence is CRLF, Carriage Return Line Feed (`\r\n`).
 
-# Client input
-
-A client must send the message with a valid command and an ending sequence.
-
-An input from the client must be formatted as such (without the brackets, of course):
-
-> [Command] [Args...] [Ending sequence]
-
-# Server response
-
-The server should always respond to the client, whether the input is valid or not.
-
-All responses from the server must be formatted as such (without the brackets, of course):
-
-> [Status code] [Message] [Ending sequence]
-
 ## Status codes
+
+A typical status code response is:
+
+> [3 number code] [message]
+
+What is given here is an example of a message, it can be modified.
+
+But the 3 number code must be accurate.
 
 All status codes, classed by category:
 
@@ -86,10 +78,29 @@ User failure:
 - 435 User isn't logged in.
 - 450 User already subscribed to this team.
 - 451 User isn't subscribed to this team.
+- 499 Badly formed request.
 
 Server failure:
 
 - 500 Server failure.
+
+# Client input
+
+A client must send the message with a valid command and an ending sequence.
+
+An input from the client must be formatted as such (without the brackets, of course):
+
+> [Command] [Args...] [Ending sequence]
+
+If the given input is invalid, the server shall respond with a 499 status code.
+
+# Server response
+
+The server should always respond to the client, whether the input is valid or not.
+
+All responses from the server must be formatted as such (without the brackets, of course):
+
+> [Status code] [Message] [Ending sequence]
 
 # User-related events
 

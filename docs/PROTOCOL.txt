@@ -63,15 +63,15 @@ Table of Contents
    1.  Introduction  . . . . . . . . . . . . . . . . . . . . . . . .   2
    2.  Context . . . . . . . . . . . . . . . . . . . . . . . . . . .   2
    3.  Ending sequence . . . . . . . . . . . . . . . . . . . . . . .   3
+     3.1.  Status codes  . . . . . . . . . . . . . . . . . . . . . .   3
    4.  Client input  . . . . . . . . . . . . . . . . . . . . . . . .   3
-   5.  Server response . . . . . . . . . . . . . . . . . . . . . . .   3
-     5.1.  Status codes  . . . . . . . . . . . . . . . . . . . . . .   3
+   5.  Server response . . . . . . . . . . . . . . . . . . . . . . .   4
    6.  User-related events . . . . . . . . . . . . . . . . . . . . .   4
      6.1.  Connection of a user  . . . . . . . . . . . . . . . . . .   4
      6.2.  Disconnection of a user . . . . . . . . . . . . . . . . .   5
      6.3.  Retrieve a list of all users  . . . . . . . . . . . . . .   5
      6.4.  Retrieve information about a specific user  . . . . . . .   6
-   7.  Team-related events . . . . . . . . . . . . . . . . . . . . .   6
+   7.  Team-related events . . . . . . . . . . . . . . . . . . . . .   7
      7.1.  Creating a team . . . . . . . . . . . . . . . . . . . . .   7
      7.2.  Retrieve a list of all teams  . . . . . . . . . . . . . .   7
      7.3.  Retrieve information about a specific team  . . . . . . .   8
@@ -128,27 +128,15 @@ Internet-Draft               MAICHE Protocol                  March 2026
    In our case, the chosen ending sequence is CRLF, Carriage Return Line
    Feed (\r\n).
 
-4.  Client input
+3.1.  Status codes
 
-   A client must send the message with a valid command and an ending
-   sequence.
+   A typical status code response is:
 
-   An input from the client must be formatted as such (without the
-   brackets, of course):
+   |  [3 number code] [message]
 
-   |  [Command] [Args...] [Ending sequence]
+   What is given here is an example of a message, it can be modified.
 
-5.  Server response
-
-   The server should always respond to the client, whether the input is
-   valid or not.
-
-   All responses from the server must be formatted as such (without the
-   brackets, of course):
-
-   |  [Status code] [Message] [Ending sequence]
-
-5.1.  Status codes
+   But the 3 number code must be accurate.
 
    All status codes, classed by category:
 
@@ -162,6 +150,18 @@ Internet-Draft               MAICHE Protocol                  March 2026
 
    *  430 User already logged in.
    *  435 User isn't logged in.
+   *  450 User already subscribed to this team.
+   *  451 User isn't subscribed to this team.
+   *  499 Badly formed request.
+
+   Server failure:
+
+   *  500 Server failure.
+
+4.  Client input
+
+   A client must send the message with a valid command and an ending
+   sequence.
 
 
 
@@ -170,12 +170,23 @@ MAICHE                   Expires 1 October 2026                 [Page 3]
 Internet-Draft               MAICHE Protocol                  March 2026
 
 
-   *  450 User already subscribed to this team.
-   *  451 User isn't subscribed to this team.
+   An input from the client must be formatted as such (without the
+   brackets, of course):
 
-   Server failure:
+   |  [Command] [Args...] [Ending sequence]
 
-   *  500 Server failure.
+   If the given input is invalid, the server shall respond with a 499
+   status code.
+
+5.  Server response
+
+   The server should always respond to the client, whether the input is
+   valid or not.
+
+   All responses from the server must be formatted as such (without the
+   brackets, of course):
+
+   |  [Status code] [Message] [Ending sequence]
 
 6.  User-related events
 
@@ -207,6 +218,14 @@ Internet-Draft               MAICHE Protocol                  March 2026
    |  
    |  LOGIN username
    |  
+
+
+
+MAICHE                   Expires 1 October 2026                 [Page 4]
+
+Internet-Draft               MAICHE Protocol                  March 2026
+
+
    |  430 User already logged in.
 
    Resume:
@@ -216,15 +235,6 @@ Internet-Draft               MAICHE Protocol                  March 2026
    |  <- 250
    |  
    |  <- 430
-
-
-
-
-
-MAICHE                   Expires 1 October 2026                 [Page 4]
-
-Internet-Draft               MAICHE Protocol                  March 2026
-
 
 6.2.  Disconnection of a user
 
@@ -265,6 +275,13 @@ Internet-Draft               MAICHE Protocol                  March 2026
 
    This is done using the USERS command.
 
+
+
+MAICHE                   Expires 1 October 2026                 [Page 5]
+
+Internet-Draft               MAICHE Protocol                  March 2026
+
+
    What is returned is a list of all the users with their usernames,
    their UUIDs and their status.
 
@@ -273,14 +290,6 @@ Internet-Draft               MAICHE Protocol                  March 2026
    This command can error out in case the user isn't logged in.
 
    Example:
-
-
-
-
-MAICHE                   Expires 1 October 2026                 [Page 5]
-
-Internet-Draft               MAICHE Protocol                  March 2026
-
 
    |  USERS
    |  
@@ -321,15 +330,6 @@ Internet-Draft               MAICHE Protocol                  March 2026
    |  USERNAME uuid 0 [newline]
    |  
    |  In case user isn't logged in:
-   |  
-   |  USER [UUID]
-   |  
-   |  435 User isn't logged in.
-
-7.  Team-related events
-
-
-
 
 
 
@@ -337,6 +337,13 @@ MAICHE                   Expires 1 October 2026                 [Page 6]
 
 Internet-Draft               MAICHE Protocol                  March 2026
 
+
+   |  
+   |  USER [UUID]
+   |  
+   |  435 User isn't logged in.
+
+7.  Team-related events
 
 7.1.  Creating a team
 
@@ -379,13 +386,6 @@ Internet-Draft               MAICHE Protocol                  March 2026
 
    Example:
 
-   |  TEAMS
-   |  
-   |  200 Success.  [Ending sequence]
-   |  
-   |  TEAM_NAME uuid description [newline]
-   |  
-   |  TEAM_NAME uuid description [newline]
 
 
 
@@ -394,6 +394,13 @@ MAICHE                   Expires 1 October 2026                 [Page 7]
 Internet-Draft               MAICHE Protocol                  March 2026
 
 
+   |  TEAMS
+   |  
+   |  200 Success.  [Ending sequence]
+   |  
+   |  TEAM_NAME uuid description [newline]
+   |  
+   |  TEAM_NAME uuid description [newline]
    |  
    |  TEAM_NAME uuid description [newline]
    |  
@@ -435,13 +442,6 @@ Internet-Draft               MAICHE Protocol                  March 2026
 
    A user can subscribe to a team.
 
-   On the client, this is the /subscribe [team_uuid].
-
-   This is done using the SUBSCRIBE_TEAM uuid command.
-
-   What is returned is a 200 status code.
-
-
 
 
 
@@ -449,6 +449,12 @@ MAICHE                   Expires 1 October 2026                 [Page 8]
 
 Internet-Draft               MAICHE Protocol                  March 2026
 
+
+   On the client, this is the /subscribe [team_uuid].
+
+   This is done using the SUBSCRIBE_TEAM uuid command.
+
+   What is returned is a 200 status code.
 
    This command can error out in case the user isn't logged in or if the
    user is already subscribed to a team.
@@ -492,12 +498,6 @@ Internet-Draft               MAICHE Protocol                  March 2026
    |  
    |  In case user isn't logged in:
    |  
-   |  UNSUBSCRIBE_TEAM uuid
-   |  
-   |  435 User isn't logged in.
-   |  
-   |  In case user isn't subscribed to this team:
-   |  
 
 
 
@@ -506,6 +506,12 @@ MAICHE                   Expires 1 October 2026                 [Page 9]
 Internet-Draft               MAICHE Protocol                  March 2026
 
 
+   |  UNSUBSCRIBE_TEAM uuid
+   |  
+   |  435 User isn't logged in.
+   |  
+   |  In case user isn't subscribed to this team:
+   |  
    |  UNSUBSCRIBE_TEAM uuid
    |  
    |  451 User isn't subscribed to this team.
@@ -549,18 +555,17 @@ Internet-Draft               MAICHE Protocol                  March 2026
 
    On the client, this is the /subscribed [team_uuid].
 
-   This is done using the LIST_SUBSCRIBED_USERS uuid command.
-
-   What is returned is a 200 status code followed by a list of users and
-   their status.
-
-
 
 
 MAICHE                   Expires 1 October 2026                [Page 10]
 
 Internet-Draft               MAICHE Protocol                  March 2026
 
+
+   This is done using the LIST_SUBSCRIBED_USERS uuid command.
+
+   What is returned is a 200 status code followed by a list of users and
+   their status.
 
    This command can error out in case the user isn't logged in.
 
@@ -583,11 +588,6 @@ Internet-Draft               MAICHE Protocol                  March 2026
    |  USERNAME uuid 0 [newline]
    |  
    |  435 User isn't logged in.
-
-
-
-
-
 
 
 
