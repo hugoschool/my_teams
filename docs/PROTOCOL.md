@@ -84,6 +84,8 @@ User failure:
 
 - 430 User already logged in.
 - 435 User isn't logged in.
+- 450 User already subscribed to this team.
+- 451 User isn't subscribed to this team.
 
 Server failure:
 
@@ -204,6 +206,174 @@ Example:
 > In case user isn't logged in:
 >
 > USER [UUID]
+>
+> 435 User isn't logged in.
+
+# Team-related events
+
+## Creating a team
+
+A user can create a team given a name and a description.
+
+On the client, this is the `/create [team_name] [team_description]` command.
+
+This is done using the `CREATE_TEAM [name] [description]` command.
+
+What is returned is only a 200 status code.
+
+This command can error out in case the user isn't logged in.
+
+Example:
+> CREATE_TEAM [name] [description]
+>
+> 200 Success.
+>
+> In case user isn't logged in:
+>
+> CREATE_TEAM [name] [description]
+>
+> 435 User isn't logged in.
+
+## Retrieve a list of all teams
+
+A user can ask to list all teams.
+
+On the client, this is the `/list` command whilst not inside a `/use` context.
+
+This is done using the `TEAMS` command.
+
+What is returned is a 200 status code followed by each teams name, uuid and description.
+
+This command can error out in case the user isn't logged in.
+
+Example:
+> TEAMS
+>
+> 200 Success. [Ending sequence]
+>
+> TEAM_NAME uuid description [newline]
+>
+> TEAM_NAME uuid description [newline]
+>
+> TEAM_NAME uuid description [newline]
+>
+> In case user isn't logged in:
+>
+> TEAMS
+>
+> 435 User isn't logged in.
+
+## Retrieve information about a specific team
+
+A user can request information about a specific team given its UUID.
+
+On the client, this is the `/info` command whilst inside a `/use [team_uuid]` context.
+
+This is done using the `TEAM uuid` command.
+
+What is returned is a 200 status code followed by the teams name, uuid and description.
+
+This command can error out in case the user isn't logged in.
+
+Example:
+> TEAM uuid
+>
+> 200 Success. [Ending sequence]
+>
+> TEAM_NAME uuid description [newline]
+>
+> In case user isn't logged in:
+>
+> TEAM uuid
+>
+> 435 User isn't logged in.
+
+## Subscribe to a team
+
+A user can subscribe to a team.
+
+On the client, this is the `/subscribe [team_uuid]`.
+
+This is done using the `SUBSCRIBE_TEAM uuid` command.
+
+What is returned is a 200 status code.
+
+This command can error out in case the user isn't logged in or if the user is already subscribed to a team.
+
+Example:
+> SUBSCRIBE_TEAM uuid
+>
+> 200 Success.
+>
+> In case user isn't logged in:
+>
+> SUBSCRIBE_TEAM uuid
+>
+> 435 User isn't logged in.
+>
+> In case user is already subscribed to this team:
+>
+> SUBSCRIBE_TEAM uuid
+>
+> 450 User is already subscribed to this team.
+
+## Unsubscribe from a team
+
+Similar to subscribing, a user can unsubscribe from a team.
+
+On the client, this is the `/unsubscribe [team_uuid]`.
+
+This is done using the `UNSUBSCRIBE_TEAM uuid` command.
+
+What is returned is a 200 status code.
+
+This command can error out in case the user isn't logged in or if the user isn't subscribed to a team.
+
+Example:
+> UNSUBSCRIBE_TEAM uuid
+>
+> 200 Success.
+>
+> In case user isn't logged in:
+>
+> UNSUBSCRIBE_TEAM uuid
+>
+> 435 User isn't logged in.
+>
+> In case user isn't subscribed to this team:
+>
+> UNSUBSCRIBE_TEAM uuid
+>
+> 451 User isn't subscribed to this team.
+
+## List all users subscribed to a team
+
+A user can see which users are subscribed to a team.
+
+On the client, this is the `/subscribed [team_uuid]`.
+
+This is done using the `LIST_SUBSCRIBED_USERS uuid` command.
+
+What is returned is a 200 status code followed by a list of users and their status.
+
+This command can error out in case the user isn't logged in.
+
+Example:
+> LIST_SUBSCRIBED_USERS uuid
+>
+> 200 Success. [Ending sequence]
+>
+> USER
+>
+> In case user isn't logged in:
+>
+> LIST_SUBSCRIBED_USERS uuid
+>
+> USERNAME uuid 0 [newline]
+>
+> USERNAME uuid 1 [newline]
+>
+> USERNAME uuid 0 [newline]
 >
 > 435 User isn't logged in.
 

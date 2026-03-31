@@ -68,9 +68,16 @@ Table of Contents
      5.1.  Status codes  . . . . . . . . . . . . . . . . . . . . . .   3
    6.  User-related events . . . . . . . . . . . . . . . . . . . . .   4
      6.1.  Connection of a user  . . . . . . . . . . . . . . . . . .   4
-     6.2.  Disconnection of a user . . . . . . . . . . . . . . . . .   4
+     6.2.  Disconnection of a user . . . . . . . . . . . . . . . . .   5
      6.3.  Retrieve a list of all users  . . . . . . . . . . . . . .   5
      6.4.  Retrieve information about a specific user  . . . . . . .   6
+   7.  Team-related events . . . . . . . . . . . . . . . . . . . . .   6
+     7.1.  Creating a team . . . . . . . . . . . . . . . . . . . . .   7
+     7.2.  Retrieve a list of all teams  . . . . . . . . . . . . . .   7
+     7.3.  Retrieve information about a specific team  . . . . . . .   8
+     7.4.  Subscribe to a team . . . . . . . . . . . . . . . . . . .   8
+     7.5.  Unsubscribe from a team . . . . . . . . . . . . . . . . .   9
+     7.6.  List all users subscribed to a team . . . . . . . . . . .  10
 
 1.  Introduction
 
@@ -99,13 +106,6 @@ Table of Contents
    |  *  Creating a channel in a team
    |  *  Creating a thread in a channel
    |  *  Creating a comment in a thread
-   |  *  Saving & restoring users, teams, channels, threads & associated
-   |     comments
-   |  *  Personal discussion (from a user to an other)
-   |  *  Saving & restoring personal discussion
-
-
-
 
 
 
@@ -113,6 +113,11 @@ MAICHE                   Expires 1 October 2026                 [Page 2]
 
 Internet-Draft               MAICHE Protocol                  March 2026
 
+
+   |  *  Saving & restoring users, teams, channels, threads & associated
+   |     comments
+   |  *  Personal discussion (from a user to an other)
+   |  *  Saving & restoring personal discussion
 
 3.  Ending sequence
 
@@ -156,12 +161,7 @@ Internet-Draft               MAICHE Protocol                  March 2026
 
    *  430 User already logged in.
    *  435 User isn't logged in.
-
-   Server failure:
-
-   *  500 Server failure.
-
-
+   *  450 User already subscribed to this team.
 
 
 
@@ -169,6 +169,12 @@ MAICHE                   Expires 1 October 2026                 [Page 3]
 
 Internet-Draft               MAICHE Protocol                  March 2026
 
+
+   *  451 User isn't subscribed to this team.
+
+   Server failure:
+
+   *  500 Server failure.
 
 6.  User-related events
 
@@ -210,13 +216,7 @@ Internet-Draft               MAICHE Protocol                  March 2026
    |  
    |  <- 430
 
-6.2.  Disconnection of a user
 
-   A user can disconnect from the server using the /logout command on
-   the client.
-
-   On the server, disconnecting from the server is done using the LOGOUT
-   command.
 
 
 
@@ -225,6 +225,14 @@ MAICHE                   Expires 1 October 2026                 [Page 4]
 
 Internet-Draft               MAICHE Protocol                  March 2026
 
+
+6.2.  Disconnection of a user
+
+   A user can disconnect from the server using the /logout command on
+   the client.
+
+   On the server, disconnecting from the server is done using the LOGOUT
+   command.
 
    This command can error out in case the user isn't logged in.
 
@@ -266,14 +274,6 @@ Internet-Draft               MAICHE Protocol                  March 2026
 
    Example:
 
-   |  USERS
-   |  
-   |  200 Success.  [Ending sequence]
-   |  
-   |  USERNAME uuid 0 [newline]
-   |  
-   |  USERNAME uuid 1 [newline]
-   |  
 
 
 
@@ -282,6 +282,14 @@ MAICHE                   Expires 1 October 2026                 [Page 5]
 Internet-Draft               MAICHE Protocol                  March 2026
 
 
+   |  USERS
+   |  
+   |  200 Success.  [Ending sequence]
+   |  
+   |  USERNAME uuid 0 [newline]
+   |  
+   |  USERNAME uuid 1 [newline]
+   |  
    |  USERNAME uuid 0 [newline]
    |  
    |  In case user isn't logged in:
@@ -318,15 +326,7 @@ Internet-Draft               MAICHE Protocol                  March 2026
    |  
    |  435 User isn't logged in.
 
-
-
-
-
-
-
-
-
-
+7.  Team-related events
 
 
 
@@ -334,3 +334,227 @@ Internet-Draft               MAICHE Protocol                  March 2026
 
 
 MAICHE                   Expires 1 October 2026                 [Page 6]
+
+Internet-Draft               MAICHE Protocol                  March 2026
+
+
+7.1.  Creating a team
+
+   A user can create a team given a name and a description.
+
+   On the client, this is the /create [team_name] [team_description]
+   command.
+
+   This is done using the CREATE_TEAM [name] [description] command.
+
+   What is returned is only a 200 status code.
+
+   This command can error out in case the user isn't logged in.
+
+   Example:
+
+   |  CREATE_TEAM [name] [description]
+   |  
+   |  200 Success.
+   |  
+   |  In case user isn't logged in:
+   |  
+   |  CREATE_TEAM [name] [description]
+   |  
+   |  435 User isn't logged in.
+
+7.2.  Retrieve a list of all teams
+
+   A user can ask to list all teams.
+
+   On the client, this is the /list command whilst not inside a /use
+   context.
+
+   This is done using the TEAMS command.
+
+   What is returned is a 200 status code followed by each teams name,
+   uuid and description.
+
+   This command can error out in case the user isn't logged in.
+
+   Example:
+
+   |  TEAMS
+   |  
+   |  200 Success.  [Ending sequence]
+   |  
+   |  TEAM_NAME uuid description [newline]
+   |  
+   |  TEAM_NAME uuid description [newline]
+
+
+
+MAICHE                   Expires 1 October 2026                 [Page 7]
+
+Internet-Draft               MAICHE Protocol                  March 2026
+
+
+   |  
+   |  TEAM_NAME uuid description [newline]
+   |  
+   |  In case user isn't logged in:
+   |  
+   |  TEAMS
+   |  
+   |  435 User isn't logged in.
+
+7.3.  Retrieve information about a specific team
+
+   A user can request information about a specific team given its UUID.
+
+   On the client, this is the /info command whilst inside a /use
+   [team_uuid] context.
+
+   This is done using the TEAM uuid command.
+
+   What is returned is a 200 status code followed by the teams name,
+   uuid and description.
+
+   This command can error out in case the user isn't logged in.
+
+   Example:
+
+   |  TEAM uuid
+   |  
+   |  200 Success.  [Ending sequence]
+   |  
+   |  TEAM_NAME uuid description [newline]
+   |  
+   |  In case user isn't logged in:
+   |  
+   |  TEAM uuid
+   |  
+   |  435 User isn't logged in.
+
+7.4.  Subscribe to a team
+
+   A user can subscribe to a team.
+
+   On the client, this is the /subscribe [team_uuid].
+
+   This is done using the SUBSCRIBE_TEAM uuid command.
+
+   What is returned is a 200 status code.
+
+
+
+
+
+MAICHE                   Expires 1 October 2026                 [Page 8]
+
+Internet-Draft               MAICHE Protocol                  March 2026
+
+
+   This command can error out in case the user isn't logged in or if the
+   user is already subscribed to a team.
+
+   Example:
+
+   |  SUBSCRIBE_TEAM uuid
+   |  
+   |  200 Success.
+   |  
+   |  In case user isn't logged in:
+   |  
+   |  SUBSCRIBE_TEAM uuid
+   |  
+   |  435 User isn't logged in.
+   |  
+   |  In case user is already subscribed to this team:
+   |  
+   |  SUBSCRIBE_TEAM uuid
+   |  
+   |  450 User is already subscribed to this team.
+
+7.5.  Unsubscribe from a team
+
+   Similar to subscribing, a user can unsubscribe from a team.
+
+   On the client, this is the /unsubscribe [team_uuid].
+
+   This is done using the UNSUBSCRIBE_TEAM uuid command.
+
+   What is returned is a 200 status code.
+
+   This command can error out in case the user isn't logged in or if the
+   user isn't subscribed to a team.
+
+   Example:
+
+   |  UNSUBSCRIBE_TEAM uuid
+   |  
+   |  200 Success.
+   |  
+   |  In case user isn't logged in:
+   |  
+   |  UNSUBSCRIBE_TEAM uuid
+   |  
+   |  435 User isn't logged in.
+   |  
+   |  In case user isn't subscribed to this team:
+   |  
+
+
+
+MAICHE                   Expires 1 October 2026                 [Page 9]
+
+Internet-Draft               MAICHE Protocol                  March 2026
+
+
+   |  UNSUBSCRIBE_TEAM uuid
+   |  
+   |  451 User isn't subscribed to this team.
+
+7.6.  List all users subscribed to a team
+
+   A user can see which users are subscribed to a team.
+
+   On the client, this is the /subscribed [team_uuid].
+
+   This is done using the LIST_SUBSCRIBED_USERS uuid command.
+
+   What is returned is a 200 status code followed by a list of users and
+   their status.
+
+   This command can error out in case the user isn't logged in.
+
+   Example:
+
+   |  LIST_SUBSCRIBED_USERS uuid
+   |  
+   |  200 Success.  [Ending sequence]
+   |  
+   |  USER
+   |  
+   |  In case user isn't logged in:
+   |  
+   |  LIST_SUBSCRIBED_USERS uuid
+   |  
+   |  USERNAME uuid 0 [newline]
+   |  
+   |  USERNAME uuid 1 [newline]
+   |  
+   |  USERNAME uuid 0 [newline]
+   |  
+   |  435 User isn't logged in.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+MAICHE                   Expires 1 October 2026                [Page 10]
