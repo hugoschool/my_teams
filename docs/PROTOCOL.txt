@@ -77,7 +77,8 @@ Table of Contents
      7.3.  Retrieve information about a specific team  . . . . . . .   8
      7.4.  Subscribe to a team . . . . . . . . . . . . . . . . . . .   8
      7.5.  Unsubscribe from a team . . . . . . . . . . . . . . . . .   9
-     7.6.  List all users subscribed to a team . . . . . . . . . . .  10
+     7.6.  List all teams the user is subscribed to  . . . . . . . .  10
+     7.7.  List all users subscribed to a team . . . . . . . . . . .  10
 
 1.  Introduction
 
@@ -105,7 +106,6 @@ Table of Contents
    |  *  Creating a user
    |  *  Creating a channel in a team
    |  *  Creating a thread in a channel
-   |  *  Creating a comment in a thread
 
 
 
@@ -114,6 +114,7 @@ MAICHE                   Expires 1 October 2026                 [Page 2]
 Internet-Draft               MAICHE Protocol                  March 2026
 
 
+   |  *  Creating a comment in a thread
    |  *  Saving & restoring users, teams, channels, threads & associated
    |     comments
    |  *  Personal discussion (from a user to an other)
@@ -161,7 +162,6 @@ Internet-Draft               MAICHE Protocol                  March 2026
 
    *  430 User already logged in.
    *  435 User isn't logged in.
-   *  450 User already subscribed to this team.
 
 
 
@@ -170,6 +170,7 @@ MAICHE                   Expires 1 October 2026                 [Page 3]
 Internet-Draft               MAICHE Protocol                  March 2026
 
 
+   *  450 User already subscribed to this team.
    *  451 User isn't subscribed to this team.
 
    Server failure:
@@ -215,7 +216,6 @@ Internet-Draft               MAICHE Protocol                  March 2026
    |  <- 250
    |  
    |  <- 430
-
 
 
 
@@ -510,7 +510,40 @@ Internet-Draft               MAICHE Protocol                  March 2026
    |  
    |  451 User isn't subscribed to this team.
 
-7.6.  List all users subscribed to a team
+7.6.  List all teams the user is subscribed to
+
+   A user can request a list of all teams it is subscribed to.
+
+   On the client, this is the /subscribed command.
+
+   This is done using the SUBSCRIBED command.
+
+   What is returned is a list of teams the user is subscribed to
+   including their names, uuid and description.
+
+   Their status is 0 if logged out and 1 if logged in.
+
+   This command can error out in case the user isn't logged in.
+
+   Example:
+
+   |  SUBSCRIBED
+   |  
+   |  200 Success.  [Ending sequence]
+   |  
+   |  TEAM_NAME uuid description [newline]
+   |  
+   |  TEAM_NAME uuid description [newline]
+   |  
+   |  TEAM_NAME uuid description [newline]
+   |  
+   |  In case user isn't logged in:
+   |  
+   |  SUBSCRIBED
+   |  
+   |  435 User isn't logged in.
+
+7.7.  List all users subscribed to a team
 
    A user can see which users are subscribed to a team.
 
@@ -520,6 +553,14 @@ Internet-Draft               MAICHE Protocol                  March 2026
 
    What is returned is a 200 status code followed by a list of users and
    their status.
+
+
+
+
+MAICHE                   Expires 1 October 2026                [Page 10]
+
+Internet-Draft               MAICHE Protocol                  March 2026
+
 
    This command can error out in case the user isn't logged in.
 
@@ -557,4 +598,19 @@ Internet-Draft               MAICHE Protocol                  March 2026
 
 
 
-MAICHE                   Expires 1 October 2026                [Page 10]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+MAICHE                   Expires 1 October 2026                [Page 11]

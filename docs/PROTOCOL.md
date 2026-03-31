@@ -346,6 +346,37 @@ Example:
 >
 > 451 User isn't subscribed to this team.
 
+## List all teams the user is subscribed to
+
+A user can request a list of all teams it is subscribed to.
+
+On the client, this is the `/subscribed` command.
+
+This is done using the `SUBSCRIBED` command.
+
+What is returned is a list of teams the user is subscribed to including their names, uuid and description.
+
+Their status is 0 if logged out and 1 if logged in.
+
+This command can error out in case the user isn't logged in.
+
+Example:
+> SUBSCRIBED
+>
+> 200 Success. [Ending sequence]
+>
+> TEAM_NAME uuid description [newline]
+>
+> TEAM_NAME uuid description [newline]
+>
+> TEAM_NAME uuid description [newline]
+>
+> In case user isn't logged in:
+>
+> SUBSCRIBED
+>
+> 435 User isn't logged in.
+
 ## List all users subscribed to a team
 
 A user can see which users are subscribed to a team.
