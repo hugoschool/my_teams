@@ -11,6 +11,12 @@
     #include "args.h"
     #include <netinet/in.h>
 
+// This initial amount macro can be reused for poller and clients array
+// It is initially set to this amount for:
+// - the initial control socket
+// - the signal file descriptor handler.
+    #define INITIAL_AMOUNT 2
+
 // For all dynamic arrays (this one and all future ones):
 // amount: current amount of elements in the array
 // size: actual malloc'd size of the array
@@ -27,7 +33,7 @@ typedef struct {
 poller_t *poller_init(void);
 void poller_fd_add(poller_t *poller, int fd);
 void poller_fd_delete(poller_t *poller, int i);
-void poller_set_init_socket(poller_t *poller, int socket_fd);
+void poller_set_init_values(poller_t *poller, int socket_fd, int signal_fd);
 void poller_free(poller_t *poller);
 
 // Socket
@@ -38,6 +44,8 @@ typedef struct {
     poller_t *poller;
     // CONTROL socket aka the main server socket
     int control_fd;
+    // Handles the SIGINT (Ctrl + C)
+    int signal_fd;
     // Represents the current client index that is being handled.
     unsigned int index;
 } server_t;
