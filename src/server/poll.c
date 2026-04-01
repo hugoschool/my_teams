@@ -5,10 +5,10 @@
 ** handler.c
 */
 
-#include "server/commands.h"
 #include "server/server.h"
 #include <stdbool.h>
 #include <stdio.h>
+#include <string.h>
 #include <sys/poll.h>
 #include <arpa/inet.h>
 #include <sys/signalfd.h>
@@ -32,10 +32,34 @@ void new_client_handler(server_t *server)
 
 void client_quit(server_t *server)
 {
+    int fd = server->poller->fds[server->index].fd;
+
+    if (fd != server->control_fd && fd != server->signal_fd) {
+        if (close(fd) == -1)
+            perror("close");
+        poller_fd_delete(server->poller, server->index);
+        server->index--;
+    }
 }
 
 void client_handler(server_t *server)
 {
+    size_t read_i = 0;
+    int fd = server->poller->fds[server->index].fd;
+    ssize_t bytes_read = 0;
+    char buffer[BUFFER_SIZE + 1];
+
+    while (true) {
+        memset(buffer, 0, BUFFER_SIZE + 1);
+        bytes_read = read(fd, buffer, BUFFER_SIZE);
+        if (bytes_read <= 0 && read_i == 0)
+            return client_quit(server);
+        buffer[bytes_read] = 0;
+        if (bytes_read < BUFFER_SIZE)
+            break;
+        read_i++;
+    }
+    printf("BUFFER: %s\n", buffer);
 }
 
 // server is ignored for now but will be useful later
@@ -58,9 +82,9 @@ static void handle_pollin_events(server_t *server, bool *running)
 
 void poll_handler(server_t *server, bool *running)
 {
-    unsigned int amount = server->poller->amount;
-
-    for (server->index = 0; server->index < amount; server->index++) {
+    for (server->index = 0;
+        server->index < server->poller->amount;
+        server->index++) {
         if (server->poller->fds[server->index].revents & POLLIN) {
             handle_pollin_events(server, running);
         }

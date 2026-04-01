@@ -17,6 +17,8 @@
 // - the signal file descriptor handler.
     #define INITIAL_AMOUNT 2
 
+    #define BUFFER_SIZE 4096
+
 // For all dynamic arrays (this one and all future ones):
 // amount: current amount of elements in the array
 // size: actual malloc'd size of the array
