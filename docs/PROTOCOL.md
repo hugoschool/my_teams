@@ -78,6 +78,7 @@ User failure:
 - 435 User isn't logged in.
 - 450 User already subscribed to this team.
 - 451 User isn't subscribed to this team.
+- 460 Given parameter is invalid. (Probably invalid UUID)
 - 499 Badly formed request.
 
 Server failure:
@@ -205,7 +206,11 @@ What is returned is the users username, uuid and status.
 
 Their status is 0 if logged out and 1 if logged in.
 
-This command can error out in case the user isn't logged in.
+This command can error out in case
+
+- the user doesn't exist
+
+- the user isn't logged in.
 
 Example:
 > USER [uuid]
@@ -213,6 +218,12 @@ Example:
 > 200 Success. [Ending sequence]
 >
 > USERNAME uuid 0 [newline]
+>
+> In case user doesn't exist:
+>
+> USER [uuid]
+>
+> 460 Given parameter is invalid.
 >
 > In case user isn't logged in:
 >
@@ -284,7 +295,11 @@ This is done using the `TEAM uuid` command.
 
 What is returned is a 200 status code followed by the teams name, uuid and description.
 
-This command can error out in case the user isn't logged in.
+This command can error out in case:
+
+- the team doesn't exist
+
+- the user isn't logged in.
 
 Example:
 > TEAM uuid
@@ -292,6 +307,12 @@ Example:
 > 200 Success. [Ending sequence]
 >
 > TEAM_NAME uuid description [newline]
+>
+> In case the team doesn't exist
+>
+> TEAM uuid
+>
+> 460 Given parameter is invalid.
 >
 > In case user isn't logged in:
 >
@@ -309,12 +330,24 @@ This is done using the `SUBSCRIBE_TEAM uuid` command.
 
 What is returned is a 200 status code.
 
-This command can error out in case the user isn't logged in or if the user is already subscribed to a team.
+This command can error out in case:
+
+- the team doesn't exist
+
+- the user isn't logged in
+
+- if the user is already subscribed to a team
 
 Example:
 > SUBSCRIBE_TEAM uuid
 >
 > 200 Success.
+>
+> In case team doesn't exist:
+>
+> SUBSCRIBE_TEAM uuid
+>
+> 460 Given parameter is invalid.
 >
 > In case user isn't logged in:
 >
@@ -338,12 +371,24 @@ This is done using the `UNSUBSCRIBE_TEAM uuid` command.
 
 What is returned is a 200 status code.
 
-This command can error out in case the user isn't logged in or if the user isn't subscribed to a team.
+This command can error out in case:
+
+- the team doesn't exist
+
+- the user isn't logged in
+
+- the user isn't subscribed to a team
 
 Example:
 > UNSUBSCRIBE_TEAM uuid
 >
 > 200 Success.
+>
+> In case the team doesn't exist:
+>
+> UNSUBSCRIBE_TEAM uuid
+>
+> 460 Given parameter is invalid.
 >
 > In case user isn't logged in:
 >
@@ -398,14 +443,24 @@ This is done using the `LIST_SUBSCRIBED_USERS uuid` command.
 
 What is returned is a 200 status code followed by a list of users and their status.
 
-This command can error out in case the user isn't logged in.
+This command can error out in case:
+
+- the team doesn't exist
+
+- the user isn't logged in
 
 Example:
 > LIST_SUBSCRIBED_USERS uuid
 >
 > 200 Success. [Ending sequence]
 >
-> USER
+> USERNAME uuid 0
+>
+> In case team doesn't exist:
+>
+> LIST_SUBSCRIBED_USERS uuid
+>
+> 460 Given parameter is invalid.
 >
 > In case user isn't logged in:
 >
