@@ -620,7 +620,7 @@ Example:
 >
 > 460 Given parameter is invalid.
 >
-> In case user isn't logged in:
+> In case user isn't subscribed to the team:
 >
 > CREATE_THREAD [team_uuid] [channel_uuid] [title] [message]
 >
@@ -718,4 +718,102 @@ Example:
 >
 > 435 User isn't logged in.
 
-<!-- TODO: rest of the docs -->
+# Comment-related events
+
+## Creating a comment
+
+A user can create a comment with a message.
+
+On the client, this is the `/create [comment_body]` command whilst in a `/use [team_uuid] [channel_uuid] [thread_uuid]` context.
+
+This is done using the `CREATE_COMMENT [team_uuid] [channel_uuid] [thread_uuid] [body]` command.
+
+What is returned is only a 200 status code.
+
+This command can error out in case:
+
+- the team does not exist
+
+- the channel does not exist
+
+- the thread does not exist
+
+- the user is not subscribed to the team
+
+- the user isn't logged in.
+
+Example:
+> CREATE_COMMENT [team_uuid] [channel_uuid] [thread_uuid] [body]
+>
+> 200 Success. [Ending sequence]
+>
+> COMMENT_UUID body
+>
+> In case channel doesn't exist and
+>
+> In case team doesn't exist and
+>
+> In case thread doesn't exist
+>
+> CREATE_COMMENT [team_uuid] [channel_uuid] [thread_uuid] [body]
+>
+> 460 Given parameter is invalid.
+>
+> In case user isn't subscribed to this team:
+>
+> CREATE_COMMENT [team_uuid] [channel_uuid] [thread_uuid] [body]
+>
+> 451 User isn't subscribed to this team.
+>
+> In case user isn't logged in:
+>
+> CREATE_COMMENT [team_uuid] [channel_uuid] [thread_uuid] [body]
+>
+> 435 User isn't logged in.
+
+## List all comments of a thread
+
+A user can list all comments of a thread.
+
+On the client, this is the `/list` command whilst in a `/use [team_uuid] [channel_uuid] [thread_uuid]` context.
+
+This is done using the `COMMENTS [team_uuid] [channel_uuid] [thread_uuid]` command.
+
+What is returned is only a 200 status code.
+
+This command can error out in case:
+
+- the team does not exist
+
+- the channel does not exist
+
+- the thread does not exist
+
+- the user isn't logged in.
+
+Example:
+> COMMENTS [team_uuid] [channel_uuid] [thread_uuid]
+>
+> 200 Success. [Ending sequence]
+>
+> COMMENT_UUID body [newline]
+>
+> COMMENT_UUID body [newline]
+>
+> COMMENT_UUID body [newline]
+>
+> In case channel doesn't exist and
+>
+> In case team doesn't exist and
+>
+> In case thread doesn't exist
+>
+> COMMENTS [team_uuid] [channel_uuid] [thread_uuid]
+>
+> 460 Given parameter is invalid.
+>
+> In case user isn't logged in:
+>
+> COMMENTS [team_uuid] [channel_uuid] [thread_uuid]
+>
+> 435 User isn't logged in.
