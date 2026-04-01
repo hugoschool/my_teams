@@ -122,20 +122,15 @@ If the username doesn't exist on the server, the server must add the user to its
 Example:
 > LOGIN username
 >
-> 250 User logged in.
+> 250 User logged in. [Ending sequence]
+>
+> USERNAME uuid 1
 >
 > In case user is already logged in:
 >
 > LOGIN username
 >
 > 430 User already logged in.
-
-Resume:
-> LOGIN username ->
->
-> <- 250
->
-> <- 430
 
 ## Disconnection of a user
 
@@ -155,13 +150,6 @@ Example:
 > LOGOUT
 >
 > 435 User isn't logged in.
-
-Resume:
-> LOGOUT ->
->
-> <- 251
->
-> <- 435
 
 ## Retrieve a list of all users
 
@@ -248,7 +236,9 @@ This command can error out in case the user isn't logged in.
 Example:
 > CREATE_TEAM [name] [description]
 >
-> 200 Success.
+> 200 Success. [Ending sequence]
+>
+> TEAM_NAME uuid description
 >
 > In case user isn't logged in:
 >
