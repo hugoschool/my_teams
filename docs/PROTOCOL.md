@@ -888,7 +888,9 @@ Example:
 >
 > 435 User isn't logged in.
 
-# Newly received events
+# Received events
+
+Received events are events that can be received anytime for all clients depending on conditions.
 
 ## Newly created team
 
@@ -919,3 +921,15 @@ The message is `NEW_COMMENT [team_uuid] [thread_uuid] [user_uuid] [comment_body]
 If a new private message has been sent by a user to another user, a message is sent to the user receiving the message.
 
 The message is `NEW_MESSAGE [user_uuid] [message_body]`
+
+## User logged in
+
+When a user logged in, a message is sent to every other client.
+
+The message is `CLIENT_JOINED [user_uuid] [user_name]`
+
+## User logged out
+
+When a user logged out, a message is sent to every other client.
+
+The message is `CLIENT_LEFT [user_uuid] [user_name]`

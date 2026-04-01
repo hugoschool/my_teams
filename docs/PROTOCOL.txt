@@ -92,20 +92,20 @@ Table of Contents
    10. Comment-related events  . . . . . . . . . . . . . . . . . . .  20
      10.1.  Creating a comment . . . . . . . . . . . . . . . . . . .  20
      10.2.  List all comments of a thread  . . . . . . . . . . . . .  21
-   11. Newly received events . . . . . . . . . . . . . . . . . . . .  22
+   11. Received events . . . . . . . . . . . . . . . . . . . . . . .  22
      11.1.  Newly created team . . . . . . . . . . . . . . . . . . .  22
      11.2.  Newly created channel  . . . . . . . . . . . . . . . . .  22
      11.3.  Newly created thread . . . . . . . . . . . . . . . . . .  22
      11.4.  Newly created comment  . . . . . . . . . . . . . . . . .  22
      11.5.  Newly created private message  . . . . . . . . . . . . .  23
+     11.6.  User logged in . . . . . . . . . . . . . . . . . . . . .  23
+     11.7.  User logged out  . . . . . . . . . . . . . . . . . . . .  23
 
 1.  Introduction
 
    The goal of the my_teams project is to create our CLI (client) and a
    server.
 
-   For this, we must also create a protocol to handle the events between
-   the client and the server.
 
 
 
@@ -113,6 +113,9 @@ MAICHE                   Expires 1 October 2026                 [Page 2]
 
 Internet-Draft               MAICHE Protocol                  March 2026
 
+
+   For this, we must also create a protocol to handle the events between
+   the client and the server.
 
 2.  Context
 
@@ -160,15 +163,14 @@ Internet-Draft               MAICHE Protocol                  March 2026
 
    All status codes, classed by category:
 
-   Initial login acknowledgment:
-
-
 
 
 MAICHE                   Expires 1 October 2026                 [Page 3]
 
 Internet-Draft               MAICHE Protocol                  March 2026
 
+
+   Initial login acknowledgment:
 
    *  25120 MAICHE Protocol initialized.
 
@@ -214,8 +216,6 @@ Internet-Draft               MAICHE Protocol                  March 2026
    brackets, of course):
 
    |  [Status code] [Message] [Ending sequence]
-
-
 
 
 
@@ -1195,7 +1195,10 @@ Internet-Draft               MAICHE Protocol                  March 2026
    |  
    |  435 User isn't logged in.
 
-11.  Newly received events
+11.  Received events
+
+   Received events are events that can be received anytime for all
+   clients depending on conditions.
 
 11.1.  Newly created team
 
@@ -1224,15 +1227,15 @@ Internet-Draft               MAICHE Protocol                  March 2026
    If a new comment has been created, a message is sent to all clients
    that are subscribed to the related team.
 
-   The message is NEW_COMMENT [team_uuid] [thread_uuid] [user_uuid]
-   [comment_body].
-
 
 
 MAICHE                   Expires 1 October 2026                [Page 22]
 
 Internet-Draft               MAICHE Protocol                  March 2026
 
+
+   The message is NEW_COMMENT [team_uuid] [thread_uuid] [user_uuid]
+   [comment_body].
 
 11.5.  Newly created private message
 
@@ -1241,20 +1244,17 @@ Internet-Draft               MAICHE Protocol                  March 2026
 
    The message is NEW_MESSAGE [user_uuid] [message_body]
 
+11.6.  User logged in
 
+   When a user logged in, a message is sent to every other client.
 
+   The message is CLIENT_JOINED [user_uuid] [user_name]
 
+11.7.  User logged out
 
+   When a user logged out, a message is sent to every other client.
 
-
-
-
-
-
-
-
-
-
+   The message is CLIENT_LEFT [user_uuid] [user_name]
 
 
 
