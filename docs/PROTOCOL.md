@@ -823,3 +823,29 @@ Example:
 > COMMENTS [team_uuid] [channel_uuid] [thread_uuid]
 >
 > 435 User isn't logged in.
+
+# Newly received events
+
+## Newly created team
+
+If a new team has been created, a message is sent to all clients.
+
+The message is `NEW_TEAM [team_uuid] [team_name] [team_description]`.
+
+## Newly created channel
+
+If a new channel has been created, a message is sent to all clients that are subscribed to the related team.
+
+The message is `NEW_CHANNEL [channel_uuid] [channel_name] [channel_description]`.
+
+## Newly created thread
+
+If a new thread has been created, a message is sent to all clients that are subscribed to the related team.
+
+The message is `NEW_THREAD [thread_uuid] [thread_title] [thread_body]`.
+
+## Newly created comment
+
+If a new comment has been created, a message is sent to all clients that are subscribed to the related team.
+
+The message is `NEW_COMMENT [team_uuid] [thread_uuid] [user_uuid] [comment_body]`.
