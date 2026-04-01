@@ -509,7 +509,7 @@ On the client, this is the `/info` command whilst inside a `/use [team_uuid] [ch
 
 This is done using the `CHANNEL team_uuid uuid` command.
 
-What is returned is a 200 status code followed by the teams name, uuid and description.
+What is returned is a 200 status code followed by the channels name, uuid and description.
 
 This command can error out in case:
 
@@ -580,6 +580,133 @@ Example:
 > In case user isn't logged in:
 >
 > CHANNELS [team_uuid]
+>
+> 435 User isn't logged in.
+
+# Thread-related events
+
+## Creating a thread
+
+A user can create a thread given a title and a message.
+
+On the client, this is the `/create [thread_title] [thread_message]` command whilst in a `/use [team_uuid] [channel_uuid]` context.
+
+This is done using the `CREATE_THREAD [team_uuid] [channel_uuid] [title] [message]` command.
+
+What is returned is only a 200 status code.
+
+This command can error out in case:
+
+- the team does not exist
+
+- the channel does not exist
+
+- the user isn't logged in.
+
+Example:
+> CREATE_THREAD [team_uuid] [channel_uuid] [title] [message]
+>
+> 200 Success. [Ending sequence]
+>
+> THREAD_TITLE uuid message
+>
+> In case channel doesn't exist and
+>
+> In case team doesn't exist:
+>
+> CREATE_THREAD [team_uuid] [channel_uuid] [title] [message]
+>
+> 460 Given parameter is invalid.
+>
+> In case user isn't logged in:
+>
+> CREATE_THREAD [team_uuid] [channel_uuid] [title] [message]
+>
+> 435 User isn't logged in.
+
+## Retrieve information about a specific thread
+
+A user can request information about a specific channel given its UUID and the teams uuid.
+
+On the client, this is the `/info` command whilst inside a `/use [team_uuid] [channel_uuid] [thread_uuid]` context.
+
+This is done using the `THREAD team_uuid channel_uuid thread_uuid` command.
+
+What is returned is a 200 status code followed by the threads title, uuid and message.
+
+This command can error out in case:
+
+- the team doesn't exist
+
+- the channel doesn't exist
+
+- the thread doesn't exist
+
+- the user isn't logged in.
+
+Example:
+> THREAD team_uuid channel_uuid thread_uuid
+>
+> 200 Success. [Ending sequence]
+>
+> THREAD_TITLE uuid message [newline]
+>
+> In case the team doesn't exist and
+>
+> In case the channel doesn't exist and
+>
+> In case the thread doesn't exist
+>
+> THREAD team_uuid channel_uuid thread_uuid
+>
+> 460 Given parameter is invalid.
+>
+> In case user isn't logged in:
+>
+> THREAD team_uuid channel_uuid thread_uuid
+>
+> 435 User isn't logged in.
+
+## List all threads in a team
+
+A user can list all threads in a team.
+
+On the client, this is the `/list` command whilst in a `/use [team_uuid] [channel_uuid]` context.
+
+This is done using the `THREADS [team_uuid] [channel_uuid]` command.
+
+What is returned is only a 200 status code.
+
+This command can error out in case:
+
+- the team does not exist
+
+- the channel does not exist
+
+- the user isn't logged in.
+
+Example:
+> THREADS [team_uuid] [CHANNEL_UUID]
+>
+> 200 Success. [Ending sequence]
+>
+> THREAD_TITLE uuid message
+>
+> THREAD_TITLE uuid message
+>
+> THREAD_TITLE uuid message
+>
+> In case team doesn't exist and
+>
+> In case channel does not exist
+>
+> THREADS [team_uuid] [CHANNEL_UUID]
+>
+> 460 Given parameter is invalid.
+>
+> In case user isn't logged in:
+>
+> THREADS [team_uuid] [CHANNEL_UUID]
 >
 > 435 User isn't logged in.
 
