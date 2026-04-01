@@ -601,6 +601,8 @@ This command can error out in case:
 
 - the channel does not exist
 
+- the user is not subscribed to the team
+
 - the user isn't logged in.
 
 Example:
@@ -617,6 +619,12 @@ Example:
 > CREATE_THREAD [team_uuid] [channel_uuid] [title] [message]
 >
 > 460 Given parameter is invalid.
+>
+> In case user isn't logged in:
+>
+> CREATE_THREAD [team_uuid] [channel_uuid] [title] [message]
+>
+> 451 User isn't subscribed to this team.
 >
 > In case user isn't logged in:
 >
