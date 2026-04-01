@@ -464,4 +464,123 @@ Example:
 >
 > 435 User isn't logged in.
 
+# Channel-related events
+
+## Creating a channel
+
+A user can create a channel given a name and a description.
+
+On the client, this is the `/create [channel_name] [channel_description]` command whilst in a `/use [team_uuid]` context.
+
+This is done using the `CREATE_CHANNEL [team_uuid] [name] [description]` command.
+
+What is returned is only a 200 status code.
+
+This command can error out in case:
+
+- the team does not exist
+
+- the user isn't logged in.
+
+Example:
+> CREATE_CHANNEL [team_uuid] [name] [description]
+>
+> 200 Success. [Ending sequence]
+>
+> CHANNEL_NAME uuid description
+>
+> In case team doesn't exist:
+>
+> CREATE_CHANNEL [team_uuid] [name] [description]
+>
+> 460 Given parameter is invalid.
+>
+> In case user isn't logged in:
+>
+> CREATE_CHANNEL [team_uuid] [name] [description]
+>
+> 435 User isn't logged in.
+
+## Retrieve information about a specific channel
+
+A user can request information about a specific channel given its UUID and the teams uuid.
+
+On the client, this is the `/info` command whilst inside a `/use [team_uuid] [channel_uuid]` context.
+
+This is done using the `CHANNEL team_uuid uuid` command.
+
+What is returned is a 200 status code followed by the teams name, uuid and description.
+
+This command can error out in case:
+
+- the team doesn't exist
+
+- the channel doesn't exist
+
+- the user isn't logged in.
+
+Example:
+> CHANNEL team_uuid uuid
+>
+> 200 Success. [Ending sequence]
+>
+> CHANNEL_NAME uuid description [newline]
+>
+> CHANNEL_NAME uuid description [newline]
+>
+> CHANNEL_NAME uuid description [newline]
+>
+> In case the team doesn't exist and
+>
+> In case the channel doesn't exist
+>
+> CHANNEL team_uuid uuid
+>
+> 460 Given parameter is invalid.
+>
+> In case user isn't logged in:
+>
+> CHANNEL team_uuid uuid
+>
+> 435 User isn't logged in.
+
+## List all channels in a team
+
+A user can list all channels in a team.
+
+On the client, this is the `/list` command whilst in a `/use [team_uuid]` context.
+
+This is done using the `CHANNELS [team_uuid]` command.
+
+What is returned is only a 200 status code.
+
+This command can error out in case:
+
+- the team does not exist
+
+- the user isn't logged in.
+
+Example:
+> CHANNELS [team_uuid]
+>
+> 200 Success. [Ending sequence]
+>
+> CHANNEL_NAME uuid description
+>
+> CHANNEL_NAME uuid description
+>
+> CHANNEL_NAME uuid description
+>
+> In case team doesn't exist:
+>
+> CHANNELS [team_uuid]
+>
+> 460 Given parameter is invalid.
+>
+> In case user isn't logged in:
+>
+> CHANNELS [team_uuid]
+>
+> 435 User isn't logged in.
+
 <!-- TODO: rest of the docs -->

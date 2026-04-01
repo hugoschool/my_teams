@@ -79,6 +79,10 @@ Table of Contents
      7.5.  Unsubscribe from a team . . . . . . . . . . . . . . . . .  10
      7.6.  List all teams the user is subscribed to  . . . . . . . .  10
      7.7.  List all users subscribed to a team . . . . . . . . . . .  11
+   8.  Channel-related events  . . . . . . . . . . . . . . . . . . .  12
+     8.1.  Creating a channel  . . . . . . . . . . . . . . . . . . .  12
+     8.2.  Retrieve information about a specific channel . . . . . .  13
+     8.3.  List all channels in a team . . . . . . . . . . . . . . .  14
 
 1.  Introduction
 
@@ -102,10 +106,6 @@ Table of Contents
    |  
    |  Here are the features intended to be implemented:
    |  
-   |  *  Creating/Joining/Leaving a team
-   |  *  Creating a user
-   |  *  Creating a channel in a team
-   |  *  Creating a thread in a channel
 
 
 
@@ -114,6 +114,10 @@ MAICHE                   Expires 1 October 2026                 [Page 2]
 Internet-Draft               MAICHE Protocol                  March 2026
 
 
+   |  *  Creating/Joining/Leaving a team
+   |  *  Creating a user
+   |  *  Creating a channel in a team
+   |  *  Creating a thread in a channel
    |  *  Creating a comment in a thread
    |  *  Saving & restoring users, teams, channels, threads & associated
    |     comments
@@ -158,10 +162,6 @@ Internet-Draft               MAICHE Protocol                  March 2026
    Server failure:
 
    *  500 Server failure.
-
-
-
-
 
 
 
@@ -642,31 +642,199 @@ Internet-Draft               MAICHE Protocol                  March 2026
    |  
    |  435 User isn't logged in.
 
+8.  Channel-related events
 
+8.1.  Creating a channel
 
+   A user can create a channel given a name and a description.
 
+   On the client, this is the /create [channel_name]
+   [channel_description] command whilst in a /use [team_uuid] context.
 
+   This is done using the CREATE_CHANNEL [team_uuid] [name]
+   [description] command.
 
+   What is returned is only a 200 status code.
 
+   This command can error out in case:
 
+   *  the team does not exist
 
+   *  the user isn't logged in.
 
+   Example:
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+   |  CREATE_CHANNEL [team_uuid] [name] [description]
+   |  
 
 
 
 MAICHE                   Expires 1 October 2026                [Page 12]
+
+Internet-Draft               MAICHE Protocol                  March 2026
+
+
+   |  200 Success.  [Ending sequence]
+   |  
+   |  CHANNEL_NAME uuid description
+   |  
+   |  In case team doesn't exist:
+   |  
+   |  CREATE_CHANNEL [team_uuid] [name] [description]
+   |  
+   |  460 Given parameter is invalid.
+   |  
+   |  In case user isn't logged in:
+   |  
+   |  CREATE_CHANNEL [team_uuid] [name] [description]
+   |  
+   |  435 User isn't logged in.
+
+8.2.  Retrieve information about a specific channel
+
+   A user can request information about a specific channel given its
+   UUID and the teams uuid.
+
+   On the client, this is the /info command whilst inside a /use
+   [team_uuid] [channel_uuid] context.
+
+   This is done using the CHANNEL team_uuid uuid command.
+
+   What is returned is a 200 status code followed by the teams name,
+   uuid and description.
+
+   This command can error out in case:
+
+   *  the team doesn't exist
+
+   *  the channel doesn't exist
+
+   *  the user isn't logged in.
+
+   Example:
+
+   |  CHANNEL team_uuid uuid
+   |  
+   |  200 Success.  [Ending sequence]
+   |  
+   |  CHANNEL_NAME uuid description [newline]
+   |  
+   |  CHANNEL_NAME uuid description [newline]
+   |  
+   |  CHANNEL_NAME uuid description [newline]
+
+
+
+MAICHE                   Expires 1 October 2026                [Page 13]
+
+Internet-Draft               MAICHE Protocol                  March 2026
+
+
+   |  
+   |  In case the team doesn't exist and
+   |  
+   |  In case the channel doesn't exist
+   |  
+   |  CHANNEL team_uuid uuid
+   |  
+   |  460 Given parameter is invalid.
+   |  
+   |  In case user isn't logged in:
+   |  
+   |  CHANNEL team_uuid uuid
+   |  
+   |  435 User isn't logged in.
+
+8.3.  List all channels in a team
+
+   A user can list all channels in a team.
+
+   On the client, this is the /list command whilst in a /use [team_uuid]
+   context.
+
+   This is done using the CHANNELS [team_uuid] command.
+
+   What is returned is only a 200 status code.
+
+   This command can error out in case:
+
+   *  the team does not exist
+
+   *  the user isn't logged in.
+
+   Example:
+
+   |  CHANNELS [team_uuid]
+   |  
+   |  200 Success.  [Ending sequence]
+   |  
+   |  CHANNEL_NAME uuid description
+   |  
+   |  CHANNEL_NAME uuid description
+   |  
+   |  CHANNEL_NAME uuid description
+   |  
+   |  In case team doesn't exist:
+   |  
+   |  CHANNELS [team_uuid]
+   |  
+
+
+
+MAICHE                   Expires 1 October 2026                [Page 14]
+
+Internet-Draft               MAICHE Protocol                  March 2026
+
+
+   |  460 Given parameter is invalid.
+   |  
+   |  In case user isn't logged in:
+   |  
+   |  CHANNELS [team_uuid]
+   |  
+   |  435 User isn't logged in.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+MAICHE                   Expires 1 October 2026                [Page 15]
