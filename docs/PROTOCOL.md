@@ -225,6 +225,39 @@ Example:
 >
 > 435 User isn't logged in.
 
+## Send a private message to a user
+
+A user can send a private message to another user.
+
+On the client, this is the `/send [user_uuid] [message_body]` command.
+
+This is done using the `SEND_USER [uuid] [body]` command.
+
+What is returned is a status code.
+
+This command can error out in case
+
+- the user doesn't exist
+
+- the user isn't logged in.
+
+Example:
+> SEND_USER [uuid] [body]
+>
+> 200 Success.
+>
+> In case user doesn't exist:
+>
+> SEND_USER [uuid] [body]
+>
+> 460 Given parameter is invalid.
+>
+> In case user isn't logged in:
+>
+> SEND_USER [uuid] [body]
+>
+> 435 User isn't logged in.
+
 # Team-related events
 
 ## Creating a team
@@ -853,3 +886,9 @@ The message is `NEW_THREAD [thread_uuid] [thread_title] [thread_body] [thread_ti
 If a new comment has been created, a message is sent to all clients that are subscribed to the related team.
 
 The message is `NEW_COMMENT [team_uuid] [thread_uuid] [user_uuid] [comment_body]`.
+
+## Newly created private message
+
+If a new private message has been sent by a user to another user, a message is sent to the user receiving the message.
+
+The message is `NEW_MESSAGE [user_uuid] [message_body]`
