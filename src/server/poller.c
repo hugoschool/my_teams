@@ -23,9 +23,6 @@ poller_t *poller_init(void)
         perror("calloc");
         exit(84);
     }
-    poller->fds[0].fd = -1;
-    poller->fds[0].events = POLLIN;
-    poller->fds[0].revents = 0;
     poller->amount = INITIAL_AMOUNT;
     poller->size = POLLER_INIT_SIZE;
     return poller;
@@ -40,11 +37,15 @@ void poller_free(poller_t *poller)
 static void poller_set_init_socket(poller_t *poller, int socket_fd)
 {
     poller->fds[0].fd = socket_fd;
+    poller->fds[0].events = POLLIN;
+    poller->fds[0].revents = 0;
 }
 
 static void poller_set_signal_fd(poller_t *poller, int signal_fd)
 {
     poller->fds[1].fd = signal_fd;
+    poller->fds[1].events = POLLIN;
+    poller->fds[1].revents = 0;
 }
 
 void poller_set_init_values(poller_t *poller, int socket_fd, int signal_fd)

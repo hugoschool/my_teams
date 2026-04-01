@@ -8,6 +8,7 @@
 #include "server/args.h"
 #include "server/server.h"
 #include <signal.h>
+#include <sys/poll.h>
 #include <sys/signalfd.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -41,10 +42,20 @@ void server_free(server_t *server)
 
 static void server_loop(server_t *server)
 {
-    while (true) {}
+    int result = 0;
+    bool running = true;
+
+    while (running) {
+        result = poll(server->poller->fds, server->poller->amount, -1);
+        if (result == -1) {
+            perror("poll");
+            break;
+        }
+        poll_handler(server, &running);
+    }
 }
 
-static int handle_signal()
+static int handle_signal(void)
 {
     sigset_t mask;
 
