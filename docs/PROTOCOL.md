@@ -82,6 +82,7 @@ User failure:
 
 - 430 User already logged in.
 - 435 User isn't logged in.
+- 440 Already exists.
 - 450 User already subscribed to this team.
 - 451 User isn't subscribed to this team.
 - 460 Given parameter is invalid. (Probably invalid UUID)
@@ -270,7 +271,11 @@ This is done using the `CREATE_TEAM [name] [description]` command.
 
 What is returned is only a 200 status code.
 
-This command can error out in case the user isn't logged in.
+This command can error out in case
+
+- the team name already exists
+
+- the user isn't logged in.
 
 Example:
 > CREATE_TEAM [name] [description]
@@ -278,6 +283,12 @@ Example:
 > 200 Success. [Ending sequence]
 >
 > TEAM_NAME uuid description
+>
+> In case team name is already taken:
+>
+> CREATE_TEAM [name] [description]
+>
+> 440 Already exists.
 >
 > In case user isn't logged in:
 >
@@ -519,6 +530,8 @@ This command can error out in case:
 
 - the team does not exist
 
+- the channel name already exists
+
 - the user isn't logged in.
 
 Example:
@@ -533,6 +546,12 @@ Example:
 > CREATE_CHANNEL [team_uuid] [name] [description]
 >
 > 460 Given parameter is invalid.
+>
+> In case channel name already exists:
+>
+> CREATE_CHANNEL [team_uuid] [name] [description]
+>
+> 440 Already exists.
 >
 > In case user isn't logged in:
 >
@@ -644,6 +663,8 @@ This command can error out in case:
 
 - the channel does not exist
 
+- the thread title already exists
+
 - the user is not subscribed to the team
 
 - the user isn't logged in.
@@ -662,6 +683,12 @@ Example:
 > CREATE_THREAD [team_uuid] [channel_uuid] [title] [message]
 >
 > 460 Given parameter is invalid.
+>
+> In case thread title already exists:
+>
+> CREATE_THREAD [team_uuid] [channel_uuid] [title] [message]
+>
+> 440 Already exists.
 >
 > In case user isn't subscribed to the team:
 >
