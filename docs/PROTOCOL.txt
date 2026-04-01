@@ -84,12 +84,13 @@ Table of Contents
      8.2.  Retrieve information about a specific channel . . . . . .  13
      8.3.  List all channels in a team . . . . . . . . . . . . . . .  14
    9.  Thread-related events . . . . . . . . . . . . . . . . . . . .  15
-     9.1.  Creating a thread . . . . . . . . . . . . . . . . . . . .  15
-     9.2.  Retrieve information about a specific thread  . . . . . .  16
-     9.3.  List all threads in a team  . . . . . . . . . . . . . . .  17
+     9.1.  Complementary information . . . . . . . . . . . . . . . .  15
+     9.2.  Creating a thread . . . . . . . . . . . . . . . . . . . .  15
+     9.3.  Retrieve information about a specific thread  . . . . . .  16
+     9.4.  List all threads in a team  . . . . . . . . . . . . . . .  17
    10. Comment-related events  . . . . . . . . . . . . . . . . . . .  18
      10.1.  Creating a comment . . . . . . . . . . . . . . . . . . .  18
-     10.2.  List all comments of a thread  . . . . . . . . . . . . .  19
+     10.2.  List all comments of a thread  . . . . . . . . . . . . .  20
    11. Newly received events . . . . . . . . . . . . . . . . . . . .  21
      11.1.  Newly created team . . . . . . . . . . . . . . . . . . .  21
      11.2.  Newly created channel  . . . . . . . . . . . . . . . . .  21
@@ -103,7 +104,6 @@ Table of Contents
 
    For this, we must also create a protocol to handle the events between
    the client and the server.
-
 
 
 
@@ -822,17 +822,17 @@ Internet-Draft               MAICHE Protocol                  March 2026
 
 9.  Thread-related events
 
-9.1.  Creating a thread
+9.1.  Complementary information
+
+   All timestamps must be UNIX timestamps (time_t in C).
+
+9.2.  Creating a thread
 
    A user can create a thread given a title and a message.
 
    On the client, this is the /create [thread_title] [thread_message]
    command whilst in a /use [team_uuid] [channel_uuid] context.
 
-   This is done using the CREATE_THREAD [team_uuid] [channel_uuid]
-   [title] [message] command.
-
-   What is returned is only a 200 status code.
 
 
 
@@ -841,6 +841,11 @@ MAICHE                   Expires 1 October 2026                [Page 15]
 
 Internet-Draft               MAICHE Protocol                  March 2026
 
+
+   This is done using the CREATE_THREAD [team_uuid] [channel_uuid]
+   [title] [message] command.
+
+   What is returned is only a 200 status code.
 
    This command can error out in case:
 
@@ -858,7 +863,7 @@ Internet-Draft               MAICHE Protocol                  March 2026
    |  
    |  200 Success.  [Ending sequence]
    |  
-   |  THREAD_TITLE uuid message
+   |  THREAD_TITLE uuid message timestamp
    |  
    |  In case channel doesn't exist and
    |  
@@ -880,16 +885,11 @@ Internet-Draft               MAICHE Protocol                  March 2026
    |  
    |  435 User isn't logged in.
 
-9.2.  Retrieve information about a specific thread
+9.3.  Retrieve information about a specific thread
 
    A user can request information about a specific channel given its
    UUID and the teams uuid.
 
-   On the client, this is the /info command whilst inside a /use
-   [team_uuid] [channel_uuid] [thread_uuid] context.
-
-   This is done using the THREAD team_uuid channel_uuid thread_uuid
-   command.
 
 
 
@@ -897,6 +897,12 @@ MAICHE                   Expires 1 October 2026                [Page 16]
 
 Internet-Draft               MAICHE Protocol                  March 2026
 
+
+   On the client, this is the /info command whilst inside a /use
+   [team_uuid] [channel_uuid] [thread_uuid] context.
+
+   This is done using the THREAD team_uuid channel_uuid thread_uuid
+   command.
 
    What is returned is a 200 status code followed by the threads title,
    uuid and message.
@@ -917,7 +923,7 @@ Internet-Draft               MAICHE Protocol                  March 2026
    |  
    |  200 Success.  [Ending sequence]
    |  
-   |  THREAD_TITLE uuid message [newline]
+   |  THREAD_TITLE uuid message timestamp [newline]
    |  
    |  In case the team doesn't exist and
    |  
@@ -935,16 +941,10 @@ Internet-Draft               MAICHE Protocol                  March 2026
    |  
    |  435 User isn't logged in.
 
-9.3.  List all threads in a team
+9.4.  List all threads in a team
 
    A user can list all threads in a team.
 
-   On the client, this is the /list command whilst in a /use [team_uuid]
-   [channel_uuid] context.
-
-   This is done using the THREADS [team_uuid] [channel_uuid] command.
-
-   What is returned is only a 200 status code.
 
 
 
@@ -953,6 +953,13 @@ MAICHE                   Expires 1 October 2026                [Page 17]
 
 Internet-Draft               MAICHE Protocol                  March 2026
 
+
+   On the client, this is the /list command whilst in a /use [team_uuid]
+   [channel_uuid] context.
+
+   This is done using the THREADS [team_uuid] [channel_uuid] command.
+
+   What is returned is only a 200 status code.
 
    This command can error out in case:
 
@@ -968,11 +975,11 @@ Internet-Draft               MAICHE Protocol                  March 2026
    |  
    |  200 Success.  [Ending sequence]
    |  
-   |  THREAD_TITLE uuid message
+   |  THREAD_TITLE uuid message timestamp
    |  
-   |  THREAD_TITLE uuid message
+   |  THREAD_TITLE uuid message timestamp
    |  
-   |  THREAD_TITLE uuid message
+   |  THREAD_TITLE uuid message timestamp
    |  
    |  In case team doesn't exist and
    |  
@@ -994,13 +1001,6 @@ Internet-Draft               MAICHE Protocol                  March 2026
 
    A user can create a comment with a message.
 
-   On the client, this is the /create [comment_body] command whilst in a
-   /use [team_uuid] [channel_uuid] [thread_uuid] context.
-
-   This is done using the CREATE_COMMENT [team_uuid] [channel_uuid]
-   [thread_uuid] [body] command.
-
-   What is returned is only a 200 status code.
 
 
 
@@ -1009,6 +1009,14 @@ MAICHE                   Expires 1 October 2026                [Page 18]
 
 Internet-Draft               MAICHE Protocol                  March 2026
 
+
+   On the client, this is the /create [comment_body] command whilst in a
+   /use [team_uuid] [channel_uuid] [thread_uuid] context.
+
+   This is done using the CREATE_COMMENT [team_uuid] [channel_uuid]
+   [thread_uuid] [body] command.
+
+   What is returned is only a 200 status code.
 
    This command can error out in case:
 
@@ -1050,6 +1058,14 @@ Internet-Draft               MAICHE Protocol                  March 2026
    |  
    |  CREATE_COMMENT [team_uuid] [channel_uuid] [thread_uuid] [body]
    |  
+
+
+
+MAICHE                   Expires 1 October 2026                [Page 19]
+
+Internet-Draft               MAICHE Protocol                  March 2026
+
+
    |  435 User isn't logged in.
 
 10.2.  List all comments of a thread
@@ -1058,13 +1074,6 @@ Internet-Draft               MAICHE Protocol                  March 2026
 
    On the client, this is the /list command whilst in a /use [team_uuid]
    [channel_uuid] [thread_uuid] context.
-
-
-
-MAICHE                   Expires 1 October 2026                [Page 19]
-
-Internet-Draft               MAICHE Protocol                  March 2026
-
 
    This is done using the COMMENTS [team_uuid] [channel_uuid]
    [thread_uuid] command.
@@ -1105,15 +1114,6 @@ Internet-Draft               MAICHE Protocol                  March 2026
    |  
    |  In case user isn't logged in:
    |  
-   |  COMMENTS [team_uuid] [channel_uuid] [thread_uuid]
-   |  
-   |  435 User isn't logged in.
-
-
-
-
-
-
 
 
 
@@ -1121,6 +1121,10 @@ MAICHE                   Expires 1 October 2026                [Page 20]
 
 Internet-Draft               MAICHE Protocol                  March 2026
 
+
+   |  COMMENTS [team_uuid] [channel_uuid] [thread_uuid]
+   |  
+   |  435 User isn't logged in.
 
 11.  Newly received events
 
@@ -1143,7 +1147,8 @@ Internet-Draft               MAICHE Protocol                  March 2026
    If a new thread has been created, a message is sent to all clients
    that are subscribed to the related team.
 
-   The message is NEW_THREAD [thread_uuid] [thread_title] [thread_body].
+   The message is NEW_THREAD [thread_uuid] [thread_title] [thread_body]
+   [thread_timestamp].
 
 11.4.  Newly created comment
 
@@ -1152,11 +1157,6 @@ Internet-Draft               MAICHE Protocol                  March 2026
 
    The message is NEW_COMMENT [team_uuid] [thread_uuid] [user_uuid]
    [comment_body].
-
-
-
-
-
 
 
 

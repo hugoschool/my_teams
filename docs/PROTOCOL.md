@@ -591,6 +591,10 @@ Example:
 
 # Thread-related events
 
+## Complementary information
+
+All timestamps must be UNIX timestamps (time_t in C).
+
 ## Creating a thread
 
 A user can create a thread given a title and a message.
@@ -616,7 +620,7 @@ Example:
 >
 > 200 Success. [Ending sequence]
 >
-> THREAD_TITLE uuid message
+> THREAD_TITLE uuid message timestamp
 >
 > In case channel doesn't exist and
 >
@@ -663,7 +667,7 @@ Example:
 >
 > 200 Success. [Ending sequence]
 >
-> THREAD_TITLE uuid message [newline]
+> THREAD_TITLE uuid message timestamp [newline]
 >
 > In case the team doesn't exist and
 >
@@ -704,11 +708,11 @@ Example:
 >
 > 200 Success. [Ending sequence]
 >
-> THREAD_TITLE uuid message
+> THREAD_TITLE uuid message timestamp
 >
-> THREAD_TITLE uuid message
+> THREAD_TITLE uuid message timestamp
 >
-> THREAD_TITLE uuid message
+> THREAD_TITLE uuid message timestamp
 >
 > In case team doesn't exist and
 >
@@ -842,7 +846,7 @@ The message is `NEW_CHANNEL [channel_uuid] [channel_name] [channel_description]`
 
 If a new thread has been created, a message is sent to all clients that are subscribed to the related team.
 
-The message is `NEW_THREAD [thread_uuid] [thread_title] [thread_body]`.
+The message is `NEW_THREAD [thread_uuid] [thread_title] [thread_body] [thread_timestamp]`.
 
 ## Newly created comment
 
