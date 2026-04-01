@@ -6,7 +6,10 @@ ifeq ($(ENV), dev)
 	CFLAGS	+=	-g3
 endif
 
-SERVER_SRC	:= 	src/server/main.c
+SERVER_SRC	:= 	src/server/main.c \
+				src/server/args.c \
+				src/server/server.c \
+				src/server/poller.c
 
 SERVER_OBJ	:=	$(SERVER_SRC:.c=.o)
 
