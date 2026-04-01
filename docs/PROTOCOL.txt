@@ -73,7 +73,7 @@ Table of Contents
      6.4.  Retrieve information about a specific user  . . . . . . .   6
    7.  Team-related events . . . . . . . . . . . . . . . . . . . . .   7
      7.1.  Creating a team . . . . . . . . . . . . . . . . . . . . .   7
-     7.2.  Retrieve a list of all teams  . . . . . . . . . . . . . .   7
+     7.2.  Retrieve a list of all teams  . . . . . . . . . . . . . .   8
      7.3.  Retrieve information about a specific team  . . . . . . .   8
      7.4.  Subscribe to a team . . . . . . . . . . . . . . . . . . .   9
      7.5.  Unsubscribe from a team . . . . . . . . . . . . . . . . .  10
@@ -149,19 +149,19 @@ Internet-Draft               MAICHE Protocol                  March 2026
 
    But the 3 number code must be accurate.
 
+   Only the initial login acknowledgment is 5 numbers.
+
    All status codes, classed by category:
+
+   Initial login acknowledgment:
+
+   *  25120 MAICHE Protocol initialized.
 
    Success:
 
    *  200 Success.
    *  250 User logged in.
    *  251 User logged out.
-
-   User failure:
-
-   *  430 User already logged in.
-   *  435 User isn't logged in.
-   *  450 User already subscribed to this team.
 
 
 
@@ -170,6 +170,11 @@ MAICHE                   Expires 1 October 2026                 [Page 3]
 Internet-Draft               MAICHE Protocol                  March 2026
 
 
+   User failure:
+
+   *  430 User already logged in.
+   *  435 User isn't logged in.
+   *  450 User already subscribed to this team.
    *  451 User isn't subscribed to this team.
    *  460 Given parameter is invalid.  (Probably invalid UUID)
    *  499 Badly formed request.
@@ -213,11 +218,6 @@ Internet-Draft               MAICHE Protocol                  March 2026
    |  There is no password authentication required for this subject but
    |  you should always develop with security in mind.
 
-   Connecting as a user should be done using the LOGIN username command.
-
-   A user can only be logged in once.  You cannot login as the same user
-   in another window.
-
 
 
 
@@ -225,6 +225,11 @@ MAICHE                   Expires 1 October 2026                 [Page 4]
 
 Internet-Draft               MAICHE Protocol                  March 2026
 
+
+   Connecting as a user should be done using the LOGIN username command.
+
+   A user can only be logged in once.  You cannot login as the same user
+   in another window.
 
    If the username doesn't exist on the server, the server must add the
    user to its database and associate it with a newly created UUID.
@@ -270,17 +275,16 @@ Internet-Draft               MAICHE Protocol                  March 2026
    A user can request a list of all the user with their usernames and
    matching UUIDs.
 
-   On the client, this is the /users command.
-
-   This is done using the USERS command.
-
-
 
 
 MAICHE                   Expires 1 October 2026                 [Page 5]
 
 Internet-Draft               MAICHE Protocol                  March 2026
 
+
+   On the client, this is the /users command.
+
+   This is done using the USERS command.
 
    What is returned is a list of all the users with their usernames,
    their UUIDs and their status.
@@ -327,10 +331,6 @@ Internet-Draft               MAICHE Protocol                  March 2026
 
    Example:
 
-   |  USER [uuid]
-   |  
-   |  200 Success.  [Ending sequence]
-
 
 
 MAICHE                   Expires 1 October 2026                 [Page 6]
@@ -338,6 +338,9 @@ MAICHE                   Expires 1 October 2026                 [Page 6]
 Internet-Draft               MAICHE Protocol                  March 2026
 
 
+   |  USER [uuid]
+   |  
+   |  200 Success.  [Ending sequence]
    |  
    |  USERNAME uuid 0 [newline]
    |  
@@ -382,9 +385,6 @@ Internet-Draft               MAICHE Protocol                  March 2026
    |  
    |  435 User isn't logged in.
 
-7.2.  Retrieve a list of all teams
-
-   A user can ask to list all teams.
 
 
 
@@ -393,6 +393,10 @@ MAICHE                   Expires 1 October 2026                 [Page 7]
 
 Internet-Draft               MAICHE Protocol                  March 2026
 
+
+7.2.  Retrieve a list of all teams
+
+   A user can ask to list all teams.
 
    On the client, this is the /list command whilst not inside a /use
    context.
@@ -438,10 +442,6 @@ Internet-Draft               MAICHE Protocol                  March 2026
 
    *  the team doesn't exist
 
-   *  the user isn't logged in.
-
-   Example:
-
 
 
 
@@ -449,6 +449,10 @@ MAICHE                   Expires 1 October 2026                 [Page 8]
 
 Internet-Draft               MAICHE Protocol                  March 2026
 
+
+   *  the user isn't logged in.
+
+   Example:
 
    |  TEAM uuid
    |  
@@ -494,10 +498,6 @@ Internet-Draft               MAICHE Protocol                  March 2026
    |  
    |  In case team doesn't exist:
    |  
-   |  SUBSCRIBE_TEAM uuid
-   |  
-   |  460 Given parameter is invalid.
-   |  
 
 
 
@@ -506,6 +506,10 @@ MAICHE                   Expires 1 October 2026                 [Page 9]
 Internet-Draft               MAICHE Protocol                  March 2026
 
 
+   |  SUBSCRIBE_TEAM uuid
+   |  
+   |  460 Given parameter is invalid.
+   |  
    |  In case user isn't logged in:
    |  
    |  SUBSCRIBE_TEAM uuid
@@ -550,10 +554,6 @@ Internet-Draft               MAICHE Protocol                  March 2026
    |  
    |  In case user isn't logged in:
    |  
-   |  UNSUBSCRIBE_TEAM uuid
-   |  
-   |  435 User isn't logged in.
-   |  
 
 
 
@@ -562,6 +562,10 @@ MAICHE                   Expires 1 October 2026                [Page 10]
 Internet-Draft               MAICHE Protocol                  March 2026
 
 
+   |  UNSUBSCRIBE_TEAM uuid
+   |  
+   |  435 User isn't logged in.
+   |  
    |  In case user isn't subscribed to this team:
    |  
    |  UNSUBSCRIBE_TEAM uuid
@@ -607,16 +611,14 @@ Internet-Draft               MAICHE Protocol                  March 2026
 
    On the client, this is the /subscribed [team_uuid].
 
-   This is done using the LIST_SUBSCRIBED_USERS uuid command.
-
-
-
 
 
 MAICHE                   Expires 1 October 2026                [Page 11]
 
 Internet-Draft               MAICHE Protocol                  March 2026
 
+
+   This is done using the LIST_SUBSCRIBED_USERS uuid command.
 
    What is returned is a 200 status code followed by a list of users and
    their status.
@@ -665,14 +667,14 @@ Internet-Draft               MAICHE Protocol                  March 2026
    This is done using the CREATE_CHANNEL [team_uuid] [name]
    [description] command.
 
-   What is returned is only a 200 status code.
-
 
 
 MAICHE                   Expires 1 October 2026                [Page 12]
 
 Internet-Draft               MAICHE Protocol                  March 2026
 
+
+   What is returned is only a 200 status code.
 
    This command can error out in case:
 
@@ -721,14 +723,14 @@ Internet-Draft               MAICHE Protocol                  March 2026
 
    *  the user isn't logged in.
 
-   Example:
-
 
 
 MAICHE                   Expires 1 October 2026                [Page 13]
 
 Internet-Draft               MAICHE Protocol                  March 2026
 
+
+   Example:
 
    |  CHANNEL team_uuid uuid
    |  
@@ -776,8 +778,6 @@ Internet-Draft               MAICHE Protocol                  March 2026
    |  CHANNELS [team_uuid]
    |  
    |  200 Success.  [Ending sequence]
-   |  
-   |  CHANNEL_NAME uuid description
 
 
 
@@ -786,6 +786,8 @@ MAICHE                   Expires 1 October 2026                [Page 14]
 Internet-Draft               MAICHE Protocol                  March 2026
 
 
+   |  
+   |  CHANNEL_NAME uuid description
    |  
    |  CHANNEL_NAME uuid description
    |  
@@ -832,8 +834,6 @@ Internet-Draft               MAICHE Protocol                  March 2026
    |  CREATE_THREAD [team_uuid] [channel_uuid] [title] [message]
    |  
    |  200 Success.  [Ending sequence]
-   |  
-   |  THREAD_TITLE uuid message
 
 
 
@@ -842,6 +842,8 @@ MAICHE                   Expires 1 October 2026                [Page 15]
 Internet-Draft               MAICHE Protocol                  March 2026
 
 
+   |  
+   |  THREAD_TITLE uuid message
    |  
    |  In case channel doesn't exist and
    |  
@@ -889,8 +891,6 @@ Internet-Draft               MAICHE Protocol                  March 2026
 
    Example:
 
-   |  THREAD team_uuid channel_uuid thread_uuid
-
 
 
 MAICHE                   Expires 1 October 2026                [Page 16]
@@ -898,6 +898,7 @@ MAICHE                   Expires 1 October 2026                [Page 16]
 Internet-Draft               MAICHE Protocol                  March 2026
 
 
+   |  THREAD team_uuid channel_uuid thread_uuid
    |  
    |  200 Success.  [Ending sequence]
    |  
@@ -945,7 +946,6 @@ Internet-Draft               MAICHE Protocol                  March 2026
    |  200 Success.  [Ending sequence]
    |  
    |  THREAD_TITLE uuid message
-   |  
 
 
 
@@ -954,6 +954,7 @@ MAICHE                   Expires 1 October 2026                [Page 17]
 Internet-Draft               MAICHE Protocol                  March 2026
 
 
+   |  
    |  THREAD_TITLE uuid message
    |  
    |  THREAD_TITLE uuid message
@@ -1001,7 +1002,6 @@ Internet-Draft               MAICHE Protocol                  March 2026
    Example:
 
    |  CREATE_COMMENT [team_uuid] [channel_uuid] [thread_uuid] [body]
-   |  
 
 
 
@@ -1010,6 +1010,7 @@ MAICHE                   Expires 1 October 2026                [Page 18]
 Internet-Draft               MAICHE Protocol                  March 2026
 
 
+   |  
    |  200 Success.  [Ending sequence]
    |  
    |  COMMENT_UUID body
@@ -1057,7 +1058,6 @@ Internet-Draft               MAICHE Protocol                  March 2026
    *  the thread does not exist
 
    *  the user isn't logged in.
-
 
 
 

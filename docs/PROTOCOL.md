@@ -64,7 +64,13 @@ What is given here is an example of a message, it can be modified.
 
 But the 3 number code must be accurate.
 
+Only the initial login acknowledgment is 5 numbers.
+
 All status codes, classed by category:
+
+Initial login acknowledgment:
+
+- 25120 MAICHE Protocol initialized.
 
 Success:
 
