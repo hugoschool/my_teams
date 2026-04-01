@@ -9,6 +9,7 @@
     #define MY_TEAMS_SERVER_H_
 
     #include "args.h"
+    #include <netinet/in.h>
 
 // For all dynamic arrays (this one and all future ones):
 // amount: current amount of elements in the array
@@ -29,9 +30,14 @@ void poller_fd_delete(poller_t *poller, int i);
 void poller_set_init_socket(poller_t *poller, int socket_fd);
 void poller_free(poller_t *poller);
 
+// Socket
+int socket_init(in_port_t port);
+
 // Server
 typedef struct {
     poller_t *poller;
+    // CONTROL socket aka the main server socket
+    int control_fd;
     // Represents the current client index that is being handled.
     unsigned int index;
 } server_t;

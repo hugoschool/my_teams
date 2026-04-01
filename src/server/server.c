@@ -1,3 +1,10 @@
+/*
+** EPITECH PROJECT, 2026
+** my_teams
+** File description:
+** server.c
+*/
+
 #include "server/args.h"
 #include "server/server.h"
 #include <stdio.h>
@@ -16,7 +23,22 @@ static server_t *server_init(void)
         free(server);
         return NULL;
     }
+    server->control_fd = -1;
     return server;
+}
+
+void server_free(server_t *server)
+{
+    if (server == NULL)
+        return;
+    if (server->poller)
+        poller_free(server->poller);
+    free(server);
+}
+
+static void server_loop(server_t *server)
+{
+    while (true) {}
 }
 
 bool teams_server(args_t *args)
@@ -25,6 +47,13 @@ bool teams_server(args_t *args)
 
     if (server == NULL)
         return false;
-
+    server->control_fd = socket_init(args->port);
+    if (server->control_fd == -1) {
+        server_free(server);
+        return false;
+    }
+    poller_set_init_socket(server->poller, server->control_fd);
+    server_loop(server);
+    server_free(server);
     return true;
 }

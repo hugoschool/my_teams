@@ -9,7 +9,8 @@ endif
 SERVER_SRC	:= 	src/server/main.c \
 				src/server/args.c \
 				src/server/server.c \
-				src/server/poller.c
+				src/server/poller.c \
+				src/server/socket.c
 
 SERVER_OBJ	:=	$(SERVER_SRC:.c=.o)
 
