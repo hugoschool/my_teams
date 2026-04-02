@@ -31,7 +31,6 @@ static bool verify_command(server_t *server, char *buffer, int i)
     return false;
 }
 
-// TODO: when no comment is found, send status code error
 void commands_handler(server_t *server, char *buffer)
 {
     if (strcmp_end(buffer, CRLF) != 0)
@@ -40,4 +39,5 @@ void commands_handler(server_t *server, char *buffer)
         if (verify_command(server, buffer, cmd_i))
             return;
     }
+    WRITE_STATUS(*CLIENT->fd, 499);
 }
