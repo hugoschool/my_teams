@@ -28,7 +28,7 @@ static server_t *server_init(void)
         free(server);
         return NULL;
     }
-    server->users = NULL;
+    server->users = users_init();
     server->teams = NULL;
     server->control_fd = -1;
     server->signal_fd = -1;
@@ -43,6 +43,8 @@ void server_free(server_t *server)
         poller_free(server->poller);
     if (server->clients)
         clients_free(server->clients);
+    if (server->users)
+        users_free(server->users);
     free(server);
 }
 

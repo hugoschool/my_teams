@@ -21,7 +21,9 @@ SERVER_SRC	:= 	$(UTILS_SRC) \
 				src/server/socket.c \
 				src/server/poll.c \
 				src/server/clients.c \
-				src/server/client_data.c
+				src/server/client_data.c \
+				src/server/user.c \
+				src/server/user_data.c
 
 # Commands
 SERVER_SRC	+=	src/server/commands/handler.c \
