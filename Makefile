@@ -23,6 +23,10 @@ SERVER_SRC	:= 	$(UTILS_SRC) \
 				src/server/clients.c \
 				src/server/client_data.c
 
+# Commands
+SERVER_SRC	+=	src/server/commands/handler.c \
+				src/server/commands/login.c
+
 SERVER_OBJ	:=	$(SERVER_SRC:.c=.o)
 
 SERVER_BINARY	:=	myteams_server

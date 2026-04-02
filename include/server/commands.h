@@ -21,7 +21,15 @@ typedef struct {
     bool needs_auth;
 } commands_t;
 
+void command_login(server_t *server);
+
 static const commands_t cmds[] = {
+    {
+        .command = "LOGIN",
+        .function = &command_login,
+        .args_amount = 1,
+        .needs_auth = false
+    },
     {.command = NULL, .function = NULL, .args_amount = 0, .needs_auth = false}
 };
 
