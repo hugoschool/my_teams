@@ -8,7 +8,7 @@
 #ifndef STATUS_H_
     #define STATUS_H_
 
-    #include "server.h"
+    #include "common.h"
     #include <string.h> // IWYU pragma: keep
     #include <unistd.h>
 

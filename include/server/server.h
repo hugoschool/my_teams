@@ -13,8 +13,6 @@
     #include <netinet/in.h>
     #include <uuid/uuid.h>
 
-    #define CRLF "\r\n"
-
 // This initial amount macro can be reused for poller and clients array
 // It is initially set to this amount for:
 // - the initial control socket

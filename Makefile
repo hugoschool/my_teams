@@ -8,7 +8,13 @@ ifeq ($(ENV), dev)
 	CFLAGS	+=	-g3
 endif
 
-SERVER_SRC	:= 	src/server/main.c \
+UTILS_SRC	:=	src/utils/remove_crlf.c \
+				src/utils/strccount.c \
+				src/utils/strcmp_end.c \
+				src/utils/strcmp_start.c
+
+SERVER_SRC	:= 	$(UTILS_SRC) \
+				src/server/main.c \
 				src/server/args.c \
 				src/server/server.c \
 				src/server/poller.c \
