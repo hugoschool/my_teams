@@ -6,6 +6,7 @@
 */
 
 #include "server/server.h"
+#include "server/status.h"
 #include <stdbool.h>
 #include <stdio.h>
 #include <string.h>
@@ -28,6 +29,7 @@ void new_client_handler(server_t *server)
     }
     poller_fd_add(server->poller, cfd);
     cfdr = &server->poller->fds[server->poller->amount - 1].fd;
+    WRITE_STATUS(*cfdr, 25120);
 }
 
 void client_quit(server_t *server)

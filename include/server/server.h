@@ -11,6 +11,8 @@
     #include "args.h"
     #include <netinet/in.h>
 
+    #define CRLF "\r\n"
+
 // This initial amount macro can be reused for poller and clients array
 // It is initially set to this amount for:
 // - the initial control socket
