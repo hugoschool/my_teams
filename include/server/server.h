@@ -24,6 +24,8 @@
 
     #define BUFFER_SIZE 4096
 
+    #define CLIENT server->clients->clients[server->index]
+
 // For all dynamic arrays (this one and all future ones):
 // amount: current amount of elements in the array
 // size: actual malloc'd size of the array

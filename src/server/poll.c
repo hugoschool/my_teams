@@ -5,6 +5,7 @@
 ** handler.c
 */
 
+#include "server/commands.h"
 #include "server/server.h"
 #include "server/status.h"
 #include <stdbool.h>
@@ -61,7 +62,7 @@ void client_handler(server_t *server)
             break;
         read_i++;
     }
-    printf("BUFFER: %s\n", buffer);
+    commands_handler(server, buffer);
 }
 
 // server is ignored for now but will be useful later

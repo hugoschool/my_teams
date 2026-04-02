@@ -25,6 +25,6 @@ static const commands_t cmds[] = {
     {.command = NULL, .function = NULL, .args_amount = 0, .needs_auth = false}
 };
 
-void commands_handler(server_t *server);
+void commands_handler(server_t *server, char *buffer);
 
 #endif
