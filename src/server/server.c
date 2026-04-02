@@ -28,6 +28,8 @@ static server_t *server_init(void)
         free(server);
         return NULL;
     }
+    server->users = NULL;
+    server->teams = NULL;
     server->control_fd = -1;
     server->signal_fd = -1;
     return server;

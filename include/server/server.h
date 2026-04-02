@@ -9,6 +9,7 @@
     #define MY_TEAMS_SERVER_H_
 
     #include "args.h"
+    #include "common.h"
     #include <netinet/in.h>
 
     #define CRLF "\r\n"
@@ -43,6 +44,73 @@ void poller_free(poller_t *poller);
 // Socket
 int socket_init(in_port_t port);
 
+// Users
+typedef struct {
+    // TODO: UUID
+    const char username[MAX_NAME_LENGTH + 1];
+} user_data_t;
+
+typedef struct {
+    user_data_t **users;
+    unsigned int amount;
+    unsigned int size;
+} users_t;
+
+// Threads
+typedef struct {
+    // TODO: UUID
+    const char *body[MAX_BODY_LENGTH + 1];
+} comment_data_t;
+
+typedef struct {
+    comment_data_t **comments;
+    unsigned int amount;
+    unsigned int size;
+} comments_t;
+
+// Threads
+typedef struct {
+    // TODO: UUID
+    const char *name[MAX_NAME_LENGTH + 1];
+    const char *description[MAX_DESCRIPTION_LENGTH + 1];
+    comments_t *comments;
+} thread_data_t;
+
+typedef struct {
+    thread_data_t **threads;
+    unsigned int amount;
+    unsigned int size;
+} threads_t;
+
+// Channels
+typedef struct {
+    // TODO: UUID
+    const char *name[MAX_NAME_LENGTH + 1];
+    const char *description[MAX_DESCRIPTION_LENGTH + 1];
+    threads_t *threads;
+} channel_data_t;
+
+typedef struct {
+    channel_data_t **channels;
+    unsigned int amount;
+    unsigned int size;
+} channels_t;
+
+// Teams
+typedef struct {
+    // TODO: UUID
+    const char *name[MAX_NAME_LENGTH + 1];
+    const char *description[MAX_DESCRIPTION_LENGTH + 1];
+    // TODO: maybe a list of all users subscribed to the team
+    channels_t *channels;
+} team_data_t;
+
+typedef struct {
+    team_data_t **teams;
+    unsigned int amount;
+    unsigned int size;
+} teams_t;
+
 // Clients
 typedef enum {
     LOGGED_OUT,
@@ -53,6 +121,9 @@ typedef struct {
     // Pointer to its struct pollfd file descriptor
     int *fd;
     login_step_t login_step;
+
+    // Pointer to its user data in the main server struct
+    user_data_t *user;
 
     // TODO: Commenting it for now
     // buffer_t *buffer;
@@ -78,6 +149,10 @@ void clients_free(clients_t *clients);
 typedef struct {
     poller_t *poller;
     clients_t *clients;
+
+    users_t *users;
+    teams_t *teams;
+
     // CONTROL socket aka the main server socket
     int control_fd;
     // Handles the SIGINT (Ctrl + C)
