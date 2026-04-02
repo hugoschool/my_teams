@@ -43,9 +43,41 @@ void poller_free(poller_t *poller);
 // Socket
 int socket_init(in_port_t port);
 
+// Clients
+typedef enum {
+    LOGGED_OUT,
+    LOGGED_IN
+} login_step_t;
+
+typedef struct {
+    // Pointer to its struct pollfd file descriptor
+    int *fd;
+    login_step_t login_step;
+
+    // TODO: Commenting it for now
+    // buffer_t *buffer;
+} client_data_t;
+
+client_data_t *client_data_init(int *fd);
+void client_data_free(client_data_t *data);
+
+typedef struct {
+    client_data_t **clients;
+    unsigned int amount;
+    unsigned int size;
+} clients_t;
+
+    #define CLIENTS_INIT_SIZE 50
+
+clients_t *clients_init(void);
+void clients_adder(clients_t *clients, int *fd);
+void clients_delete(clients_t *clients, int i);
+void clients_free(clients_t *clients);
+
 // Server
 typedef struct {
     poller_t *poller;
+    clients_t *clients;
     // CONTROL socket aka the main server socket
     int control_fd;
     // Handles the SIGINT (Ctrl + C)

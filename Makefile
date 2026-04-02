@@ -11,7 +11,9 @@ SERVER_SRC	:= 	src/server/main.c \
 				src/server/server.c \
 				src/server/poller.c \
 				src/server/socket.c \
-				src/server/poll.c
+				src/server/poll.c \
+				src/server/clients.c \
+				src/server/client_data.c
 
 SERVER_OBJ	:=	$(SERVER_SRC:.c=.o)
 

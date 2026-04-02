@@ -12,6 +12,7 @@
 #include <sys/signalfd.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <unistd.h>
 
 static server_t *server_init(void)
 {
@@ -22,7 +23,8 @@ static server_t *server_init(void)
         return NULL;
     }
     server->poller = poller_init();
-    if (server->poller == NULL) {
+    server->clients = clients_init();
+    if (server->poller == NULL || server->clients == NULL) {
         free(server);
         return NULL;
     }
@@ -37,6 +39,8 @@ void server_free(server_t *server)
         return;
     if (server->poller)
         poller_free(server->poller);
+    if (server->clients)
+        clients_free(server->clients);
     free(server);
 }
 
