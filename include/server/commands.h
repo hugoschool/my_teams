@@ -17,10 +17,12 @@ typedef struct {
     // Represents the amount of arguments the command can take.
     // Ex: USER a takes in 1 argument
     const unsigned int args_amount;
+    // Needs for user to be logged in
+    bool needs_auth;
 } commands_t;
 
 static const commands_t cmds[] = {
-    {.command = NULL, .function = NULL, .args_amount = 0}
+    {.command = NULL, .function = NULL, .args_amount = 0, .needs_auth = false}
 };
 
 void commands_handler(server_t *server);
