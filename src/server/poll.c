@@ -30,6 +30,7 @@ void new_client_handler(server_t *server)
     }
     poller_fd_add(server->poller, cfd);
     cfdr = &server->poller->fds[server->poller->amount - 1].fd;
+    clients_adder(server->clients, cfdr);
     WRITE_STATUS(*cfdr, 25120);
 }
 
