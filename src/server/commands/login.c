@@ -8,8 +8,18 @@
 #include "logging_server.h"
 #include "server/server.h"
 #include "server/status.h"
+#include <stdio.h>
 
-// TODO: send a message to all other clients about login
+static void send_client_joined_message(server_t *server, user_data_t *user)
+{
+    for (unsigned int i = INITIAL_AMOUNT; i < server->clients->amount; i++) {
+        if (i == server->index || CLIENT_I(i)->login_step == LOGGED_OUT)
+            continue;
+        dprintf(*CLIENT_I(i)->fd, "CLIENT_JOINED %s %s"CRLF,
+            user->uuid, user->username);
+    }
+}
+
 // TODO: not respecting protocol here, not sending:
 // USERNAME uuid status
 void command_login(server_t *server)
@@ -28,5 +38,6 @@ void command_login(server_t *server)
     if (user == NULL)
         return;
     server_event_user_logged_in(user->uuid);
+    send_client_joined_message(server, user);
     return;
 }

@@ -25,6 +25,7 @@
     #define BUFFER_SIZE 4096
 
     #define CLIENT server->clients->clients[server->index]
+    #define CLIENT_I(i) server->clients->clients[i]
 
 // For all dynamic arrays (this one and all future ones):
 // amount: current amount of elements in the array
