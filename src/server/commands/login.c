@@ -5,6 +5,7 @@
 ** login.c
 */
 
+#include "logging_server.h"
 #include "server/server.h"
 #include "server/status.h"
 
@@ -26,6 +27,6 @@ void command_login(server_t *server)
     user = users_add(server->users, username);
     if (user == NULL)
         return;
-    // TODO: log with logging library
+    server_event_user_logged_in(user->uuid);
     return;
 }

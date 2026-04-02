@@ -54,5 +54,5 @@ user_data_t *users_add(users_t *users, char *username)
     uuid_unparse(binuuid, uuid);
     users->users[users->amount] = user_data_init(uuid, username);
     users->amount++;
-    return users->users[users->amount];
+    return users->users[users->amount - 1];
 }
