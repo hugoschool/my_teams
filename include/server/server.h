@@ -53,7 +53,7 @@ typedef struct {
     char username[MAX_NAME_LENGTH + 1];
 } user_data_t;
 
-user_data_t *user_data_init(void);
+user_data_t *user_data_init(char *uuid, char *username);
 void user_data_free(user_data_t *data);
 
 typedef struct {
@@ -64,6 +64,10 @@ typedef struct {
 
 users_t *users_init(void);
 void users_free(users_t *users);
+
+user_data_t *users_add(users_t *users, char *username);
+user_data_t *users_get_from_username(users_t *users, char *username);
+user_data_t *users_get_from_uuid(users_t *users, char *uuid);
 
 // Threads
 typedef struct {

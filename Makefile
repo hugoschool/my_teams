@@ -1,8 +1,8 @@
 CC	?=	clang
 CFLAGS	:=	-Wall -Wextra -std=gnu17
 CPPFLAGS	:=	-I ./include -I ./libs/myteams
-LDFLAGS	:=
-LDLIBS	:=	-luuid
+LDFLAGS	:= -L ./libs/myteams
+LDLIBS	:=	-lmyteams -luuid
 
 ifeq ($(ENV), dev)
 	CFLAGS	+=	-g3
@@ -62,5 +62,8 @@ fclean:	clean
 	$(RM) $(CLI_BINARY)
 
 re:	fclean all
+
+dev-server:
+	LD_LIBRARY_PATH=./libs/myteams ./myteams_server 4242
 
 .PHONY:	all clean fclean re
