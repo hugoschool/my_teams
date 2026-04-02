@@ -49,9 +49,12 @@ int socket_init(in_port_t port);
 
 // Users
 typedef struct {
-    const char uuid[UUID_STR_LEN];
-    const char username[MAX_NAME_LENGTH + 1];
+    char uuid[UUID_STR_LEN];
+    char username[MAX_NAME_LENGTH + 1];
 } user_data_t;
+
+user_data_t *user_data_init(void);
+void user_data_free(user_data_t *data);
 
 typedef struct {
     user_data_t **users;
@@ -59,10 +62,13 @@ typedef struct {
     unsigned int size;
 } users_t;
 
+users_t *users_init(void);
+void users_free(users_t *users);
+
 // Threads
 typedef struct {
-    const char uuid[UUID_STR_LEN];
-    const char *body[MAX_BODY_LENGTH + 1];
+    char uuid[UUID_STR_LEN];
+    char body[MAX_BODY_LENGTH + 1];
 } comment_data_t;
 
 typedef struct {
@@ -73,9 +79,9 @@ typedef struct {
 
 // Threads
 typedef struct {
-    const char uuid[UUID_STR_LEN];
-    const char *name[MAX_NAME_LENGTH + 1];
-    const char *description[MAX_DESCRIPTION_LENGTH + 1];
+    char uuid[UUID_STR_LEN];
+    char name[MAX_NAME_LENGTH + 1];
+    char description[MAX_DESCRIPTION_LENGTH + 1];
     comments_t *comments;
 } thread_data_t;
 
@@ -87,9 +93,9 @@ typedef struct {
 
 // Channels
 typedef struct {
-    const char uuid[UUID_STR_LEN];
-    const char *name[MAX_NAME_LENGTH + 1];
-    const char *description[MAX_DESCRIPTION_LENGTH + 1];
+    char uuid[UUID_STR_LEN];
+    char name[MAX_NAME_LENGTH + 1];
+    char description[MAX_DESCRIPTION_LENGTH + 1];
     threads_t *threads;
 } channel_data_t;
 
@@ -101,9 +107,9 @@ typedef struct {
 
 // Teams
 typedef struct {
-    const char uuid[UUID_STR_LEN];
-    const char *name[MAX_NAME_LENGTH + 1];
-    const char *description[MAX_DESCRIPTION_LENGTH + 1];
+    char uuid[UUID_STR_LEN];
+    char name[MAX_NAME_LENGTH + 1];
+    char description[MAX_DESCRIPTION_LENGTH + 1];
     // TODO: maybe a list of all users subscribed to the team
     channels_t *channels;
 } team_data_t;
