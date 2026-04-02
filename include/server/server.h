@@ -11,6 +11,7 @@
     #include "args.h"
     #include "common.h"
     #include <netinet/in.h>
+    #include <uuid/uuid.h>
 
     #define CRLF "\r\n"
 
@@ -19,6 +20,9 @@
 // - the initial control socket
 // - the signal file descriptor handler.
     #define INITIAL_AMOUNT 2
+
+// This initial size macro refers to the base size used by dynamic arrays
+    #define INITIAL_SIZE 50 + INITIAL_AMOUNT
 
     #define BUFFER_SIZE 4096
 
@@ -33,7 +37,6 @@ typedef struct {
     unsigned int size;
 } poller_t;
 
-    #define POLLER_INIT_SIZE 50
 
 poller_t *poller_init(void);
 void poller_fd_add(poller_t *poller, int fd);
@@ -46,7 +49,7 @@ int socket_init(in_port_t port);
 
 // Users
 typedef struct {
-    // TODO: UUID
+    const char uuid[UUID_STR_LEN];
     const char username[MAX_NAME_LENGTH + 1];
 } user_data_t;
 
@@ -58,7 +61,7 @@ typedef struct {
 
 // Threads
 typedef struct {
-    // TODO: UUID
+    const char uuid[UUID_STR_LEN];
     const char *body[MAX_BODY_LENGTH + 1];
 } comment_data_t;
 
@@ -70,7 +73,7 @@ typedef struct {
 
 // Threads
 typedef struct {
-    // TODO: UUID
+    const char uuid[UUID_STR_LEN];
     const char *name[MAX_NAME_LENGTH + 1];
     const char *description[MAX_DESCRIPTION_LENGTH + 1];
     comments_t *comments;
@@ -84,7 +87,7 @@ typedef struct {
 
 // Channels
 typedef struct {
-    // TODO: UUID
+    const char uuid[UUID_STR_LEN];
     const char *name[MAX_NAME_LENGTH + 1];
     const char *description[MAX_DESCRIPTION_LENGTH + 1];
     threads_t *threads;
@@ -98,7 +101,7 @@ typedef struct {
 
 // Teams
 typedef struct {
-    // TODO: UUID
+    const char uuid[UUID_STR_LEN];
     const char *name[MAX_NAME_LENGTH + 1];
     const char *description[MAX_DESCRIPTION_LENGTH + 1];
     // TODO: maybe a list of all users subscribed to the team
@@ -137,8 +140,6 @@ typedef struct {
     unsigned int amount;
     unsigned int size;
 } clients_t;
-
-    #define CLIENTS_INIT_SIZE 50
 
 clients_t *clients_init(void);
 void clients_adder(clients_t *clients, int *fd);

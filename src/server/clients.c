@@ -17,13 +17,13 @@ clients_t *clients_init(void)
         perror("malloc");
         exit(84);
     }
-    clients->clients = calloc(CLIENTS_INIT_SIZE, sizeof(client_data_t));
+    clients->clients = calloc(INITIAL_SIZE, sizeof(client_data_t));
     if (clients->clients == NULL) {
         perror("calloc");
         exit(84);
     }
     clients->amount = INITIAL_AMOUNT;
-    clients->size = CLIENTS_INIT_SIZE;
+    clients->size = INITIAL_SIZE;
     return clients;
 }
 

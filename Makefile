@@ -1,6 +1,8 @@
 CC	?=	clang
 CFLAGS	:=	-Wall -Wextra -std=gnu17
 CPPFLAGS	:=	-I ./include -I ./libs/myteams
+LDFLAGS	:=
+LDLIBS	:=	-luuid
 
 ifeq ($(ENV), dev)
 	CFLAGS	+=	-g3
@@ -34,10 +36,10 @@ server:	$(SERVER_BINARY)
 cli:	$(CLI_BINARY)
 
 $(SERVER_BINARY):	$(SERVER_OBJ)
-	$(CC) -o $(SERVER_BINARY) $(SERVER_OBJ)
+	$(CC) -o $(SERVER_BINARY) $(SERVER_OBJ) $(LDFLAGS) $(LDLIBS)
 
 $(CLI_BINARY):	$(CLI_OBJ)
-	$(CC) -o $(CLI_BINARY) $(CLI_OBJ)
+	$(CC) -o $(CLI_BINARY) $(CLI_OBJ) $(LDFLAGS) $(LDLIBS)
 
 clean:
 	$(RM) $(SERVER_OBJ)

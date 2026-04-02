@@ -18,13 +18,13 @@ poller_t *poller_init(void)
         perror("malloc");
         exit(84);
     }
-    poller->fds = calloc(POLLER_INIT_SIZE, sizeof(struct pollfd));
+    poller->fds = calloc(INITIAL_SIZE, sizeof(struct pollfd));
     if (poller->fds == NULL) {
         perror("calloc");
         exit(84);
     }
     poller->amount = INITIAL_AMOUNT;
-    poller->size = POLLER_INIT_SIZE;
+    poller->size = INITIAL_SIZE;
     return poller;
 }
 
