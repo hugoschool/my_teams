@@ -22,6 +22,7 @@ typedef struct {
 } commands_t;
 
 void command_login(server_t *server);
+void command_logout(server_t *server);
 
 static const commands_t cmds[] = {
     {
@@ -29,6 +30,12 @@ static const commands_t cmds[] = {
         .function = &command_login,
         .args_amount = 1,
         .needs_auth = false
+    },
+    {
+        .command = "LOGOUT",
+        .function = &command_logout,
+        .args_amount = 0,
+        .needs_auth = true
     },
     {.command = NULL, .function = NULL, .args_amount = 0, .needs_auth = false}
 };

@@ -29,7 +29,8 @@ SERVER_SRC	:= 	$(UTILS_SRC) \
 
 # Commands
 SERVER_SRC	+=	src/server/commands/handler.c \
-				src/server/commands/login.c
+				src/server/commands/login.c \
+				src/server/commands/logout.c
 
 SERVER_OBJ	:=	$(SERVER_SRC:.c=.o)
 
