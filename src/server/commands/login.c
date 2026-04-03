@@ -8,7 +8,9 @@
 #include "logging_server.h"
 #include "server/server.h"
 #include "server/status.h"
+#include "utils.h"
 #include <stdio.h>
+#include <stdlib.h>
 
 static void send_client_joined_message(server_t *server, user_data_t *user)
 {
@@ -24,7 +26,7 @@ static void send_client_joined_message(server_t *server, user_data_t *user)
 // USERNAME uuid status
 void command_login(server_t *server)
 {
-    char *username = "yo";
+    char *username = NULL;
     user_data_t *user = NULL;
 
     if (CLIENT->login_step == LOGGED_IN) {
@@ -33,11 +35,14 @@ void command_login(server_t *server)
     }
     WRITE_STATUS(*CLIENT->fd, 250);
     CLIENT->login_step = LOGGED_IN;
-    // TODO: get parameter
+    username = get_arg(server->buffer, 1);
+    if (username == NULL)
+        return;
     user = users_add(server->users, username);
     if (user == NULL)
         return;
     server_event_user_logged_in(user->uuid);
     send_client_joined_message(server, user);
+    free(username);
     return;
 }
