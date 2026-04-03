@@ -43,6 +43,7 @@ void client_quit(server_t *server)
         if (close(fd) == -1)
             perror("close");
         poller_fd_delete(server->poller, server->index);
+        clients_delete(server->clients, server->index);
         server->index--;
     }
 }
