@@ -14,5 +14,6 @@ int strcmp_start(const char *str, const char *start);
 int strcmp_end(const char *str, const char *end);
 void remove_crlf(char *str);
 size_t strccount(const char *str, char c);
+char *get_arg(char *str, int nb);
 
 #endif

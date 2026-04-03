@@ -11,7 +11,8 @@ endif
 UTILS_SRC	:=	src/utils/remove_crlf.c \
 				src/utils/strccount.c \
 				src/utils/strcmp_end.c \
-				src/utils/strcmp_start.c
+				src/utils/strcmp_start.c \
+				src/utils/get_arg.c
 
 SERVER_SRC	:= 	$(UTILS_SRC) \
 				src/server/main.c \
@@ -63,7 +64,7 @@ fclean:	clean
 
 re:	fclean all
 
-dev-server:
+dev-server:	all
 	LD_LIBRARY_PATH=./libs/myteams ./myteams_server 4242
 
 .PHONY:	all clean fclean re
