@@ -62,47 +62,47 @@ Table of Contents
 
    1.  Introduction  . . . . . . . . . . . . . . . . . . . . . . . .   3
    2.  Context . . . . . . . . . . . . . . . . . . . . . . . . . . .   3
-   3.  Ending sequence . . . . . . . . . . . . . . . . . . . . . . .   3
-     3.1.  Status codes  . . . . . . . . . . . . . . . . . . . . . .   3
-   4.  Client input  . . . . . . . . . . . . . . . . . . . . . . . .   4
-   5.  Server response . . . . . . . . . . . . . . . . . . . . . . .   4
-   6.  User-related events . . . . . . . . . . . . . . . . . . . . .   5
-     6.1.  Connection of a user  . . . . . . . . . . . . . . . . . .   5
-     6.2.  Disconnection of a user . . . . . . . . . . . . . . . . .   5
-     6.3.  Retrieve a list of all users  . . . . . . . . . . . . . .   6
-     6.4.  Retrieve information about a specific user  . . . . . . .   7
-   7.  Private message related events  . . . . . . . . . . . . . . .   7
-     7.1.  Send a private message to a user  . . . . . . . . . . . .   7
-     7.2.  List all messages exchanged with a user . . . . . . . . .   8
-   8.  Team-related events . . . . . . . . . . . . . . . . . . . . .   9
-     8.1.  Creating a team . . . . . . . . . . . . . . . . . . . . .   9
-     8.2.  Retrieve a list of all teams  . . . . . . . . . . . . . .  10
-     8.3.  Retrieve information about a specific team  . . . . . . .  10
-     8.4.  Subscribe to a team . . . . . . . . . . . . . . . . . . .  11
-     8.5.  Unsubscribe from a team . . . . . . . . . . . . . . . . .  12
-     8.6.  List all teams the user is subscribed to  . . . . . . . .  13
-     8.7.  List all users subscribed to a team . . . . . . . . . . .  14
-   9.  Channel-related events  . . . . . . . . . . . . . . . . . . .  15
-     9.1.  Creating a channel  . . . . . . . . . . . . . . . . . . .  15
-     9.2.  Retrieve information about a specific channel . . . . . .  16
-     9.3.  List all channels in a team . . . . . . . . . . . . . . .  17
-   10. Thread-related events . . . . . . . . . . . . . . . . . . . .  17
-     10.1.  Complementary information  . . . . . . . . . . . . . . .  17
-     10.2.  Creating a thread  . . . . . . . . . . . . . . . . . . .  18
-     10.3.  Retrieve information about a specific thread . . . . . .  19
-     10.4.  List all threads in a team . . . . . . . . . . . . . . .  20
-   11. Comment-related events  . . . . . . . . . . . . . . . . . . .  21
-     11.1.  Creating a comment . . . . . . . . . . . . . . . . . . .  21
-     11.2.  List all comments of a thread  . . . . . . . . . . . . .  22
-   12. Received events . . . . . . . . . . . . . . . . . . . . . . .  23
-     12.1.  Newly created team . . . . . . . . . . . . . . . . . . .  23
-     12.2.  Newly created channel  . . . . . . . . . . . . . . . . .  23
-     12.3.  Newly created thread . . . . . . . . . . . . . . . . . .  23
-     12.4.  Newly created comment  . . . . . . . . . . . . . . . . .  23
-     12.5.  Newly created private message  . . . . . . . . . . . . .  24
-     12.6.  User logged in . . . . . . . . . . . . . . . . . . . . .  24
-     12.7.  User logged out  . . . . . . . . . . . . . . . . . . . .  24
-
+   3.  Information . . . . . . . . . . . . . . . . . . . . . . . . .   3
+     3.1.  Ending sequence . . . . . . . . . . . . . . . . . . . . .   3
+     3.2.  Status codes  . . . . . . . . . . . . . . . . . . . . . .   3
+     3.3.  Client input  . . . . . . . . . . . . . . . . . . . . . .   4
+     3.4.  Server response . . . . . . . . . . . . . . . . . . . . .   5
+     3.5.  Timestamps  . . . . . . . . . . . . . . . . . . . . . . .   5
+   4.  User-related events . . . . . . . . . . . . . . . . . . . . .   5
+     4.1.  Connection of a user  . . . . . . . . . . . . . . . . . .   5
+     4.2.  Disconnection of a user . . . . . . . . . . . . . . . . .   6
+     4.3.  Retrieve a list of all users  . . . . . . . . . . . . . .   6
+     4.4.  Retrieve information about a specific user  . . . . . . .   7
+   5.  Private message related events  . . . . . . . . . . . . . . .   7
+     5.1.  Send a private message to a user  . . . . . . . . . . . .   8
+     5.2.  List all messages exchanged with a user . . . . . . . . .   8
+   6.  Team-related events . . . . . . . . . . . . . . . . . . . . .   9
+     6.1.  Creating a team . . . . . . . . . . . . . . . . . . . . .   9
+     6.2.  Retrieve a list of all teams  . . . . . . . . . . . . . .  10
+     6.3.  Retrieve information about a specific team  . . . . . . .  11
+     6.4.  Subscribe to a team . . . . . . . . . . . . . . . . . . .  11
+     6.5.  Unsubscribe from a team . . . . . . . . . . . . . . . . .  12
+     6.6.  List all teams the user is subscribed to  . . . . . . . .  13
+     6.7.  List all users subscribed to a team . . . . . . . . . . .  14
+   7.  Channel-related events  . . . . . . . . . . . . . . . . . . .  15
+     7.1.  Creating a channel  . . . . . . . . . . . . . . . . . . .  15
+     7.2.  Retrieve information about a specific channel . . . . . .  16
+     7.3.  List all channels in a team . . . . . . . . . . . . . . .  17
+   8.  Thread-related events . . . . . . . . . . . . . . . . . . . .  18
+     8.1.  Creating a thread . . . . . . . . . . . . . . . . . . . .  18
+     8.2.  Retrieve information about a specific thread  . . . . . .  19
+     8.3.  List all threads in a team  . . . . . . . . . . . . . . .  20
+   9.  Comment-related events  . . . . . . . . . . . . . . . . . . .  21
+     9.1.  Creating a comment  . . . . . . . . . . . . . . . . . . .  21
+     9.2.  List all comments of a thread . . . . . . . . . . . . . .  22
+   10. Received events . . . . . . . . . . . . . . . . . . . . . . .  23
+     10.1.  Newly created team . . . . . . . . . . . . . . . . . . .  23
+     10.2.  Newly created channel  . . . . . . . . . . . . . . . . .  23
+     10.3.  Newly created thread . . . . . . . . . . . . . . . . . .  23
+     10.4.  Newly created comment  . . . . . . . . . . . . . . . . .  24
+     10.5.  Newly created private message  . . . . . . . . . . . . .  24
+     10.6.  User logged in . . . . . . . . . . . . . . . . . . . . .  24
+     10.7.  User logged out  . . . . . . . . . . . . . . . . . . . .  24
 
 
 
@@ -146,7 +146,9 @@ Internet-Draft               MAICHE Protocol                  March 2026
    |  *  Personal discussion (from a user to an other)
    |  *  Saving & restoring personal discussion
 
-3.  Ending sequence
+3.  Information
+
+3.1.  Ending sequence
 
    All communications from the client and from the server must end with
    an ending sequence.
@@ -154,13 +156,11 @@ Internet-Draft               MAICHE Protocol                  March 2026
    In our case, the chosen ending sequence is CRLF, Carriage Return Line
    Feed (\r\n).
 
-3.1.  Status codes
+3.2.  Status codes
 
    A typical status code response is:
 
    |  [3 number code] [message]
-
-   What is given here is an example of a message, it can be modified.
 
 
 
@@ -169,6 +169,8 @@ MAICHE                   Expires 1 October 2026                 [Page 3]
 
 Internet-Draft               MAICHE Protocol                  March 2026
 
+
+   What is given here is an example of a message, it can be modified.
 
    But the 3 number code must be accurate.
 
@@ -200,7 +202,7 @@ Internet-Draft               MAICHE Protocol                  March 2026
 
    *  500 Server failure.
 
-4.  Client input
+3.3.  Client input
 
    A client must send the message with a valid command and an ending
    sequence.
@@ -213,10 +215,8 @@ Internet-Draft               MAICHE Protocol                  March 2026
    If the given input is invalid, the server shall respond with a 499
    status code.
 
-5.  Server response
 
-   The server should always respond to the client, whether the input is
-   valid or not.
+
 
 
 
@@ -226,14 +226,23 @@ MAICHE                   Expires 1 October 2026                 [Page 4]
 Internet-Draft               MAICHE Protocol                  March 2026
 
 
+3.4.  Server response
+
+   The server should always respond to the client, whether the input is
+   valid or not.
+
    All responses from the server must be formatted as such (without the
    brackets, of course):
 
    |  [Status code] [Message] [Ending sequence]
 
-6.  User-related events
+3.5.  Timestamps
 
-6.1.  Connection of a user
+   All timestamps must be UNIX timestamps (time_t in C).
+
+4.  User-related events
+
+4.1.  Connection of a user
 
    On the client, connecting as a user is done via the /login command
    and does not require authentication using a password.
@@ -265,7 +274,15 @@ Internet-Draft               MAICHE Protocol                  March 2026
    |  
    |  430 User already logged in.
 
-6.2.  Disconnection of a user
+
+
+
+MAICHE                   Expires 1 October 2026                 [Page 5]
+
+Internet-Draft               MAICHE Protocol                  March 2026
+
+
+4.2.  Disconnection of a user
 
    A user can disconnect from the server using the /logout command on
    the client.
@@ -274,13 +291,6 @@ Internet-Draft               MAICHE Protocol                  March 2026
    command.
 
    This command can error out in case the user isn't logged in.
-
-
-
-MAICHE                   Expires 1 October 2026                 [Page 5]
-
-Internet-Draft               MAICHE Protocol                  March 2026
-
 
    Example:
 
@@ -294,7 +304,7 @@ Internet-Draft               MAICHE Protocol                  March 2026
    |  
    |  435 User isn't logged in.
 
-6.3.  Retrieve a list of all users
+4.3.  Retrieve a list of all users
 
    A user can request a list of all the user with their usernames and
    matching UUIDs.
@@ -320,16 +330,6 @@ Internet-Draft               MAICHE Protocol                  March 2026
    |  
    |  USERNAME uuid 1 [newline]
    |  
-   |  USERNAME uuid 0 [newline]
-   |  
-   |  In case user isn't logged in:
-   |  
-   |  USERS
-   |  
-   |  435 User isn't logged in.
-
-
-
 
 
 
@@ -338,7 +338,15 @@ MAICHE                   Expires 1 October 2026                 [Page 6]
 Internet-Draft               MAICHE Protocol                  March 2026
 
 
-6.4.  Retrieve information about a specific user
+   |  USERNAME uuid 0 [newline]
+   |  
+   |  In case user isn't logged in:
+   |  
+   |  USERS
+   |  
+   |  435 User isn't logged in.
+
+4.4.  Retrieve information about a specific user
 
    A user can request information about a specific user given its UUID.
 
@@ -376,15 +384,7 @@ Internet-Draft               MAICHE Protocol                  March 2026
    |  
    |  435 User isn't logged in.
 
-7.  Private message related events
-
-7.1.  Send a private message to a user
-
-   A user can send a private message to another user.
-
-   On the client, this is the /send [user_uuid] [message_body] command.
-
-   This is done using the MESSAGE_SEND [uuid] [body] command.
+5.  Private message related events
 
 
 
@@ -393,6 +393,14 @@ MAICHE                   Expires 1 October 2026                 [Page 7]
 
 Internet-Draft               MAICHE Protocol                  March 2026
 
+
+5.1.  Send a private message to a user
+
+   A user can send a private message to another user.
+
+   On the client, this is the /send [user_uuid] [message_body] command.
+
+   This is done using the MESSAGE_SEND [uuid] [body] command.
 
    What is returned is a status code.
 
@@ -420,7 +428,7 @@ Internet-Draft               MAICHE Protocol                  March 2026
    |  
    |  435 User isn't logged in.
 
-7.2.  List all messages exchanged with a user
+5.2.  List all messages exchanged with a user
 
    A user can list all private messages exchanged with another user.
 
@@ -435,14 +443,6 @@ Internet-Draft               MAICHE Protocol                  March 2026
 
    This command can error out in case
 
-   *  the user doesn't exist
-
-   *  the user isn't logged in.
-
-   Example:
-
-   |  MESSAGES [uuid]
-
 
 
 MAICHE                   Expires 1 October 2026                 [Page 8]
@@ -450,6 +450,13 @@ MAICHE                   Expires 1 October 2026                 [Page 8]
 Internet-Draft               MAICHE Protocol                  March 2026
 
 
+   *  the user doesn't exist
+
+   *  the user isn't logged in.
+
+   Example:
+
+   |  MESSAGES [uuid]
    |  
    |  200 Success.  [Ending sequence]
    |  
@@ -471,9 +478,9 @@ Internet-Draft               MAICHE Protocol                  March 2026
    |  
    |  435 User isn't logged in.
 
-8.  Team-related events
+6.  Team-related events
 
-8.1.  Creating a team
+6.1.  Creating a team
 
    A user can create a team given a name and a description.
 
@@ -492,13 +499,6 @@ Internet-Draft               MAICHE Protocol                  March 2026
 
    Example:
 
-   |  CREATE_TEAM [name] [description]
-   |  
-   |  200 Success.  [Ending sequence]
-   |  
-   |  TEAM_NAME uuid description
-   |  
-
 
 
 MAICHE                   Expires 1 October 2026                 [Page 9]
@@ -506,6 +506,12 @@ MAICHE                   Expires 1 October 2026                 [Page 9]
 Internet-Draft               MAICHE Protocol                  March 2026
 
 
+   |  CREATE_TEAM [name] [description]
+   |  
+   |  200 Success.  [Ending sequence]
+   |  
+   |  TEAM_NAME uuid description
+   |  
    |  In case team name is already taken:
    |  
    |  CREATE_TEAM [name] [description]
@@ -518,7 +524,7 @@ Internet-Draft               MAICHE Protocol                  March 2026
    |  
    |  435 User isn't logged in.
 
-8.2.  Retrieve a list of all teams
+6.2.  Retrieve a list of all teams
 
    A user can ask to list all teams.
 
@@ -548,12 +554,6 @@ Internet-Draft               MAICHE Protocol                  March 2026
    |  
    |  TEAMS
    |  
-   |  435 User isn't logged in.
-
-8.3.  Retrieve information about a specific team
-
-   A user can request information about a specific team given its UUID.
-
 
 
 
@@ -561,6 +561,12 @@ MAICHE                   Expires 1 October 2026                [Page 10]
 
 Internet-Draft               MAICHE Protocol                  March 2026
 
+
+   |  435 User isn't logged in.
+
+6.3.  Retrieve information about a specific team
+
+   A user can request information about a specific team given its UUID.
 
    On the client, this is the /info command whilst inside a /use
    [team_uuid] context.
@@ -596,19 +602,13 @@ Internet-Draft               MAICHE Protocol                  March 2026
    |  
    |  435 User isn't logged in.
 
-8.4.  Subscribe to a team
+6.4.  Subscribe to a team
 
    A user can subscribe to a team.
 
    On the client, this is the /subscribe [team_uuid].
 
    This is done using the SUBSCRIBE_TEAM uuid command.
-
-   What is returned is a 200 status code.
-
-   This command can error out in case:
-
-   *  the team doesn't exist
 
 
 
@@ -617,6 +617,12 @@ MAICHE                   Expires 1 October 2026                [Page 11]
 
 Internet-Draft               MAICHE Protocol                  March 2026
 
+
+   What is returned is a 200 status code.
+
+   This command can error out in case:
+
+   *  the team doesn't exist
 
    *  the user isn't logged in
 
@@ -646,7 +652,7 @@ Internet-Draft               MAICHE Protocol                  March 2026
    |  
    |  450 User is already subscribed to this team.
 
-8.5.  Unsubscribe from a team
+6.5.  Unsubscribe from a team
 
    Similar to subscribing, a user can unsubscribe from a team.
 
@@ -660,12 +666,6 @@ Internet-Draft               MAICHE Protocol                  March 2026
 
    *  the team doesn't exist
 
-   *  the user isn't logged in
-
-   *  the user isn't subscribed to a team
-
-   Example:
-
 
 
 
@@ -673,6 +673,12 @@ MAICHE                   Expires 1 October 2026                [Page 12]
 
 Internet-Draft               MAICHE Protocol                  March 2026
 
+
+   *  the user isn't logged in
+
+   *  the user isn't subscribed to a team
+
+   Example:
 
    |  UNSUBSCRIBE_TEAM uuid
    |  
@@ -696,7 +702,7 @@ Internet-Draft               MAICHE Protocol                  March 2026
    |  
    |  451 User isn't subscribed to this team.
 
-8.6.  List all teams the user is subscribed to
+6.6.  List all teams the user is subscribed to
 
    A user can request a list of all teams it is subscribed to.
 
@@ -716,12 +722,6 @@ Internet-Draft               MAICHE Protocol                  March 2026
    |  SUBSCRIBED
    |  
    |  200 Success.  [Ending sequence]
-   |  
-   |  TEAM_NAME uuid description [newline]
-   |  
-   |  TEAM_NAME uuid description [newline]
-   |  
-   |  TEAM_NAME uuid description [newline]
 
 
 
@@ -731,13 +731,19 @@ Internet-Draft               MAICHE Protocol                  March 2026
 
 
    |  
+   |  TEAM_NAME uuid description [newline]
+   |  
+   |  TEAM_NAME uuid description [newline]
+   |  
+   |  TEAM_NAME uuid description [newline]
+   |  
    |  In case user isn't logged in:
    |  
    |  SUBSCRIBED
    |  
    |  435 User isn't logged in.
 
-8.7.  List all users subscribed to a team
+6.7.  List all users subscribed to a team
 
    A user can see which users are subscribed to a team.
 
@@ -772,12 +778,6 @@ Internet-Draft               MAICHE Protocol                  March 2026
    |  
    |  LIST_SUBSCRIBED_USERS uuid
    |  
-   |  USERNAME uuid 0 [newline]
-   |  
-   |  USERNAME uuid 1 [newline]
-   |  
-   |  USERNAME uuid 0 [newline]
-   |  
 
 
 
@@ -786,11 +786,17 @@ MAICHE                   Expires 1 October 2026                [Page 14]
 Internet-Draft               MAICHE Protocol                  March 2026
 
 
+   |  USERNAME uuid 0 [newline]
+   |  
+   |  USERNAME uuid 1 [newline]
+   |  
+   |  USERNAME uuid 0 [newline]
+   |  
    |  435 User isn't logged in.
 
-9.  Channel-related events
+7.  Channel-related events
 
-9.1.  Creating a channel
+7.1.  Creating a channel
 
    A user can create a channel given a name and a description.
 
@@ -828,12 +834,6 @@ Internet-Draft               MAICHE Protocol                  March 2026
    |  
    |  CREATE_CHANNEL [team_uuid] [name] [description]
    |  
-   |  440 Already exists.
-   |  
-   |  In case user isn't logged in:
-   |  
-   |  CREATE_CHANNEL [team_uuid] [name] [description]
-   |  
 
 
 
@@ -842,9 +842,15 @@ MAICHE                   Expires 1 October 2026                [Page 15]
 Internet-Draft               MAICHE Protocol                  March 2026
 
 
+   |  440 Already exists.
+   |  
+   |  In case user isn't logged in:
+   |  
+   |  CREATE_CHANNEL [team_uuid] [name] [description]
+   |  
    |  435 User isn't logged in.
 
-9.2.  Retrieve information about a specific channel
+7.2.  Retrieve information about a specific channel
 
    A user can request information about a specific channel given its
    UUID and the teams uuid.
@@ -884,12 +890,6 @@ Internet-Draft               MAICHE Protocol                  March 2026
    |  CHANNEL team_uuid uuid
    |  
    |  460 Given parameter is invalid.
-   |  
-   |  In case user isn't logged in:
-   |  
-   |  CHANNEL team_uuid uuid
-   |  
-   |  435 User isn't logged in.
 
 
 
@@ -898,7 +898,14 @@ MAICHE                   Expires 1 October 2026                [Page 16]
 Internet-Draft               MAICHE Protocol                  March 2026
 
 
-9.3.  List all channels in a team
+   |  
+   |  In case user isn't logged in:
+   |  
+   |  CHANNEL team_uuid uuid
+   |  
+   |  435 User isn't logged in.
+
+7.3.  List all channels in a team
 
    A user can list all channels in a team.
 
@@ -939,13 +946,6 @@ Internet-Draft               MAICHE Protocol                  March 2026
    |  
    |  435 User isn't logged in.
 
-10.  Thread-related events
-
-10.1.  Complementary information
-
-   All timestamps must be UNIX timestamps (time_t in C).
-
-
 
 
 
@@ -954,7 +954,9 @@ MAICHE                   Expires 1 October 2026                [Page 17]
 Internet-Draft               MAICHE Protocol                  March 2026
 
 
-10.2.  Creating a thread
+8.  Thread-related events
+
+8.1.  Creating a thread
 
    A user can create a thread given a title and a message.
 
@@ -1000,8 +1002,6 @@ Internet-Draft               MAICHE Protocol                  March 2026
    |  
    |  440 Already exists.
    |  
-   |  In case user isn't subscribed to the team:
-   |  
 
 
 
@@ -1010,6 +1010,8 @@ MAICHE                   Expires 1 October 2026                [Page 18]
 Internet-Draft               MAICHE Protocol                  March 2026
 
 
+   |  In case user isn't subscribed to the team:
+   |  
    |  CREATE_THREAD [team_uuid] [channel_uuid] [title] [message]
    |  
    |  451 User isn't subscribed to this team.
@@ -1020,7 +1022,7 @@ Internet-Draft               MAICHE Protocol                  March 2026
    |  
    |  435 User isn't logged in.
 
-10.3.  Retrieve information about a specific thread
+8.2.  Retrieve information about a specific thread
 
    A user can request information about a specific channel given its
    UUID and the teams uuid.
@@ -1056,8 +1058,6 @@ Internet-Draft               MAICHE Protocol                  March 2026
    |  
    |  In case the channel doesn't exist and
    |  
-   |  In case the thread doesn't exist
-   |  
 
 
 
@@ -1066,6 +1066,8 @@ MAICHE                   Expires 1 October 2026                [Page 19]
 Internet-Draft               MAICHE Protocol                  March 2026
 
 
+   |  In case the thread doesn't exist
+   |  
    |  THREAD team_uuid channel_uuid thread_uuid
    |  
    |  460 Given parameter is invalid.
@@ -1076,7 +1078,7 @@ Internet-Draft               MAICHE Protocol                  March 2026
    |  
    |  435 User isn't logged in.
 
-10.4.  List all threads in a team
+8.3.  List all threads in a team
 
    A user can list all threads in a team.
 
@@ -1112,8 +1114,6 @@ Internet-Draft               MAICHE Protocol                  March 2026
    |  In case channel does not exist
    |  
    |  THREADS [team_uuid] [CHANNEL_UUID]
-   |  
-   |  460 Given parameter is invalid.
 
 
 
@@ -1123,15 +1123,17 @@ Internet-Draft               MAICHE Protocol                  March 2026
 
 
    |  
+   |  460 Given parameter is invalid.
+   |  
    |  In case user isn't logged in:
    |  
    |  THREADS [team_uuid] [CHANNEL_UUID]
    |  
    |  435 User isn't logged in.
 
-11.  Comment-related events
+9.  Comment-related events
 
-11.1.  Creating a comment
+9.1.  Creating a comment
 
    A user can create a comment with a message.
 
@@ -1168,8 +1170,6 @@ Internet-Draft               MAICHE Protocol                  March 2026
    |  In case team doesn't exist and
    |  
    |  In case thread doesn't exist
-   |  
-   |  CREATE_COMMENT [team_uuid] [channel_uuid] [thread_uuid] [body]
 
 
 
@@ -1178,6 +1178,8 @@ MAICHE                   Expires 1 October 2026                [Page 21]
 Internet-Draft               MAICHE Protocol                  March 2026
 
 
+   |  
+   |  CREATE_COMMENT [team_uuid] [channel_uuid] [thread_uuid] [body]
    |  
    |  460 Given parameter is invalid.
    |  
@@ -1193,7 +1195,7 @@ Internet-Draft               MAICHE Protocol                  March 2026
    |  
    |  435 User isn't logged in.
 
-11.2.  List all comments of a thread
+9.2.  List all comments of a thread
 
    A user can list all comments of a thread.
 
@@ -1224,8 +1226,6 @@ Internet-Draft               MAICHE Protocol                  March 2026
    |  COMMENT_UUID body [newline]
    |  
    |  COMMENT_UUID body [newline]
-   |  
-   |  COMMENT_UUID body [newline]
 
 
 
@@ -1234,6 +1234,8 @@ MAICHE                   Expires 1 October 2026                [Page 22]
 Internet-Draft               MAICHE Protocol                  March 2026
 
 
+   |  
+   |  COMMENT_UUID body [newline]
    |  
    |  In case channel doesn't exist and
    |  
@@ -1251,18 +1253,18 @@ Internet-Draft               MAICHE Protocol                  March 2026
    |  
    |  435 User isn't logged in.
 
-12.  Received events
+10.  Received events
 
    Received events are events that can be received anytime for all
    clients depending on conditions.
 
-12.1.  Newly created team
+10.1.  Newly created team
 
    If a new team has been created, a message is sent to all clients.
 
    The message is NEW_TEAM [team_uuid] [team_name] [team_description].
 
-12.2.  Newly created channel
+10.2.  Newly created channel
 
    If a new channel has been created, a message is sent to all clients
    that are subscribed to the related team.
@@ -1270,7 +1272,7 @@ Internet-Draft               MAICHE Protocol                  March 2026
    The message is NEW_CHANNEL [channel_uuid] [channel_name]
    [channel_description].
 
-12.3.  Newly created thread
+10.3.  Newly created thread
 
    If a new thread has been created, a message is sent to all clients
    that are subscribed to the related team.
@@ -1278,10 +1280,8 @@ Internet-Draft               MAICHE Protocol                  March 2026
    The message is NEW_THREAD [thread_uuid] [thread_title] [thread_body]
    [thread_timestamp].
 
-12.4.  Newly created comment
 
-   If a new comment has been created, a message is sent to all clients
-   that are subscribed to the related team.
+
 
 
 
@@ -1290,32 +1290,32 @@ MAICHE                   Expires 1 October 2026                [Page 23]
 Internet-Draft               MAICHE Protocol                  March 2026
 
 
+10.4.  Newly created comment
+
+   If a new comment has been created, a message is sent to all clients
+   that are subscribed to the related team.
+
    The message is NEW_COMMENT [team_uuid] [thread_uuid] [user_uuid]
    [comment_body].
 
-12.5.  Newly created private message
+10.5.  Newly created private message
 
    If a new private message has been sent by a user to another user, a
    message is sent to the user receiving the message.
 
    The message is NEW_MESSAGE [user_uuid] [message_body]
 
-12.6.  User logged in
+10.6.  User logged in
 
    When a user logged in, a message is sent to every other client.
 
    The message is CLIENT_JOINED [user_uuid] [user_name]
 
-12.7.  User logged out
+10.7.  User logged out
 
    When a user logged out, a message is sent to every other client.
 
    The message is CLIENT_LEFT [user_uuid] [user_name]
-
-
-
-
-
 
 
 

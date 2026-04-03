@@ -48,7 +48,9 @@ According to the subject:
 > - Personal discussion (from a user to an other)
 > - Saving & restoring personal discussion
 
-# Ending sequence
+# Information
+
+## Ending sequence
 
 All communications from the client and from the server must end with an ending sequence.
 
@@ -92,7 +94,7 @@ Server failure:
 
 - 500 Server failure.
 
-# Client input
+## Client input
 
 A client must send the message with a valid command and an ending sequence.
 
@@ -102,13 +104,17 @@ An input from the client must be formatted as such (without the brackets, of cou
 
 If the given input is invalid, the server shall respond with a 499 status code.
 
-# Server response
+## Server response
 
 The server should always respond to the client, whether the input is valid or not.
 
 All responses from the server must be formatted as such (without the brackets, of course):
 
 > [Status code] [Message] [Ending sequence]
+
+## Timestamps
+
+All timestamps must be UNIX timestamps (time_t in C).
 
 # User-related events
 
@@ -685,10 +691,6 @@ Example:
 > 435 User isn't logged in.
 
 # Thread-related events
-
-## Complementary information
-
-All timestamps must be UNIX timestamps (time_t in C).
 
 ## Creating a thread
 
