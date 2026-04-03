@@ -27,6 +27,8 @@
     #define CLIENT server->clients->clients[server->index]
     #define CLIENT_I(i) server->clients->clients[i]
 
+    #define USER_I(i) server->users->users[i]
+
 // For all dynamic arrays (this one and all future ones):
 // amount: current amount of elements in the array
 // size: actual malloc'd size of the array
