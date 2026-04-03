@@ -226,13 +226,15 @@ Example:
 >
 > 435 User isn't logged in.
 
+# Private message related events
+
 ## Send a private message to a user
 
 A user can send a private message to another user.
 
 On the client, this is the `/send [user_uuid] [message_body]` command.
 
-This is done using the `SEND_USER [uuid] [body]` command.
+This is done using the `MESSAGE_SEND [uuid] [body]` command.
 
 What is returned is a status code.
 
@@ -243,19 +245,60 @@ This command can error out in case
 - the user isn't logged in.
 
 Example:
-> SEND_USER [uuid] [body]
+> MESSAGE_SEND [uuid] [body]
 >
 > 200 Success.
 >
 > In case user doesn't exist:
 >
-> SEND_USER [uuid] [body]
+> MESSAGE_SEND [uuid] [body]
 >
 > 460 Given parameter is invalid.
 >
 > In case user isn't logged in:
 >
-> SEND_USER [uuid] [body]
+> MESSAGE_SEND [uuid] [body]
+>
+> 435 User isn't logged in.
+
+## List all messages exchanged with a user
+
+A user can list all private messages exchanged with another user.
+
+On the client, this is the `/messages [user_uuid]` command.
+
+This is done using the `MESSAGES [uuid]` command.
+
+What is returned is a status code.
+
+First is the UUID of the user who sent the message, then the timestamp of the sent message then the message body.
+
+This command can error out in case
+
+- the user doesn't exist
+
+- the user isn't logged in.
+
+Example:
+> MESSAGES [uuid]
+>
+> 200 Success. [Ending sequence]
+>
+> UUID timestamp body [Newline]
+>
+> UUID timestamp body [Newline]
+>
+> UUID timestamp body [Newline]
+>
+> In case user doesn't exist:
+>
+> MESSAGES [uuid]
+>
+> 460 Given parameter is invalid.
+>
+> In case user isn't logged in:
+>
+> MESSAGES [uuid]
 >
 > 435 User isn't logged in.
 
