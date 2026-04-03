@@ -145,6 +145,7 @@ typedef struct {
 
 client_data_t *client_data_init(int *fd);
 void client_data_free(client_data_t *data);
+void client_set_user(client_data_t *data, user_data_t *user_data);
 
 typedef struct {
     client_data_t **clients;

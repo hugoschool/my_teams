@@ -41,8 +41,8 @@ void command_login(server_t *server)
     user = users_add(server->users, username);
     if (user == NULL)
         return;
+    client_set_user(CLIENT, user);
     server_event_user_logged_in(user->uuid);
     send_client_joined_message(server, user);
     free(username);
-    return;
 }
