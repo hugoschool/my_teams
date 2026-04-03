@@ -833,7 +833,7 @@ Example:
 >
 > 435 User isn't logged in.
 
-# Comment-related events
+# Comment-related events (also called replies)
 
 ## Creating a comment
 
@@ -862,7 +862,7 @@ Example:
 >
 > 200 Success. [Ending sequence]
 >
-> COMMENT_UUID body
+> COMMENT_UUID timestamp body
 >
 > In case channel doesn't exist and
 >
@@ -911,11 +911,11 @@ Example:
 >
 > 200 Success. [Ending sequence]
 >
-> COMMENT_UUID body [newline]
+> COMMENT_UUID timestamp body [newline]
 >
-> COMMENT_UUID body [newline]
+> COMMENT_UUID timestamp body [newline]
 >
-> COMMENT_UUID body [newline]
+> COMMENT_UUID timestamp body [newline]
 >
 > In case channel doesn't exist and
 >

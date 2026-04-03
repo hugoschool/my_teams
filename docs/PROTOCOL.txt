@@ -92,7 +92,7 @@ Table of Contents
      8.1.  Creating a thread . . . . . . . . . . . . . . . . . . . .  18
      8.2.  Retrieve information about a specific thread  . . . . . .  19
      8.3.  List all threads in a team  . . . . . . . . . . . . . . .  20
-   9.  Comment-related events  . . . . . . . . . . . . . . . . . . .  21
+   9.  Comment-related events (also called replies)  . . . . . . . .  21
      9.1.  Creating a comment  . . . . . . . . . . . . . . . . . . .  21
      9.2.  List all comments of a thread . . . . . . . . . . . . . .  22
    10. Received events . . . . . . . . . . . . . . . . . . . . . . .  23
@@ -1131,7 +1131,7 @@ Internet-Draft               MAICHE Protocol                  March 2026
    |  
    |  435 User isn't logged in.
 
-9.  Comment-related events
+9.  Comment-related events (also called replies)
 
 9.1.  Creating a comment
 
@@ -1163,7 +1163,7 @@ Internet-Draft               MAICHE Protocol                  March 2026
    |  
    |  200 Success.  [Ending sequence]
    |  
-   |  COMMENT_UUID body
+   |  COMMENT_UUID timestamp body
    |  
    |  In case channel doesn't exist and
    |  
@@ -1223,9 +1223,9 @@ Internet-Draft               MAICHE Protocol                  March 2026
    |  
    |  200 Success.  [Ending sequence]
    |  
-   |  COMMENT_UUID body [newline]
+   |  COMMENT_UUID timestamp body [newline]
    |  
-   |  COMMENT_UUID body [newline]
+   |  COMMENT_UUID timestamp body [newline]
 
 
 
@@ -1235,7 +1235,7 @@ Internet-Draft               MAICHE Protocol                  March 2026
 
 
    |  
-   |  COMMENT_UUID body [newline]
+   |  COMMENT_UUID timestamp body [newline]
    |  
    |  In case channel doesn't exist and
    |  
