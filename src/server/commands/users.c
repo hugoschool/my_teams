@@ -17,7 +17,7 @@ void command_users(server_t *server)
     WRITE_STATUS(*CLIENT->fd, 200);
     for (unsigned int i = 0; i < server->users->amount; i++) {
         user = USER_I(i);
-        // TODO: remove the hard coded status here
-        dprintf(*CLIENT->fd, "%s %s %d\n", user->username, user->uuid, 0);
+        dprintf(*CLIENT->fd, "%s %s %d\n", user->username, user->uuid,
+            user->status);
     }
 }

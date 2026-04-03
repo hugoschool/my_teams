@@ -22,6 +22,7 @@ static void send_client_left_message(server_t *server, user_data_t *user)
     }
 }
 
+// Client status is handled by client_quit function
 void command_logout(server_t *server)
 {
     user_data_t *user = CLIENT->user;

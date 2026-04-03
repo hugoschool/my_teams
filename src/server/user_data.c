@@ -22,6 +22,7 @@ user_data_t *user_data_init(char *uuid, char *username)
     }
     strncpy(data->uuid, uuid, UUID_STR_LEN);
     strncpy(data->username, username, MAX_NAME_LENGTH + 1);
+    data->status = true;
     return data;
 }
 

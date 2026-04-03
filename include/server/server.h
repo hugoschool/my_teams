@@ -54,6 +54,7 @@ int socket_init(in_port_t port);
 typedef struct {
     char uuid[UUID_STR_LEN];
     char username[MAX_NAME_LENGTH + 1];
+    bool status;
 } user_data_t;
 
 user_data_t *user_data_init(char *uuid, char *username);
