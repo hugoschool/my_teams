@@ -23,6 +23,16 @@ static void send_client_joined_message(server_t *server, user_data_t *user)
     }
 }
 
+static user_data_t *get_user(users_t *users, char *username)
+{
+    user_data_t *user = NULL;
+
+    user = users_get_from_username(users, username);
+    if (user == NULL)
+        user = users_add(users, username);
+    return user;
+}
+
 // TODO: not respecting protocol here, not sending:
 // USERNAME uuid status
 void command_login(server_t *server)
@@ -39,7 +49,7 @@ void command_login(server_t *server)
     username = get_arg(server->buffer, 1);
     if (username == NULL)
         return;
-    user = users_add(server->users, username);
+    user = get_user(server->users, username);
     if (user == NULL)
         return;
     client_set_user(CLIENT, user);
