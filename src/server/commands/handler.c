@@ -10,24 +10,27 @@
 #include "server/status.h"
 #include "utils.h"
 #include <stdbool.h>
+#include <stdlib.h>
 
-// TODO: better command matching, using this TEAM and TEAMS instructions collide.
 // Returns true if the command is valid and could stop the loop
-// TODO: correct args_amount handling
 static bool verify_command(server_t *server, int i)
 {
-    if (strcmp_start(server->buffer, cmds[i].command) == 0) {
+    char *command = get_arg(server->buffer, 0);
+
+    if (strncmp(command, cmds[i].command, strlen(command)) == 0) {
+        free(command);
         if (cmds[i].needs_auth == true && CLIENT->login_step == LOGGED_OUT) {
             WRITE_STATUS(*CLIENT->fd, 435);
             return true;
         }
-        if (cmds[i].args_amount != strccount(server->buffer, ' ')) {
+        if (cmds[i].args_amount != arg_amount(server->buffer) - 1) {
             WRITE_STATUS(*CLIENT->fd, 499);
             return true;
         }
         cmds[i].function(server);
         return true;
     }
+    free(command);
     return false;
 }
 
