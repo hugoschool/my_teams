@@ -17,7 +17,7 @@ static bool verify_command(server_t *server, int i)
 {
     char *command = get_arg(server->buffer, 0);
 
-    if (strncmp(command, cmds[i].command, strlen(command)) == 0) {
+    if (strncmp(command, cmds[i].command, strlen(cmds[i].command)) == 0) {
         free(command);
         if (cmds[i].needs_auth == true && CLIENT->login_step == LOGGED_OUT) {
             WRITE_STATUS(*CLIENT->fd, 435);
