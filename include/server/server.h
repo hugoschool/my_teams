@@ -171,6 +171,8 @@ typedef struct {
     int signal_fd;
     // Represents the current client index that is being handled.
     unsigned int index;
+    // Represents the current client's buffer being handled.
+    char *buffer;
 } server_t;
 
 bool teams_server(args_t *args);

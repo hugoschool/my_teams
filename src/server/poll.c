@@ -63,7 +63,8 @@ void client_handler(server_t *server)
             break;
         read_i++;
     }
-    commands_handler(server, buffer);
+    server->buffer = buffer;
+    commands_handler(server);
 }
 
 // server is ignored for now but will be useful later
