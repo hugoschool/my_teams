@@ -1,0 +1,6 @@
+MMARK	?=	mmark
+XML2RFC	?=	xml2rfc
+
+PROTOCOL.txt:	PROTOCOL.md
+	$(MMARK) PROTOCOL.md > PROTOCOL.xml
+	$(XML2RFC) PROTOCOL.xml

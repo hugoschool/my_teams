@@ -9,5 +9,8 @@ myteams_server
 .cache
 compile_commands.json
 
+# Documentation
+docs/*.xml
+
 # VSCode
 .vscode

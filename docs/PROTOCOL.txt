@@ -1,0 +1,1288 @@
+
+
+
+
+Network Working Group                                          M. MAICHE
+Internet-Draft                                             30 March 2026
+Intended status: Informational                                          
+Expires: 1 October 2026
+
+
+                            MAICHE Protocol
+                            draft-maiche-00
+
+Abstract
+
+   This document describes the protocol that will be in use for the
+   my_teams project.
+
+Status of This Memo
+
+   This Internet-Draft is submitted in full conformance with the
+   provisions of BCP 78 and BCP 79.
+
+   Internet-Drafts are working documents of the Internet Engineering
+   Task Force (IETF).  Note that other groups may also distribute
+   working documents as Internet-Drafts.  The list of current Internet-
+   Drafts is at https://datatracker.ietf.org/drafts/current/.
+
+   Internet-Drafts are draft documents valid for a maximum of six months
+   and may be updated, replaced, or obsoleted by other documents at any
+   time.  It is inappropriate to use Internet-Drafts as reference
+   material or to cite them other than as "work in progress."
+
+   This Internet-Draft will expire on 1 October 2026.
+
+Copyright Notice
+
+   Copyright (c) 2026 IETF Trust and the persons identified as the
+   document authors.  All rights reserved.
+
+   This document is subject to BCP 78 and the IETF Trust's Legal
+   Provisions Relating to IETF Documents (https://trustee.ietf.org/
+   license-info) in effect on the date of publication of this document.
+   Please review these documents carefully, as they describe your rights
+   and restrictions with respect to this document.  Code Components
+   extracted from this document must include Revised BSD License text as
+   described in Section 4.e of the Trust Legal Provisions and are
+   provided without warranty as described in the Revised BSD License.
+
+
+
+
+
+
+
+MAICHE                   Expires 1 October 2026                 [Page 1]
+
+Internet-Draft               MAICHE Protocol                  March 2026
+
+
+Table of Contents
+
+   1.  Introduction  . . . . . . . . . . . . . . . . . . . . . . . .   2
+   2.  Context . . . . . . . . . . . . . . . . . . . . . . . . . . .   3
+   3.  Ending sequence . . . . . . . . . . . . . . . . . . . . . . .   3
+     3.1.  Status codes  . . . . . . . . . . . . . . . . . . . . . .   3
+   4.  Client input  . . . . . . . . . . . . . . . . . . . . . . . .   4
+   5.  Server response . . . . . . . . . . . . . . . . . . . . . . .   4
+   6.  User-related events . . . . . . . . . . . . . . . . . . . . .   5
+     6.1.  Connection of a user  . . . . . . . . . . . . . . . . . .   5
+     6.2.  Disconnection of a user . . . . . . . . . . . . . . . . .   5
+     6.3.  Retrieve a list of all users  . . . . . . . . . . . . . .   6
+     6.4.  Retrieve information about a specific user  . . . . . . .   6
+     6.5.  Send a private message to a user  . . . . . . . . . . . .   7
+   7.  Team-related events . . . . . . . . . . . . . . . . . . . . .   8
+     7.1.  Creating a team . . . . . . . . . . . . . . . . . . . . .   8
+     7.2.  Retrieve a list of all teams  . . . . . . . . . . . . . .   9
+     7.3.  Retrieve information about a specific team  . . . . . . .   9
+     7.4.  Subscribe to a team . . . . . . . . . . . . . . . . . . .  10
+     7.5.  Unsubscribe from a team . . . . . . . . . . . . . . . . .  11
+     7.6.  List all teams the user is subscribed to  . . . . . . . .  12
+     7.7.  List all users subscribed to a team . . . . . . . . . . .  13
+   8.  Channel-related events  . . . . . . . . . . . . . . . . . . .  13
+     8.1.  Creating a channel  . . . . . . . . . . . . . . . . . . .  14
+     8.2.  Retrieve information about a specific channel . . . . . .  15
+     8.3.  List all channels in a team . . . . . . . . . . . . . . .  16
+   9.  Thread-related events . . . . . . . . . . . . . . . . . . . .  16
+     9.1.  Complementary information . . . . . . . . . . . . . . . .  16
+     9.2.  Creating a thread . . . . . . . . . . . . . . . . . . . .  17
+     9.3.  Retrieve information about a specific thread  . . . . . .  18
+     9.4.  List all threads in a team  . . . . . . . . . . . . . . .  19
+   10. Comment-related events  . . . . . . . . . . . . . . . . . . .  20
+     10.1.  Creating a comment . . . . . . . . . . . . . . . . . . .  20
+     10.2.  List all comments of a thread  . . . . . . . . . . . . .  21
+   11. Received events . . . . . . . . . . . . . . . . . . . . . . .  22
+     11.1.  Newly created team . . . . . . . . . . . . . . . . . . .  22
+     11.2.  Newly created channel  . . . . . . . . . . . . . . . . .  22
+     11.3.  Newly created thread . . . . . . . . . . . . . . . . . .  22
+     11.4.  Newly created comment  . . . . . . . . . . . . . . . . .  22
+     11.5.  Newly created private message  . . . . . . . . . . . . .  23
+     11.6.  User logged in . . . . . . . . . . . . . . . . . . . . .  23
+     11.7.  User logged out  . . . . . . . . . . . . . . . . . . . .  23
+
+1.  Introduction
+
+   The goal of the my_teams project is to create our CLI (client) and a
+   server.
+
+
+
+
+MAICHE                   Expires 1 October 2026                 [Page 2]
+
+Internet-Draft               MAICHE Protocol                  March 2026
+
+
+   For this, we must also create a protocol to handle the events between
+   the client and the server.
+
+2.  Context
+
+   According to the subject:
+
+   |  A collaborative communication application is a service able to
+   |  manage several communication teams, where discussion are organised
+   |  like following:
+   |  
+   |  *  threads (initial post and additional comments) in a specific
+   |     channel
+   |  *  discussion (personal messages)
+   |  
+   |  Here are the features intended to be implemented:
+   |  
+   |  *  Creating/Joining/Leaving a team
+   |  *  Creating a user
+   |  *  Creating a channel in a team
+   |  *  Creating a thread in a channel
+   |  *  Creating a comment in a thread
+   |  *  Saving & restoring users, teams, channels, threads & associated
+   |     comments
+   |  *  Personal discussion (from a user to an other)
+   |  *  Saving & restoring personal discussion
+
+3.  Ending sequence
+
+   All communications from the client and from the server must end with
+   an ending sequence.
+
+   In our case, the chosen ending sequence is CRLF, Carriage Return Line
+   Feed (\r\n).
+
+3.1.  Status codes
+
+   A typical status code response is:
+
+   |  [3 number code] [message]
+
+   What is given here is an example of a message, it can be modified.
+
+   But the 3 number code must be accurate.
+
+   Only the initial login acknowledgment is 5 numbers.
+
+   All status codes, classed by category:
+
+
+
+MAICHE                   Expires 1 October 2026                 [Page 3]
+
+Internet-Draft               MAICHE Protocol                  March 2026
+
+
+   Initial login acknowledgment:
+
+   *  25120 MAICHE Protocol initialized.
+
+   Success:
+
+   *  200 Success.
+   *  250 User logged in.
+   *  251 User logged out.
+
+   User failure:
+
+   *  430 User already logged in.
+   *  435 User isn't logged in.
+   *  440 Already exists.
+   *  450 User already subscribed to this team.
+   *  451 User isn't subscribed to this team.
+   *  460 Given parameter is invalid.  (Probably invalid UUID)
+   *  499 Badly formed request.
+
+   Server failure:
+
+   *  500 Server failure.
+
+4.  Client input
+
+   A client must send the message with a valid command and an ending
+   sequence.
+
+   An input from the client must be formatted as such (without the
+   brackets, of course):
+
+   |  [Command] [Args...] [Ending sequence]
+
+   If the given input is invalid, the server shall respond with a 499
+   status code.
+
+5.  Server response
+
+   The server should always respond to the client, whether the input is
+   valid or not.
+
+   All responses from the server must be formatted as such (without the
+   brackets, of course):
+
+   |  [Status code] [Message] [Ending sequence]
+
+
+
+
+
+MAICHE                   Expires 1 October 2026                 [Page 4]
+
+Internet-Draft               MAICHE Protocol                  March 2026
+
+
+6.  User-related events
+
+6.1.  Connection of a user
+
+   On the client, connecting as a user is done via the /login command
+   and does not require authentication using a password.
+
+   Citing the subject:
+
+   |  There is no password authentication required for this subject but
+   |  you should always develop with security in mind.
+
+   Connecting as a user should be done using the LOGIN username command.
+
+   A user can only be logged in once.  You cannot login as the same user
+   in another window.
+
+   If the username doesn't exist on the server, the server must add the
+   user to its database and associate it with a newly created UUID.
+
+   Example:
+
+   |  LOGIN username
+   |  
+   |  250 User logged in.  [Ending sequence]
+   |  
+   |  USERNAME uuid 1
+   |  
+   |  In case user is already logged in:
+   |  
+   |  LOGIN username
+   |  
+   |  430 User already logged in.
+
+6.2.  Disconnection of a user
+
+   A user can disconnect from the server using the /logout command on
+   the client.
+
+   On the server, disconnecting from the server is done using the LOGOUT
+   command.
+
+   This command can error out in case the user isn't logged in.
+
+   Example:
+
+   |  LOGOUT
+   |  
+
+
+
+MAICHE                   Expires 1 October 2026                 [Page 5]
+
+Internet-Draft               MAICHE Protocol                  March 2026
+
+
+   |  251 User logged out.
+   |  
+   |  In case user isn't logged in:
+   |  
+   |  LOGOUT
+   |  
+   |  435 User isn't logged in.
+
+6.3.  Retrieve a list of all users
+
+   A user can request a list of all the user with their usernames and
+   matching UUIDs.
+
+   On the client, this is the /users command.
+
+   This is done using the USERS command.
+
+   What is returned is a list of all the users with their usernames,
+   their UUIDs and their status.
+
+   Their status is 0 if logged out and 1 if logged in.
+
+   This command can error out in case the user isn't logged in.
+
+   Example:
+
+   |  USERS
+   |  
+   |  200 Success.  [Ending sequence]
+   |  
+   |  USERNAME uuid 0 [newline]
+   |  
+   |  USERNAME uuid 1 [newline]
+   |  
+   |  USERNAME uuid 0 [newline]
+   |  
+   |  In case user isn't logged in:
+   |  
+   |  USERS
+   |  
+   |  435 User isn't logged in.
+
+6.4.  Retrieve information about a specific user
+
+   A user can request information about a specific user given its UUID.
+
+   On the client, this is the /user [uuid] command.
+
+
+
+
+MAICHE                   Expires 1 October 2026                 [Page 6]
+
+Internet-Draft               MAICHE Protocol                  March 2026
+
+
+   This is done using the USER uuid command.
+
+   What is returned is the users username, uuid and status.
+
+   Their status is 0 if logged out and 1 if logged in.
+
+   This command can error out in case
+
+   *  the user doesn't exist
+
+   *  the user isn't logged in.
+
+   Example:
+
+   |  USER [uuid]
+   |  
+   |  200 Success.  [Ending sequence]
+   |  
+   |  USERNAME uuid 0 [newline]
+   |  
+   |  In case user doesn't exist:
+   |  
+   |  USER [uuid]
+   |  
+   |  460 Given parameter is invalid.
+   |  
+   |  In case user isn't logged in:
+   |  
+   |  USER [UUID]
+   |  
+   |  435 User isn't logged in.
+
+6.5.  Send a private message to a user
+
+   A user can send a private message to another user.
+
+   On the client, this is the /send [user_uuid] [message_body] command.
+
+   This is done using the SEND_USER [uuid] [body] command.
+
+   What is returned is a status code.
+
+   This command can error out in case
+
+   *  the user doesn't exist
+
+   *  the user isn't logged in.
+
+
+
+
+MAICHE                   Expires 1 October 2026                 [Page 7]
+
+Internet-Draft               MAICHE Protocol                  March 2026
+
+
+   Example:
+
+   |  SEND_USER [uuid] [body]
+   |  
+   |  200 Success.
+   |  
+   |  In case user doesn't exist:
+   |  
+   |  SEND_USER [uuid] [body]
+   |  
+   |  460 Given parameter is invalid.
+   |  
+   |  In case user isn't logged in:
+   |  
+   |  SEND_USER [uuid] [body]
+   |  
+   |  435 User isn't logged in.
+
+7.  Team-related events
+
+7.1.  Creating a team
+
+   A user can create a team given a name and a description.
+
+   On the client, this is the /create [team_name] [team_description]
+   command.
+
+   This is done using the CREATE_TEAM [name] [description] command.
+
+   What is returned is only a 200 status code.
+
+   This command can error out in case
+
+   *  the team name already exists
+
+   *  the user isn't logged in.
+
+   Example:
+
+   |  CREATE_TEAM [name] [description]
+   |  
+   |  200 Success.  [Ending sequence]
+   |  
+   |  TEAM_NAME uuid description
+   |  
+   |  In case team name is already taken:
+   |  
+   |  CREATE_TEAM [name] [description]
+
+
+
+MAICHE                   Expires 1 October 2026                 [Page 8]
+
+Internet-Draft               MAICHE Protocol                  March 2026
+
+
+   |  
+   |  440 Already exists.
+   |  
+   |  In case user isn't logged in:
+   |  
+   |  CREATE_TEAM [name] [description]
+   |  
+   |  435 User isn't logged in.
+
+7.2.  Retrieve a list of all teams
+
+   A user can ask to list all teams.
+
+   On the client, this is the /list command whilst not inside a /use
+   context.
+
+   This is done using the TEAMS command.
+
+   What is returned is a 200 status code followed by each teams name,
+   uuid and description.
+
+   This command can error out in case the user isn't logged in.
+
+   Example:
+
+   |  TEAMS
+   |  
+   |  200 Success.  [Ending sequence]
+   |  
+   |  TEAM_NAME uuid description [newline]
+   |  
+   |  TEAM_NAME uuid description [newline]
+   |  
+   |  TEAM_NAME uuid description [newline]
+   |  
+   |  In case user isn't logged in:
+   |  
+   |  TEAMS
+   |  
+   |  435 User isn't logged in.
+
+7.3.  Retrieve information about a specific team
+
+   A user can request information about a specific team given its UUID.
+
+   On the client, this is the /info command whilst inside a /use
+   [team_uuid] context.
+
+
+
+
+MAICHE                   Expires 1 October 2026                 [Page 9]
+
+Internet-Draft               MAICHE Protocol                  March 2026
+
+
+   This is done using the TEAM uuid command.
+
+   What is returned is a 200 status code followed by the teams name,
+   uuid and description.
+
+   This command can error out in case:
+
+   *  the team doesn't exist
+
+   *  the user isn't logged in.
+
+   Example:
+
+   |  TEAM uuid
+   |  
+   |  200 Success.  [Ending sequence]
+   |  
+   |  TEAM_NAME uuid description [newline]
+   |  
+   |  In case the team doesn't exist
+   |  
+   |  TEAM uuid
+   |  
+   |  460 Given parameter is invalid.
+   |  
+   |  In case user isn't logged in:
+   |  
+   |  TEAM uuid
+   |  
+   |  435 User isn't logged in.
+
+7.4.  Subscribe to a team
+
+   A user can subscribe to a team.
+
+   On the client, this is the /subscribe [team_uuid].
+
+   This is done using the SUBSCRIBE_TEAM uuid command.
+
+   What is returned is a 200 status code.
+
+   This command can error out in case:
+
+   *  the team doesn't exist
+
+   *  the user isn't logged in
+
+   *  if the user is already subscribed to a team
+
+
+
+MAICHE                   Expires 1 October 2026                [Page 10]
+
+Internet-Draft               MAICHE Protocol                  March 2026
+
+
+   Example:
+
+   |  SUBSCRIBE_TEAM uuid
+   |  
+   |  200 Success.
+   |  
+   |  In case team doesn't exist:
+   |  
+   |  SUBSCRIBE_TEAM uuid
+   |  
+   |  460 Given parameter is invalid.
+   |  
+   |  In case user isn't logged in:
+   |  
+   |  SUBSCRIBE_TEAM uuid
+   |  
+   |  435 User isn't logged in.
+   |  
+   |  In case user is already subscribed to this team:
+   |  
+   |  SUBSCRIBE_TEAM uuid
+   |  
+   |  450 User is already subscribed to this team.
+
+7.5.  Unsubscribe from a team
+
+   Similar to subscribing, a user can unsubscribe from a team.
+
+   On the client, this is the /unsubscribe [team_uuid].
+
+   This is done using the UNSUBSCRIBE_TEAM uuid command.
+
+   What is returned is a 200 status code.
+
+   This command can error out in case:
+
+   *  the team doesn't exist
+
+   *  the user isn't logged in
+
+   *  the user isn't subscribed to a team
+
+   Example:
+
+   |  UNSUBSCRIBE_TEAM uuid
+   |  
+   |  200 Success.
+   |  
+
+
+
+MAICHE                   Expires 1 October 2026                [Page 11]
+
+Internet-Draft               MAICHE Protocol                  March 2026
+
+
+   |  In case the team doesn't exist:
+   |  
+   |  UNSUBSCRIBE_TEAM uuid
+   |  
+   |  460 Given parameter is invalid.
+   |  
+   |  In case user isn't logged in:
+   |  
+   |  UNSUBSCRIBE_TEAM uuid
+   |  
+   |  435 User isn't logged in.
+   |  
+   |  In case user isn't subscribed to this team:
+   |  
+   |  UNSUBSCRIBE_TEAM uuid
+   |  
+   |  451 User isn't subscribed to this team.
+
+7.6.  List all teams the user is subscribed to
+
+   A user can request a list of all teams it is subscribed to.
+
+   On the client, this is the /subscribed command.
+
+   This is done using the SUBSCRIBED command.
+
+   What is returned is a list of teams the user is subscribed to
+   including their names, uuid and description.
+
+   Their status is 0 if logged out and 1 if logged in.
+
+   This command can error out in case the user isn't logged in.
+
+   Example:
+
+   |  SUBSCRIBED
+   |  
+   |  200 Success.  [Ending sequence]
+   |  
+   |  TEAM_NAME uuid description [newline]
+   |  
+   |  TEAM_NAME uuid description [newline]
+   |  
+   |  TEAM_NAME uuid description [newline]
+   |  
+   |  In case user isn't logged in:
+   |  
+   |  SUBSCRIBED
+
+
+
+MAICHE                   Expires 1 October 2026                [Page 12]
+
+Internet-Draft               MAICHE Protocol                  March 2026
+
+
+   |  
+   |  435 User isn't logged in.
+
+7.7.  List all users subscribed to a team
+
+   A user can see which users are subscribed to a team.
+
+   On the client, this is the /subscribed [team_uuid].
+
+   This is done using the LIST_SUBSCRIBED_USERS uuid command.
+
+   What is returned is a 200 status code followed by a list of users and
+   their status.
+
+   This command can error out in case:
+
+   *  the team doesn't exist
+
+   *  the user isn't logged in
+
+   Example:
+
+   |  LIST_SUBSCRIBED_USERS uuid
+   |  
+   |  200 Success.  [Ending sequence]
+   |  
+   |  USERNAME uuid 0
+   |  
+   |  In case team doesn't exist:
+   |  
+   |  LIST_SUBSCRIBED_USERS uuid
+   |  
+   |  460 Given parameter is invalid.
+   |  
+   |  In case user isn't logged in:
+   |  
+   |  LIST_SUBSCRIBED_USERS uuid
+   |  
+   |  USERNAME uuid 0 [newline]
+   |  
+   |  USERNAME uuid 1 [newline]
+   |  
+   |  USERNAME uuid 0 [newline]
+   |  
+   |  435 User isn't logged in.
+
+8.  Channel-related events
+
+
+
+
+MAICHE                   Expires 1 October 2026                [Page 13]
+
+Internet-Draft               MAICHE Protocol                  March 2026
+
+
+8.1.  Creating a channel
+
+   A user can create a channel given a name and a description.
+
+   On the client, this is the /create [channel_name]
+   [channel_description] command whilst in a /use [team_uuid] context.
+
+   This is done using the CREATE_CHANNEL [team_uuid] [name]
+   [description] command.
+
+   What is returned is only a 200 status code.
+
+   This command can error out in case:
+
+   *  the team does not exist
+
+   *  the channel name already exists
+
+   *  the user isn't logged in.
+
+   Example:
+
+   |  CREATE_CHANNEL [team_uuid] [name] [description]
+   |  
+   |  200 Success.  [Ending sequence]
+   |  
+   |  CHANNEL_NAME uuid description
+   |  
+   |  In case team doesn't exist:
+   |  
+   |  CREATE_CHANNEL [team_uuid] [name] [description]
+   |  
+   |  460 Given parameter is invalid.
+   |  
+   |  In case channel name already exists:
+   |  
+   |  CREATE_CHANNEL [team_uuid] [name] [description]
+   |  
+   |  440 Already exists.
+   |  
+   |  In case user isn't logged in:
+   |  
+   |  CREATE_CHANNEL [team_uuid] [name] [description]
+   |  
+   |  435 User isn't logged in.
+
+
+
+
+
+
+MAICHE                   Expires 1 October 2026                [Page 14]
+
+Internet-Draft               MAICHE Protocol                  March 2026
+
+
+8.2.  Retrieve information about a specific channel
+
+   A user can request information about a specific channel given its
+   UUID and the teams uuid.
+
+   On the client, this is the /info command whilst inside a /use
+   [team_uuid] [channel_uuid] context.
+
+   This is done using the CHANNEL team_uuid uuid command.
+
+   What is returned is a 200 status code followed by the channels name,
+   uuid and description.
+
+   This command can error out in case:
+
+   *  the team doesn't exist
+
+   *  the channel doesn't exist
+
+   *  the user isn't logged in.
+
+   Example:
+
+   |  CHANNEL team_uuid uuid
+   |  
+   |  200 Success.  [Ending sequence]
+   |  
+   |  CHANNEL_NAME uuid description [newline]
+   |  
+   |  CHANNEL_NAME uuid description [newline]
+   |  
+   |  CHANNEL_NAME uuid description [newline]
+   |  
+   |  In case the team doesn't exist and
+   |  
+   |  In case the channel doesn't exist
+   |  
+   |  CHANNEL team_uuid uuid
+   |  
+   |  460 Given parameter is invalid.
+   |  
+   |  In case user isn't logged in:
+   |  
+   |  CHANNEL team_uuid uuid
+   |  
+   |  435 User isn't logged in.
+
+
+
+
+
+MAICHE                   Expires 1 October 2026                [Page 15]
+
+Internet-Draft               MAICHE Protocol                  March 2026
+
+
+8.3.  List all channels in a team
+
+   A user can list all channels in a team.
+
+   On the client, this is the /list command whilst in a /use [team_uuid]
+   context.
+
+   This is done using the CHANNELS [team_uuid] command.
+
+   What is returned is only a 200 status code.
+
+   This command can error out in case:
+
+   *  the team does not exist
+
+   *  the user isn't logged in.
+
+   Example:
+
+   |  CHANNELS [team_uuid]
+   |  
+   |  200 Success.  [Ending sequence]
+   |  
+   |  CHANNEL_NAME uuid description
+   |  
+   |  CHANNEL_NAME uuid description
+   |  
+   |  CHANNEL_NAME uuid description
+   |  
+   |  In case team doesn't exist:
+   |  
+   |  CHANNELS [team_uuid]
+   |  
+   |  460 Given parameter is invalid.
+   |  
+   |  In case user isn't logged in:
+   |  
+   |  CHANNELS [team_uuid]
+   |  
+   |  435 User isn't logged in.
+
+9.  Thread-related events
+
+9.1.  Complementary information
+
+   All timestamps must be UNIX timestamps (time_t in C).
+
+
+
+
+
+MAICHE                   Expires 1 October 2026                [Page 16]
+
+Internet-Draft               MAICHE Protocol                  March 2026
+
+
+9.2.  Creating a thread
+
+   A user can create a thread given a title and a message.
+
+   On the client, this is the /create [thread_title] [thread_message]
+   command whilst in a /use [team_uuid] [channel_uuid] context.
+
+   This is done using the CREATE_THREAD [team_uuid] [channel_uuid]
+   [title] [message] command.
+
+   What is returned is only a 200 status code.
+
+   This command can error out in case:
+
+   *  the team does not exist
+
+   *  the channel does not exist
+
+   *  the thread title already exists
+
+   *  the user is not subscribed to the team
+
+   *  the user isn't logged in.
+
+   Example:
+
+   |  CREATE_THREAD [team_uuid] [channel_uuid] [title] [message]
+   |  
+   |  200 Success.  [Ending sequence]
+   |  
+   |  THREAD_TITLE uuid message timestamp
+   |  
+   |  In case channel doesn't exist and
+   |  
+   |  In case team doesn't exist:
+   |  
+   |  CREATE_THREAD [team_uuid] [channel_uuid] [title] [message]
+   |  
+   |  460 Given parameter is invalid.
+   |  
+   |  In case thread title already exists:
+   |  
+   |  CREATE_THREAD [team_uuid] [channel_uuid] [title] [message]
+   |  
+   |  440 Already exists.
+   |  
+   |  In case user isn't subscribed to the team:
+   |  
+
+
+
+MAICHE                   Expires 1 October 2026                [Page 17]
+
+Internet-Draft               MAICHE Protocol                  March 2026
+
+
+   |  CREATE_THREAD [team_uuid] [channel_uuid] [title] [message]
+   |  
+   |  451 User isn't subscribed to this team.
+   |  
+   |  In case user isn't logged in:
+   |  
+   |  CREATE_THREAD [team_uuid] [channel_uuid] [title] [message]
+   |  
+   |  435 User isn't logged in.
+
+9.3.  Retrieve information about a specific thread
+
+   A user can request information about a specific channel given its
+   UUID and the teams uuid.
+
+   On the client, this is the /info command whilst inside a /use
+   [team_uuid] [channel_uuid] [thread_uuid] context.
+
+   This is done using the THREAD team_uuid channel_uuid thread_uuid
+   command.
+
+   What is returned is a 200 status code followed by the threads title,
+   uuid and message.
+
+   This command can error out in case:
+
+   *  the team doesn't exist
+
+   *  the channel doesn't exist
+
+   *  the thread doesn't exist
+
+   *  the user isn't logged in.
+
+   Example:
+
+   |  THREAD team_uuid channel_uuid thread_uuid
+   |  
+   |  200 Success.  [Ending sequence]
+   |  
+   |  THREAD_TITLE uuid message timestamp [newline]
+   |  
+   |  In case the team doesn't exist and
+   |  
+   |  In case the channel doesn't exist and
+   |  
+   |  In case the thread doesn't exist
+   |  
+
+
+
+MAICHE                   Expires 1 October 2026                [Page 18]
+
+Internet-Draft               MAICHE Protocol                  March 2026
+
+
+   |  THREAD team_uuid channel_uuid thread_uuid
+   |  
+   |  460 Given parameter is invalid.
+   |  
+   |  In case user isn't logged in:
+   |  
+   |  THREAD team_uuid channel_uuid thread_uuid
+   |  
+   |  435 User isn't logged in.
+
+9.4.  List all threads in a team
+
+   A user can list all threads in a team.
+
+   On the client, this is the /list command whilst in a /use [team_uuid]
+   [channel_uuid] context.
+
+   This is done using the THREADS [team_uuid] [channel_uuid] command.
+
+   What is returned is only a 200 status code.
+
+   This command can error out in case:
+
+   *  the team does not exist
+
+   *  the channel does not exist
+
+   *  the user isn't logged in.
+
+   Example:
+
+   |  THREADS [team_uuid] [CHANNEL_UUID]
+   |  
+   |  200 Success.  [Ending sequence]
+   |  
+   |  THREAD_TITLE uuid message timestamp
+   |  
+   |  THREAD_TITLE uuid message timestamp
+   |  
+   |  THREAD_TITLE uuid message timestamp
+   |  
+   |  In case team doesn't exist and
+   |  
+   |  In case channel does not exist
+   |  
+   |  THREADS [team_uuid] [CHANNEL_UUID]
+   |  
+   |  460 Given parameter is invalid.
+
+
+
+MAICHE                   Expires 1 October 2026                [Page 19]
+
+Internet-Draft               MAICHE Protocol                  March 2026
+
+
+   |  
+   |  In case user isn't logged in:
+   |  
+   |  THREADS [team_uuid] [CHANNEL_UUID]
+   |  
+   |  435 User isn't logged in.
+
+10.  Comment-related events
+
+10.1.  Creating a comment
+
+   A user can create a comment with a message.
+
+   On the client, this is the /create [comment_body] command whilst in a
+   /use [team_uuid] [channel_uuid] [thread_uuid] context.
+
+   This is done using the CREATE_COMMENT [team_uuid] [channel_uuid]
+   [thread_uuid] [body] command.
+
+   What is returned is only a 200 status code.
+
+   This command can error out in case:
+
+   *  the team does not exist
+
+   *  the channel does not exist
+
+   *  the thread does not exist
+
+   *  the user is not subscribed to the team
+
+   *  the user isn't logged in.
+
+   Example:
+
+   |  CREATE_COMMENT [team_uuid] [channel_uuid] [thread_uuid] [body]
+   |  
+   |  200 Success.  [Ending sequence]
+   |  
+   |  COMMENT_UUID body
+   |  
+   |  In case channel doesn't exist and
+   |  
+   |  In case team doesn't exist and
+   |  
+   |  In case thread doesn't exist
+   |  
+   |  CREATE_COMMENT [team_uuid] [channel_uuid] [thread_uuid] [body]
+
+
+
+MAICHE                   Expires 1 October 2026                [Page 20]
+
+Internet-Draft               MAICHE Protocol                  March 2026
+
+
+   |  
+   |  460 Given parameter is invalid.
+   |  
+   |  In case user isn't subscribed to this team:
+   |  
+   |  CREATE_COMMENT [team_uuid] [channel_uuid] [thread_uuid] [body]
+   |  
+   |  451 User isn't subscribed to this team.
+   |  
+   |  In case user isn't logged in:
+   |  
+   |  CREATE_COMMENT [team_uuid] [channel_uuid] [thread_uuid] [body]
+   |  
+   |  435 User isn't logged in.
+
+10.2.  List all comments of a thread
+
+   A user can list all comments of a thread.
+
+   On the client, this is the /list command whilst in a /use [team_uuid]
+   [channel_uuid] [thread_uuid] context.
+
+   This is done using the COMMENTS [team_uuid] [channel_uuid]
+   [thread_uuid] command.
+
+   What is returned is only a 200 status code.
+
+   This command can error out in case:
+
+   *  the team does not exist
+
+   *  the channel does not exist
+
+   *  the thread does not exist
+
+   *  the user isn't logged in.
+
+   Example:
+
+   |  COMMENTS [team_uuid] [channel_uuid] [thread_uuid]
+   |  
+   |  200 Success.  [Ending sequence]
+   |  
+   |  COMMENT_UUID body [newline]
+   |  
+   |  COMMENT_UUID body [newline]
+   |  
+   |  COMMENT_UUID body [newline]
+
+
+
+MAICHE                   Expires 1 October 2026                [Page 21]
+
+Internet-Draft               MAICHE Protocol                  March 2026
+
+
+   |  
+   |  In case channel doesn't exist and
+   |  
+   |  In case team doesn't exist and
+   |  
+   |  In case thread doesn't exist
+   |  
+   |  COMMENTS [team_uuid] [channel_uuid] [thread_uuid]
+   |  
+   |  460 Given parameter is invalid.
+   |  
+   |  In case user isn't logged in:
+   |  
+   |  COMMENTS [team_uuid] [channel_uuid] [thread_uuid]
+   |  
+   |  435 User isn't logged in.
+
+11.  Received events
+
+   Received events are events that can be received anytime for all
+   clients depending on conditions.
+
+11.1.  Newly created team
+
+   If a new team has been created, a message is sent to all clients.
+
+   The message is NEW_TEAM [team_uuid] [team_name] [team_description].
+
+11.2.  Newly created channel
+
+   If a new channel has been created, a message is sent to all clients
+   that are subscribed to the related team.
+
+   The message is NEW_CHANNEL [channel_uuid] [channel_name]
+   [channel_description].
+
+11.3.  Newly created thread
+
+   If a new thread has been created, a message is sent to all clients
+   that are subscribed to the related team.
+
+   The message is NEW_THREAD [thread_uuid] [thread_title] [thread_body]
+   [thread_timestamp].
+
+11.4.  Newly created comment
+
+   If a new comment has been created, a message is sent to all clients
+   that are subscribed to the related team.
+
+
+
+MAICHE                   Expires 1 October 2026                [Page 22]
+
+Internet-Draft               MAICHE Protocol                  March 2026
+
+
+   The message is NEW_COMMENT [team_uuid] [thread_uuid] [user_uuid]
+   [comment_body].
+
+11.5.  Newly created private message
+
+   If a new private message has been sent by a user to another user, a
+   message is sent to the user receiving the message.
+
+   The message is NEW_MESSAGE [user_uuid] [message_body]
+
+11.6.  User logged in
+
+   When a user logged in, a message is sent to every other client.
+
+   The message is CLIENT_JOINED [user_uuid] [user_name]
+
+11.7.  User logged out
+
+   When a user logged out, a message is sent to every other client.
+
+   The message is CLIENT_LEFT [user_uuid] [user_name]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+MAICHE                   Expires 1 October 2026                [Page 23]

@@ -1,0 +1,935 @@
+%%%
+Title = "MAICHE Protocol"
+area = "Internet"
+workgroup = "Network Working Group"
+date = 2026-03-30T00:00:00Z
+
+[seriesInfo]
+name = "Internet-Draft"
+value = "draft-maiche-00"
+stream = "IETF"
+status = "informational"
+
+[[author]]
+initials="M."
+surname="MAICHE"
+fullname="MAICHE FAN CLUB"
+%%%
+
+.# Abstract
+
+This document describes the protocol that will be in use for the `my_teams` project.
+
+{mainmatter}
+
+# Introduction
+
+The goal of the `my_teams` project is to create our CLI (client) and a server.
+
+For this, we must also create a protocol to handle the events between the client and the server.
+
+# Context
+
+According to the subject:
+
+> A collaborative communication application is a service able to manage several communication teams, where discussion are organised like following:
+>
+> - threads (initial post and additional comments) in a specific channel
+> - discussion (personal messages)
+>
+> Here are the features intended to be implemented:
+>
+> - Creating/Joining/Leaving a team
+> - Creating a user
+> - Creating a channel in a team
+> - Creating a thread in a channel
+> - Creating a comment in a thread
+> - Saving & restoring users, teams, channels, threads & associated comments
+> - Personal discussion (from a user to an other)
+> - Saving & restoring personal discussion
+
+# Ending sequence
+
+All communications from the client and from the server must end with an ending sequence.
+
+In our case, the chosen ending sequence is CRLF, Carriage Return Line Feed (`\r\n`).
+
+## Status codes
+
+A typical status code response is:
+
+> [3 number code] [message]
+
+What is given here is an example of a message, it can be modified.
+
+But the 3 number code must be accurate.
+
+Only the initial login acknowledgment is 5 numbers.
+
+All status codes, classed by category:
+
+Initial login acknowledgment:
+
+- 25120 MAICHE Protocol initialized.
+
+Success:
+
+- 200 Success.
+- 250 User logged in.
+- 251 User logged out.
+
+User failure:
+
+- 430 User already logged in.
+- 435 User isn't logged in.
+- 440 Already exists.
+- 450 User already subscribed to this team.
+- 451 User isn't subscribed to this team.
+- 460 Given parameter is invalid. (Probably invalid UUID)
+- 499 Badly formed request.
+
+Server failure:
+
+- 500 Server failure.
+
+# Client input
+
+A client must send the message with a valid command and an ending sequence.
+
+An input from the client must be formatted as such (without the brackets, of course):
+
+> [Command] [Args...] [Ending sequence]
+
+If the given input is invalid, the server shall respond with a 499 status code.
+
+# Server response
+
+The server should always respond to the client, whether the input is valid or not.
+
+All responses from the server must be formatted as such (without the brackets, of course):
+
+> [Status code] [Message] [Ending sequence]
+
+# User-related events
+
+## Connection of a user
+
+On the client, connecting as a user is done via the `/login` command and does not require authentication using a password.
+
+Citing the subject:
+
+> There is no password authentication required for this subject but you should always develop with security in mind.
+
+Connecting as a user should be done using the `LOGIN username` command.
+
+A user can only be logged in once. You cannot login as the same user in another window.
+
+If the username doesn't exist on the server, the server must add the user to its database and associate it with a newly created UUID.
+
+Example:
+> LOGIN username
+>
+> 250 User logged in. [Ending sequence]
+>
+> USERNAME uuid 1
+>
+> In case user is already logged in:
+>
+> LOGIN username
+>
+> 430 User already logged in.
+
+## Disconnection of a user
+
+A user can disconnect from the server using the `/logout` command on the client.
+
+On the server, disconnecting from the server is done using the `LOGOUT` command.
+
+This command can error out in case the user isn't logged in.
+
+Example:
+> LOGOUT
+>
+> 251 User logged out.
+>
+> In case user isn't logged in:
+>
+> LOGOUT
+>
+> 435 User isn't logged in.
+
+## Retrieve a list of all users
+
+A user can request a list of all the user with their usernames and matching UUIDs.
+
+On the client, this is the `/users` command.
+
+This is done using the `USERS` command.
+
+What is returned is a list of all the users with their usernames, their UUIDs and their status.
+
+Their status is 0 if logged out and 1 if logged in.
+
+This command can error out in case the user isn't logged in.
+
+Example:
+> USERS
+>
+> 200 Success. [Ending sequence]
+>
+> USERNAME uuid 0 [newline]
+>
+> USERNAME uuid 1 [newline]
+>
+> USERNAME uuid 0 [newline]
+>
+> In case user isn't logged in:
+>
+> USERS
+>
+> 435 User isn't logged in.
+
+## Retrieve information about a specific user
+
+A user can request information about a specific user given its UUID.
+
+On the client, this is the `/user [uuid]` command.
+
+This is done using the `USER uuid` command.
+
+What is returned is the users username, uuid and status.
+
+Their status is 0 if logged out and 1 if logged in.
+
+This command can error out in case
+
+- the user doesn't exist
+
+- the user isn't logged in.
+
+Example:
+> USER [uuid]
+>
+> 200 Success. [Ending sequence]
+>
+> USERNAME uuid 0 [newline]
+>
+> In case user doesn't exist:
+>
+> USER [uuid]
+>
+> 460 Given parameter is invalid.
+>
+> In case user isn't logged in:
+>
+> USER [UUID]
+>
+> 435 User isn't logged in.
+
+## Send a private message to a user
+
+A user can send a private message to another user.
+
+On the client, this is the `/send [user_uuid] [message_body]` command.
+
+This is done using the `SEND_USER [uuid] [body]` command.
+
+What is returned is a status code.
+
+This command can error out in case
+
+- the user doesn't exist
+
+- the user isn't logged in.
+
+Example:
+> SEND_USER [uuid] [body]
+>
+> 200 Success.
+>
+> In case user doesn't exist:
+>
+> SEND_USER [uuid] [body]
+>
+> 460 Given parameter is invalid.
+>
+> In case user isn't logged in:
+>
+> SEND_USER [uuid] [body]
+>
+> 435 User isn't logged in.
+
+# Team-related events
+
+## Creating a team
+
+A user can create a team given a name and a description.
+
+On the client, this is the `/create [team_name] [team_description]` command.
+
+This is done using the `CREATE_TEAM [name] [description]` command.
+
+What is returned is only a 200 status code.
+
+This command can error out in case
+
+- the team name already exists
+
+- the user isn't logged in.
+
+Example:
+> CREATE_TEAM [name] [description]
+>
+> 200 Success. [Ending sequence]
+>
+> TEAM_NAME uuid description
+>
+> In case team name is already taken:
+>
+> CREATE_TEAM [name] [description]
+>
+> 440 Already exists.
+>
+> In case user isn't logged in:
+>
+> CREATE_TEAM [name] [description]
+>
+> 435 User isn't logged in.
+
+## Retrieve a list of all teams
+
+A user can ask to list all teams.
+
+On the client, this is the `/list` command whilst not inside a `/use` context.
+
+This is done using the `TEAMS` command.
+
+What is returned is a 200 status code followed by each teams name, uuid and description.
+
+This command can error out in case the user isn't logged in.
+
+Example:
+> TEAMS
+>
+> 200 Success. [Ending sequence]
+>
+> TEAM_NAME uuid description [newline]
+>
+> TEAM_NAME uuid description [newline]
+>
+> TEAM_NAME uuid description [newline]
+>
+> In case user isn't logged in:
+>
+> TEAMS
+>
+> 435 User isn't logged in.
+
+## Retrieve information about a specific team
+
+A user can request information about a specific team given its UUID.
+
+On the client, this is the `/info` command whilst inside a `/use [team_uuid]` context.
+
+This is done using the `TEAM uuid` command.
+
+What is returned is a 200 status code followed by the teams name, uuid and description.
+
+This command can error out in case:
+
+- the team doesn't exist
+
+- the user isn't logged in.
+
+Example:
+> TEAM uuid
+>
+> 200 Success. [Ending sequence]
+>
+> TEAM_NAME uuid description [newline]
+>
+> In case the team doesn't exist
+>
+> TEAM uuid
+>
+> 460 Given parameter is invalid.
+>
+> In case user isn't logged in:
+>
+> TEAM uuid
+>
+> 435 User isn't logged in.
+
+## Subscribe to a team
+
+A user can subscribe to a team.
+
+On the client, this is the `/subscribe [team_uuid]`.
+
+This is done using the `SUBSCRIBE_TEAM uuid` command.
+
+What is returned is a 200 status code.
+
+This command can error out in case:
+
+- the team doesn't exist
+
+- the user isn't logged in
+
+- if the user is already subscribed to a team
+
+Example:
+> SUBSCRIBE_TEAM uuid
+>
+> 200 Success.
+>
+> In case team doesn't exist:
+>
+> SUBSCRIBE_TEAM uuid
+>
+> 460 Given parameter is invalid.
+>
+> In case user isn't logged in:
+>
+> SUBSCRIBE_TEAM uuid
+>
+> 435 User isn't logged in.
+>
+> In case user is already subscribed to this team:
+>
+> SUBSCRIBE_TEAM uuid
+>
+> 450 User is already subscribed to this team.
+
+## Unsubscribe from a team
+
+Similar to subscribing, a user can unsubscribe from a team.
+
+On the client, this is the `/unsubscribe [team_uuid]`.
+
+This is done using the `UNSUBSCRIBE_TEAM uuid` command.
+
+What is returned is a 200 status code.
+
+This command can error out in case:
+
+- the team doesn't exist
+
+- the user isn't logged in
+
+- the user isn't subscribed to a team
+
+Example:
+> UNSUBSCRIBE_TEAM uuid
+>
+> 200 Success.
+>
+> In case the team doesn't exist:
+>
+> UNSUBSCRIBE_TEAM uuid
+>
+> 460 Given parameter is invalid.
+>
+> In case user isn't logged in:
+>
+> UNSUBSCRIBE_TEAM uuid
+>
+> 435 User isn't logged in.
+>
+> In case user isn't subscribed to this team:
+>
+> UNSUBSCRIBE_TEAM uuid
+>
+> 451 User isn't subscribed to this team.
+
+## List all teams the user is subscribed to
+
+A user can request a list of all teams it is subscribed to.
+
+On the client, this is the `/subscribed` command.
+
+This is done using the `SUBSCRIBED` command.
+
+What is returned is a list of teams the user is subscribed to including their names, uuid and description.
+
+Their status is 0 if logged out and 1 if logged in.
+
+This command can error out in case the user isn't logged in.
+
+Example:
+> SUBSCRIBED
+>
+> 200 Success. [Ending sequence]
+>
+> TEAM_NAME uuid description [newline]
+>
+> TEAM_NAME uuid description [newline]
+>
+> TEAM_NAME uuid description [newline]
+>
+> In case user isn't logged in:
+>
+> SUBSCRIBED
+>
+> 435 User isn't logged in.
+
+## List all users subscribed to a team
+
+A user can see which users are subscribed to a team.
+
+On the client, this is the `/subscribed [team_uuid]`.
+
+This is done using the `LIST_SUBSCRIBED_USERS uuid` command.
+
+What is returned is a 200 status code followed by a list of users and their status.
+
+This command can error out in case:
+
+- the team doesn't exist
+
+- the user isn't logged in
+
+Example:
+> LIST_SUBSCRIBED_USERS uuid
+>
+> 200 Success. [Ending sequence]
+>
+> USERNAME uuid 0
+>
+> In case team doesn't exist:
+>
+> LIST_SUBSCRIBED_USERS uuid
+>
+> 460 Given parameter is invalid.
+>
+> In case user isn't logged in:
+>
+> LIST_SUBSCRIBED_USERS uuid
+>
+> USERNAME uuid 0 [newline]
+>
+> USERNAME uuid 1 [newline]
+>
+> USERNAME uuid 0 [newline]
+>
+> 435 User isn't logged in.
+
+# Channel-related events
+
+## Creating a channel
+
+A user can create a channel given a name and a description.
+
+On the client, this is the `/create [channel_name] [channel_description]` command whilst in a `/use [team_uuid]` context.
+
+This is done using the `CREATE_CHANNEL [team_uuid] [name] [description]` command.
+
+What is returned is only a 200 status code.
+
+This command can error out in case:
+
+- the team does not exist
+
+- the channel name already exists
+
+- the user isn't logged in.
+
+Example:
+> CREATE_CHANNEL [team_uuid] [name] [description]
+>
+> 200 Success. [Ending sequence]
+>
+> CHANNEL_NAME uuid description
+>
+> In case team doesn't exist:
+>
+> CREATE_CHANNEL [team_uuid] [name] [description]
+>
+> 460 Given parameter is invalid.
+>
+> In case channel name already exists:
+>
+> CREATE_CHANNEL [team_uuid] [name] [description]
+>
+> 440 Already exists.
+>
+> In case user isn't logged in:
+>
+> CREATE_CHANNEL [team_uuid] [name] [description]
+>
+> 435 User isn't logged in.
+
+## Retrieve information about a specific channel
+
+A user can request information about a specific channel given its UUID and the teams uuid.
+
+On the client, this is the `/info` command whilst inside a `/use [team_uuid] [channel_uuid]` context.
+
+This is done using the `CHANNEL team_uuid uuid` command.
+
+What is returned is a 200 status code followed by the channels name, uuid and description.
+
+This command can error out in case:
+
+- the team doesn't exist
+
+- the channel doesn't exist
+
+- the user isn't logged in.
+
+Example:
+> CHANNEL team_uuid uuid
+>
+> 200 Success. [Ending sequence]
+>
+> CHANNEL_NAME uuid description [newline]
+>
+> CHANNEL_NAME uuid description [newline]
+>
+> CHANNEL_NAME uuid description [newline]
+>
+> In case the team doesn't exist and
+>
+> In case the channel doesn't exist
+>
+> CHANNEL team_uuid uuid
+>
+> 460 Given parameter is invalid.
+>
+> In case user isn't logged in:
+>
+> CHANNEL team_uuid uuid
+>
+> 435 User isn't logged in.
+
+## List all channels in a team
+
+A user can list all channels in a team.
+
+On the client, this is the `/list` command whilst in a `/use [team_uuid]` context.
+
+This is done using the `CHANNELS [team_uuid]` command.
+
+What is returned is only a 200 status code.
+
+This command can error out in case:
+
+- the team does not exist
+
+- the user isn't logged in.
+
+Example:
+> CHANNELS [team_uuid]
+>
+> 200 Success. [Ending sequence]
+>
+> CHANNEL_NAME uuid description
+>
+> CHANNEL_NAME uuid description
+>
+> CHANNEL_NAME uuid description
+>
+> In case team doesn't exist:
+>
+> CHANNELS [team_uuid]
+>
+> 460 Given parameter is invalid.
+>
+> In case user isn't logged in:
+>
+> CHANNELS [team_uuid]
+>
+> 435 User isn't logged in.
+
+# Thread-related events
+
+## Complementary information
+
+All timestamps must be UNIX timestamps (time_t in C).
+
+## Creating a thread
+
+A user can create a thread given a title and a message.
+
+On the client, this is the `/create [thread_title] [thread_message]` command whilst in a `/use [team_uuid] [channel_uuid]` context.
+
+This is done using the `CREATE_THREAD [team_uuid] [channel_uuid] [title] [message]` command.
+
+What is returned is only a 200 status code.
+
+This command can error out in case:
+
+- the team does not exist
+
+- the channel does not exist
+
+- the thread title already exists
+
+- the user is not subscribed to the team
+
+- the user isn't logged in.
+
+Example:
+> CREATE_THREAD [team_uuid] [channel_uuid] [title] [message]
+>
+> 200 Success. [Ending sequence]
+>
+> THREAD_TITLE uuid message timestamp
+>
+> In case channel doesn't exist and
+>
+> In case team doesn't exist:
+>
+> CREATE_THREAD [team_uuid] [channel_uuid] [title] [message]
+>
+> 460 Given parameter is invalid.
+>
+> In case thread title already exists:
+>
+> CREATE_THREAD [team_uuid] [channel_uuid] [title] [message]
+>
+> 440 Already exists.
+>
+> In case user isn't subscribed to the team:
+>
+> CREATE_THREAD [team_uuid] [channel_uuid] [title] [message]
+>
+> 451 User isn't subscribed to this team.
+>
+> In case user isn't logged in:
+>
+> CREATE_THREAD [team_uuid] [channel_uuid] [title] [message]
+>
+> 435 User isn't logged in.
+
+## Retrieve information about a specific thread
+
+A user can request information about a specific channel given its UUID and the teams uuid.
+
+On the client, this is the `/info` command whilst inside a `/use [team_uuid] [channel_uuid] [thread_uuid]` context.
+
+This is done using the `THREAD team_uuid channel_uuid thread_uuid` command.
+
+What is returned is a 200 status code followed by the threads title, uuid and message.
+
+This command can error out in case:
+
+- the team doesn't exist
+
+- the channel doesn't exist
+
+- the thread doesn't exist
+
+- the user isn't logged in.
+
+Example:
+> THREAD team_uuid channel_uuid thread_uuid
+>
+> 200 Success. [Ending sequence]
+>
+> THREAD_TITLE uuid message timestamp [newline]
+>
+> In case the team doesn't exist and
+>
+> In case the channel doesn't exist and
+>
+> In case the thread doesn't exist
+>
+> THREAD team_uuid channel_uuid thread_uuid
+>
+> 460 Given parameter is invalid.
+>
+> In case user isn't logged in:
+>
+> THREAD team_uuid channel_uuid thread_uuid
+>
+> 435 User isn't logged in.
+
+## List all threads in a team
+
+A user can list all threads in a team.
+
+On the client, this is the `/list` command whilst in a `/use [team_uuid] [channel_uuid]` context.
+
+This is done using the `THREADS [team_uuid] [channel_uuid]` command.
+
+What is returned is only a 200 status code.
+
+This command can error out in case:
+
+- the team does not exist
+
+- the channel does not exist
+
+- the user isn't logged in.
+
+Example:
+> THREADS [team_uuid] [CHANNEL_UUID]
+>
+> 200 Success. [Ending sequence]
+>
+> THREAD_TITLE uuid message timestamp
+>
+> THREAD_TITLE uuid message timestamp
+>
+> THREAD_TITLE uuid message timestamp
+>
+> In case team doesn't exist and
+>
+> In case channel does not exist
+>
+> THREADS [team_uuid] [CHANNEL_UUID]
+>
+> 460 Given parameter is invalid.
+>
+> In case user isn't logged in:
+>
+> THREADS [team_uuid] [CHANNEL_UUID]
+>
+> 435 User isn't logged in.
+
+# Comment-related events
+
+## Creating a comment
+
+A user can create a comment with a message.
+
+On the client, this is the `/create [comment_body]` command whilst in a `/use [team_uuid] [channel_uuid] [thread_uuid]` context.
+
+This is done using the `CREATE_COMMENT [team_uuid] [channel_uuid] [thread_uuid] [body]` command.
+
+What is returned is only a 200 status code.
+
+This command can error out in case:
+
+- the team does not exist
+
+- the channel does not exist
+
+- the thread does not exist
+
+- the user is not subscribed to the team
+
+- the user isn't logged in.
+
+Example:
+> CREATE_COMMENT [team_uuid] [channel_uuid] [thread_uuid] [body]
+>
+> 200 Success. [Ending sequence]
+>
+> COMMENT_UUID body
+>
+> In case channel doesn't exist and
+>
+> In case team doesn't exist and
+>
+> In case thread doesn't exist
+>
+> CREATE_COMMENT [team_uuid] [channel_uuid] [thread_uuid] [body]
+>
+> 460 Given parameter is invalid.
+>
+> In case user isn't subscribed to this team:
+>
+> CREATE_COMMENT [team_uuid] [channel_uuid] [thread_uuid] [body]
+>
+> 451 User isn't subscribed to this team.
+>
+> In case user isn't logged in:
+>
+> CREATE_COMMENT [team_uuid] [channel_uuid] [thread_uuid] [body]
+>
+> 435 User isn't logged in.
+
+## List all comments of a thread
+
+A user can list all comments of a thread.
+
+On the client, this is the `/list` command whilst in a `/use [team_uuid] [channel_uuid] [thread_uuid]` context.
+
+This is done using the `COMMENTS [team_uuid] [channel_uuid] [thread_uuid]` command.
+
+What is returned is only a 200 status code.
+
+This command can error out in case:
+
+- the team does not exist
+
+- the channel does not exist
+
+- the thread does not exist
+
+- the user isn't logged in.
+
+Example:
+> COMMENTS [team_uuid] [channel_uuid] [thread_uuid]
+>
+> 200 Success. [Ending sequence]
+>
+> COMMENT_UUID body [newline]
+>
+> COMMENT_UUID body [newline]
+>
+> COMMENT_UUID body [newline]
+>
+> In case channel doesn't exist and
+>
+> In case team doesn't exist and
+>
+> In case thread doesn't exist
+>
+> COMMENTS [team_uuid] [channel_uuid] [thread_uuid]
+>
+> 460 Given parameter is invalid.
+>
+> In case user isn't logged in:
+>
+> COMMENTS [team_uuid] [channel_uuid] [thread_uuid]
+>
+> 435 User isn't logged in.
+
+# Received events
+
+Received events are events that can be received anytime for all clients depending on conditions.
+
+## Newly created team
+
+If a new team has been created, a message is sent to all clients.
+
+The message is `NEW_TEAM [team_uuid] [team_name] [team_description]`.
+
+## Newly created channel
+
+If a new channel has been created, a message is sent to all clients that are subscribed to the related team.
+
+The message is `NEW_CHANNEL [channel_uuid] [channel_name] [channel_description]`.
+
+## Newly created thread
+
+If a new thread has been created, a message is sent to all clients that are subscribed to the related team.
+
+The message is `NEW_THREAD [thread_uuid] [thread_title] [thread_body] [thread_timestamp]`.
+
+## Newly created comment
+
+If a new comment has been created, a message is sent to all clients that are subscribed to the related team.
+
+The message is `NEW_COMMENT [team_uuid] [thread_uuid] [user_uuid] [comment_body]`.
+
+## Newly created private message
+
+If a new private message has been sent by a user to another user, a message is sent to the user receiving the message.
+
+The message is `NEW_MESSAGE [user_uuid] [message_body]`
+
+## User logged in
+
+When a user logged in, a message is sent to every other client.
+
+The message is `CLIENT_JOINED [user_uuid] [user_name]`
+
+## User logged out
+
+When a user logged out, a message is sent to every other client.
+
+The message is `CLIENT_LEFT [user_uuid] [user_name]`

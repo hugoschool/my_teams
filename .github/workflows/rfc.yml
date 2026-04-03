@@ -1,0 +1,37 @@
+name: Verify RFC
+
+on:
+  push:
+    paths:
+      - "docs/PROTOCOL.md"
+  workflow_dispatch:
+
+jobs:
+  verify_rfc:
+    name: Verify RFC text file
+    if: ${{ github.repository_owner == 'hugoschool' }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v6
+
+      - name: Install dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install mmark xml2rfc
+
+      - name: Make the RFC file
+        run: make -C docs/
+
+      - name: Check for changes
+        run: |
+          git add docs/
+
+          if ! git status | tail -1 | grep -q "nothing to commit"; then
+            echo "::error ::RFC text file wasn't updated"
+            exit 1
+          else
+            echo "Nothing was changed, exiting normally"
+            exit 0
+          fi
+
