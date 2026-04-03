@@ -6,16 +6,18 @@
 */
 
 #include "logging_server.h"
+#include "server/events.h"
 #include "server/server.h"
 #include "server/status.h"
 #include <stdio.h>
 
+// TODO: need to generalize this
 static void send_client_left_message(server_t *server, user_data_t *user)
 {
     for (unsigned int i = INITIAL_AMOUNT; i < server->clients->amount; i++) {
         if (i == server->index || CLIENT_I(i)->login_step == LOGGED_OUT)
             continue;
-        dprintf(*CLIENT_I(i)->fd, "CLIENT_LEFT %s %s"CRLF,
+        dprintf(*CLIENT_I(i)->fd, CLIENT_LEFT" %s %s"CRLF,
             user->uuid, user->username);
     }
 }
