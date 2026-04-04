@@ -77,6 +77,7 @@ user_data_t *users_get_from_uuid(users_t *users, char *uuid);
 typedef struct {
     char uuid[UUID_STR_LEN];
     char body[MAX_BODY_LENGTH + 1];
+    time_t timestamp;
 } comment_data_t;
 
 typedef struct {
@@ -91,6 +92,7 @@ typedef struct {
     char name[MAX_NAME_LENGTH + 1];
     char description[MAX_DESCRIPTION_LENGTH + 1];
     comments_t *comments;
+    time_t timestamp;
 } thread_data_t;
 
 typedef struct {
@@ -166,6 +168,7 @@ typedef struct {
     const char *user_uuid_from;
     const char *user_uuid_to;
     char body[MAX_BODY_LENGTH + 1];
+    time_t timestamp;
 } message_data_t;
 
 message_data_t *message_data_init(const char *from, const char *to,

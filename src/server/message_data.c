@@ -10,6 +10,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <time.h>
 
 message_data_t *message_data_init(const char *from, const char *to, char *body)
 {
@@ -22,6 +23,7 @@ message_data_t *message_data_init(const char *from, const char *to, char *body)
     data->user_uuid_from = strdup(from);
     data->user_uuid_to = strdup(to);
     strncpy(data->body, body, MAX_BODY_LENGTH + 1);
+    data->timestamp = time(NULL);
     return data;
 }
 
