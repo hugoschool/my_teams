@@ -1,4 +1,5 @@
 #include "client/args.h"
+#include "client/client.h"
 #include <stdio.h>
 
 // client->data_socket = socket(AF_INET, SOCK_STREAM, 0);
@@ -22,5 +23,7 @@ int main(int argc, char **argv)
     }
     if (args.help)
         return 0;
-    return 84;
+    if (!teams_client(&args))
+        return 84;
+    return 0;
 }

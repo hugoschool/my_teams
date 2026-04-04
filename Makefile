@@ -75,7 +75,8 @@ SERVER_OBJ	:=	$(SERVER_SRC:.c=.o)
 SERVER_BINARY	:=	myteams_server
 
 CLI_SRC	:= 	src/cli/main.c	\
-			src/cli/client_args.c
+			src/cli/client_args.c	\
+			src/cli/client.c
 
 CLI_OBJ	:=	$(CLI_SRC:.c=.o)
 
