@@ -10,6 +10,7 @@
 #include "server/status.h"
 #include "utils.h"
 #include <stdio.h>
+#include <stdlib.h>
 
 void command_user(server_t *server)
 {
@@ -20,6 +21,7 @@ void command_user(server_t *server)
     if (uuid == NULL)
         return;
     user = users_get_from_uuid(server->users, uuid);
+    free(uuid);
     if (user == NULL) {
         WRITE_STATUS(*CLIENT->fd, 460);
         return;
