@@ -35,7 +35,8 @@ SERVER_SRC	+=	src/server/commands/handler.c \
 				src/server/commands/logout.c \
 				src/server/commands/users.c \
 				src/server/commands/user.c \
-				src/server/commands/message_send.c
+				src/server/commands/message_send.c \
+				src/server/commands/messages.c
 
 SERVER_OBJ	:=	$(SERVER_SRC:.c=.o)
 
