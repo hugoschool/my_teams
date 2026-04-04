@@ -37,3 +37,22 @@ void messages_free(messages_t *messages)
     free(messages->messages);
     free(messages);
 }
+
+message_data_t *messages_add(messages_t *messages, char *from, char *to,
+    char *body)
+{
+    if (messages == NULL)
+        return NULL;
+    if (messages->amount == messages->size) {
+        messages->size += 1;
+        messages->messages =
+            realloc(messages->messages, sizeof(message_data_t) * (messages->size));
+        if (messages->messages == NULL) {
+            perror("realloc");
+            exit(84);
+        }
+    }
+    messages->messages[messages->amount] = message_data_init(from, to, body);
+    messages->amount++;
+    return messages->messages[messages->amount - 1];
+}

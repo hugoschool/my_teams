@@ -179,6 +179,8 @@ typedef struct {
 } messages_t;
 
 messages_t *messages_init(void);
+message_data_t *messages_add(messages_t *messages, char *from, char *to,
+    char *body);
 void messages_free(messages_t *messages);
 
 // Server
