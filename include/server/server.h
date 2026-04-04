@@ -73,7 +73,7 @@ user_data_t *users_add(users_t *users, char *username);
 user_data_t *users_get_from_username(users_t *users, char *username);
 user_data_t *users_get_from_uuid(users_t *users, char *uuid);
 
-// Threads
+// Comments
 typedef struct {
     char uuid[UUID_STR_LEN];
     char body[MAX_BODY_LENGTH + 1];
@@ -161,12 +161,33 @@ void clients_adder(clients_t *clients, int *fd);
 void clients_delete(clients_t *clients, int i);
 void clients_free(clients_t *clients);
 
+// Message
+typedef struct {
+    const char *user_uuid_from;
+    const char *user_uuid_to;
+    char body[MAX_BODY_LENGTH + 1];
+} message_data_t;
+
+message_data_t *message_data_init(const char *from, const char *to,
+    char *body);
+void message_data_free(message_data_t *data);
+
+typedef struct {
+    message_data_t **messages;
+    unsigned int amount;
+    unsigned int size;
+} messages_t;
+
+messages_t *messages_init(void);
+void messages_free(messages_t *messages);
+
 // Server
 typedef struct {
     poller_t *poller;
     clients_t *clients;
 
     users_t *users;
+    messages_t *messages;
     teams_t *teams;
 
     // CONTROL socket aka the main server socket

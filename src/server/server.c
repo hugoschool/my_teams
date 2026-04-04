@@ -29,6 +29,7 @@ static server_t *server_init(void)
         return NULL;
     }
     server->users = users_init();
+    server->messages = messages_init();
     server->teams = NULL;
     server->control_fd = -1;
     server->signal_fd = -1;
@@ -45,6 +46,8 @@ void server_free(server_t *server)
         clients_free(server->clients);
     if (server->users)
         users_free(server->users);
+    if (server->messages)
+        messages_free(server->messages);
     free(server);
 }
 
