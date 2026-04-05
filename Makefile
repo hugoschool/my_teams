@@ -27,7 +27,9 @@ SERVER_SRC	:= 	$(UTILS_SRC) \
 				src/server/users.c \
 				src/server/user_data.c \
 				src/server/messages.c \
-				src/server/message_data.c
+				src/server/message_data.c \
+				src/server/teams.c \
+				src/server/team_data.c
 
 # Commands
 SERVER_SRC	+=	src/server/commands/handler.c \

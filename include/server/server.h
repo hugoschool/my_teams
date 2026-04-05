@@ -123,15 +123,25 @@ typedef struct {
     char uuid[UUID_STR_LEN];
     char name[MAX_NAME_LENGTH + 1];
     char description[MAX_DESCRIPTION_LENGTH + 1];
-    // TODO: maybe a list of all users subscribed to the team
+    // A list of the users subscribed to this team
+    users_t *users;
     channels_t *channels;
 } team_data_t;
+
+team_data_t *team_data_init(char *uuid, char *name, char *description);
+void team_data_free(team_data_t *data);
 
 typedef struct {
     team_data_t **teams;
     unsigned int amount;
     unsigned int size;
 } teams_t;
+
+teams_t *teams_init(void);
+void teams_free(teams_t *teams);
+team_data_t *teams_add(teams_t *teams, char *name, char *description);
+
+team_data_t *teams_get_from_uuid(teams_t *teams, char *uuid);
 
 // Clients
 typedef enum {
