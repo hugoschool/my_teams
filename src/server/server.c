@@ -50,6 +50,8 @@ void server_free(server_t *server)
         users_free(server->users);
     if (server->messages)
         messages_free(server->messages);
+    if (server->teams)
+        teams_free(server->teams);
     free(server);
 }
 
