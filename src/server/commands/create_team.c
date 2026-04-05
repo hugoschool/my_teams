@@ -23,6 +23,8 @@ static void send_event_all_clients(server_t *server, team_data_t *team)
     }
 }
 
+// TODO: not respecting protocol here
+// Same as LOGIN
 void command_create_team(server_t *server)
 {
     char *name = get_arg(server->buffer, 1);
