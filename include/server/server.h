@@ -31,6 +31,8 @@
 
     #define MESSAGE_I(i) server->messages->messages[i]
 
+    #define TEAM_I(i) server->teams->teams[i]
+
 // For all dynamic arrays (this one and all future ones):
 // amount: current amount of elements in the array
 // size: actual malloc'd size of the array

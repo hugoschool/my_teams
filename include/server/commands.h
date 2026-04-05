@@ -28,6 +28,7 @@ void command_user(server_t *server);
 void command_message_send(server_t *server);
 void command_messages(server_t *server);
 void command_create_team(server_t *server);
+void command_teams(server_t *server);
 
 static const commands_t cmds[] = {
     {
@@ -70,6 +71,12 @@ static const commands_t cmds[] = {
         .command = "CREATE_TEAM",
         .function = &command_create_team,
         .args_amount = 2,
+        .needs_auth = true
+    },
+    {
+        .command = "TEAMS",
+        .function = &command_teams,
+        .args_amount = 0,
         .needs_auth = true
     },
     {.command = NULL, .function = NULL, .args_amount = 0, .needs_auth = false}
