@@ -75,8 +75,11 @@ void users_free(users_t *users);
 
 user_data_t *users_add(users_t *users, char *username);
 void users_add_data(users_t *users, user_data_t *data);
+
 user_data_t *users_get_from_username(users_t *users, char *username);
 user_data_t *users_get_from_uuid(users_t *users, char *uuid);
+
+void users_remove_by_data(users_t *users, user_data_t *data);
 
 // Comments
 typedef struct {

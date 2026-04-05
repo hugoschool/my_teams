@@ -72,3 +72,16 @@ user_data_t *users_add(users_t *users, char *username)
     users->amount++;
     return users->users[users->amount - 1];
 }
+
+// Removing is NOT a deletion, therefore the data won't be freed.
+void users_remove_by_data(users_t *users, user_data_t *data)
+{
+    if (users == NULL)
+        return;
+    for (unsigned int i = 0; i < users->amount; i++) {
+        if (users->users[i] == data) {
+            users->users[i] = users->users[users->amount - 1];
+            users->amount--;
+        }
+    }
+}
