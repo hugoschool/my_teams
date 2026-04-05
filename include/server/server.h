@@ -146,6 +146,8 @@ team_data_t *teams_add(teams_t *teams, char *name, char *description);
 team_data_t *teams_get_from_uuid(teams_t *teams, char *uuid);
 team_data_t *teams_get_from_name(teams_t *teams, char *name);
 
+bool teams_is_user_subscribed(teams_t *teams, user_data_t *user);
+
 // Clients
 typedef enum {
     LOGGED_OUT,
