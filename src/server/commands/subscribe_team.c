@@ -30,7 +30,7 @@ void command_subscribe_team(server_t *server)
         WRITE_STATUS(*CLIENT->fd, 460);
         return;
     }
-    if (teams_is_user_subscribed(server->teams, CLIENT->user) == true) {
+    if (team_is_user_subscribed(team, CLIENT->user) == true) {
         WRITE_STATUS(*CLIENT->fd, 450);
         return;
     }

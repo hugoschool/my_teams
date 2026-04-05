@@ -56,18 +56,14 @@ team_data_t *teams_get_from_name(teams_t *teams, char *name)
     return NULL;
 }
 
-bool teams_is_user_subscribed(teams_t *teams, user_data_t *user)
+bool team_is_user_subscribed(team_data_t *team, user_data_t *user)
 {
-    team_data_t *team = NULL;
     user_data_t *team_user = NULL;
 
-    for (unsigned int i = 0; i < teams->amount; i++) {
-        team = teams->teams[i];
-        for (unsigned int j = 0; j < team->users->amount; j++) {
-            team_user = team->users->users[j];
-            if (team_user == user) {
-                return true;
-            }
+    for (unsigned int i = 0; i < team->users->amount; i++) {
+        team_user = team->users->users[i];
+        if (team_user == user) {
+            return true;
         }
     }
     return false;
