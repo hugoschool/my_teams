@@ -110,4 +110,7 @@ re:	fclean all
 dev-server:	all
 	LD_LIBRARY_PATH=./libs/myteams ./myteams_server 4242
 
+dev-client:	all
+	LD_LIBRARY_PATH=./libs/myteams ./myteams_cli 127.0.0.1 4242
+
 .PHONY:	all clean fclean re
