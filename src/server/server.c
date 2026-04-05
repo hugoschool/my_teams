@@ -24,13 +24,15 @@ static server_t *server_init(void)
     }
     server->poller = poller_init();
     server->clients = clients_init();
-    if (server->poller == NULL || server->clients == NULL) {
+    server->users = users_init();
+    server->messages = messages_init();
+    server->teams = teams_init();
+    if (server->poller == NULL || server->clients == NULL
+        || server->users == NULL || server->messages == NULL
+        || server->teams == NULL) {
         free(server);
         return NULL;
     }
-    server->users = users_init();
-    server->messages = messages_init();
-    server->teams = NULL;
     server->control_fd = -1;
     server->signal_fd = -1;
     return server;
