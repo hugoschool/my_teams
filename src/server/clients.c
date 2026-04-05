@@ -32,7 +32,7 @@ void clients_adder(clients_t *clients, int *fd)
     if (clients == NULL)
         return;
     if (clients->amount == clients->size) {
-        clients->size += 1;
+        clients->size *= 2;
         clients->clients =
             realloc(clients->clients, sizeof(client_data_t) * (clients->size));
         if (clients->clients == NULL) {

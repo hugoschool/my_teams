@@ -44,7 +44,7 @@ message_data_t *messages_add(messages_t *messages, char *from, char *to,
     if (messages == NULL)
         return NULL;
     if (messages->amount == messages->size) {
-        messages->size += 1;
+        messages->size *= 2;
         messages->messages =
             realloc(messages->messages, sizeof(message_data_t) * (messages->size));
         if (messages->messages == NULL) {

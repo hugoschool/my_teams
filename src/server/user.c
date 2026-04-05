@@ -42,7 +42,7 @@ user_data_t *users_add(users_t *users, char *username)
     if (users == NULL)
         return NULL;
     if (users->amount == users->size) {
-        users->size += 1;
+        users->size *= 2;
         users->users =
             realloc(users->users, sizeof(user_data_t) * (users->size));
         if (users->users == NULL) {

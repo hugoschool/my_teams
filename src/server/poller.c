@@ -57,7 +57,7 @@ void poller_set_init_values(poller_t *poller, int socket_fd, int signal_fd)
 void poller_fd_add(poller_t *poller, int fd)
 {
     if (poller->amount == poller->size) {
-        poller->size += 1;
+        poller->size *= 2;
         poller->fds =
             realloc(poller->fds, sizeof(struct pollfd) * (poller->size));
         if (poller->fds == NULL) {
