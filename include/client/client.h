@@ -22,6 +22,14 @@
         char thread_uuid[UUID_STR_LEN];
     } context_t;
 
+    typedef char* UUID;
+
+    typedef struct context_s {
+        char *team_uuid;
+        char *channel_uuid;
+        char *thread_uuid;
+    } context_t;
+
     typedef struct client_s {
         int socket_fd;
         bool logged;

@@ -21,6 +21,11 @@ int client_loop(client_t *client)
     return 0;
 }
 
+int client_loop(client_t *client)
+{
+
+}
+
 bool teams_client(client_args_t *args)
 {
     client_t client = {.socket_fd = -1, .logged = false, .user_name = NULL, .uuid = "\0", .context = {"\0", "\0", "\0"}};
