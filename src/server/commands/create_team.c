@@ -41,6 +41,6 @@ void command_create_team(server_t *server)
     free(name);
     free(description);
     WRITE_STATUS(*CLIENT->fd, 200);
-    server_event_team_created(team->uuid, team->name, team->uuid);
+    server_event_team_created(team->uuid, team->name, CLIENT->user->uuid);
     send_event_all_clients(server, team);
 }
