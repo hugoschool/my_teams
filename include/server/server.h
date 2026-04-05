@@ -142,6 +142,7 @@ void teams_free(teams_t *teams);
 team_data_t *teams_add(teams_t *teams, char *name, char *description);
 
 team_data_t *teams_get_from_uuid(teams_t *teams, char *uuid);
+team_data_t *teams_get_from_name(teams_t *teams, char *name);
 
 // Clients
 typedef enum {

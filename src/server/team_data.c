@@ -24,9 +24,9 @@ team_data_t *team_data_init(char *uuid, char *name, char *description)
     strncpy(data->name, name, MAX_NAME_LENGTH + 1);
     strncpy(data->description, description, MAX_DESCRIPTION_LENGTH + 1);
     data->users = users_init();
-    data->channels = NULL;
-    if (data->users == NULL || data->channels == NULL)
+    if (data->users == NULL)
         exit(84);
+    data->channels = NULL;
     return data;
 }
 
@@ -42,6 +42,15 @@ team_data_t *teams_get_from_uuid(teams_t *teams, char *uuid)
 {
     for (unsigned int i = 0; i < teams->amount; i++) {
         if (strncmp(teams->teams[i]->uuid, uuid, UUID_STR_LEN) == 0)
+            return teams->teams[i];
+    }
+    return NULL;
+}
+
+team_data_t *teams_get_from_name(teams_t *teams, char *name)
+{
+    for (unsigned int i = 0; i < teams->amount; i++) {
+        if (strncmp(teams->teams[i]->name, name, MAX_NAME_LENGTH + 1) == 0)
             return teams->teams[i];
     }
     return NULL;
