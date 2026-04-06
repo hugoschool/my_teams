@@ -35,7 +35,7 @@ void team_data_free(team_data_t *data)
     if (data == NULL)
         return;
     if (data->users)
-        users_free(data->users);
+        users_free(data->users, false);
     free(data);
     data = NULL;
 }

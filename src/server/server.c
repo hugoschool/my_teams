@@ -47,7 +47,7 @@ void server_free(server_t *server)
     if (server->clients)
         clients_free(server->clients);
     if (server->users)
-        users_free(server->users);
+        users_free(server->users, true);
     if (server->messages)
         messages_free(server->messages);
     if (server->teams)

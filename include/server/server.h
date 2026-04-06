@@ -71,7 +71,7 @@ typedef struct {
 } users_t;
 
 users_t *users_init(void);
-void users_free(users_t *users);
+void users_free(users_t *users, bool should_free);
 
 user_data_t *users_add(users_t *users, char *username);
 void users_add_data(users_t *users, user_data_t *data);

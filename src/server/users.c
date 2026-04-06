@@ -23,13 +23,13 @@ users_t *users_init(void)
     return users;
 }
 
-void users_free(users_t *users)
+void users_free(users_t *users, bool should_free)
 {
     if (users == NULL)
         return;
-    for (size_t i = 0; i < users->amount; i++) {
-        user_data_free(users->users[i]);
-    }
+    if (should_free == true)
+        for (size_t i = 0; i < users->amount; i++)
+            user_data_free(users->users[i]);
     free(users->users);
     free(users);
 }
