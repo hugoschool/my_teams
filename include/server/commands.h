@@ -38,6 +38,7 @@ void command_create_channel(server_t *server);
 void command_channel(server_t *server);
 void command_channels(server_t *server);
 void command_create_thread(server_t *server);
+void command_threads(server_t *server);
 
 static const commands_t cmds[] = {
     {
@@ -140,6 +141,12 @@ static const commands_t cmds[] = {
         .command = "CREATE_THREAD",
         .function = &command_create_thread,
         .args_amount = 4,
+        .needs_auth = true
+    },
+    {
+        .command = "THREADS",
+        .function = &command_threads,
+        .args_amount = 2,
         .needs_auth = true
     },
     {.command = NULL, .function = NULL, .args_amount = 0, .needs_auth = false}
