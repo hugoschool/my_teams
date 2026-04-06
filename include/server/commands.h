@@ -35,6 +35,7 @@ void command_unsubscribe_team(server_t *server);
 void command_subscribed(server_t *server);
 void command_list_subscribed_users(server_t *server);
 void command_create_channel(server_t *server);
+void command_channel(server_t *server);
 
 static const commands_t cmds[] = {
     {
@@ -119,6 +120,12 @@ static const commands_t cmds[] = {
         .command = "CREATE_CHANNEL",
         .function = &command_create_channel,
         .args_amount = 3,
+        .needs_auth = true
+    },
+    {
+        .command = "CHANNEL",
+        .function = &command_channel,
+        .args_amount = 2,
         .needs_auth = true
     },
     {.command = NULL, .function = NULL, .args_amount = 0, .needs_auth = false}
