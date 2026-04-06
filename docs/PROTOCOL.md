@@ -858,7 +858,7 @@ Example:
 >
 > 200 Success. [Ending sequence]
 >
-> COMMENT_UUID timestamp body
+> COMMENT_UUID user_uuid timestamp body
 >
 > In case channel doesn't exist and
 >
@@ -907,11 +907,11 @@ Example:
 >
 > 200 Success. [Ending sequence]
 >
-> COMMENT_UUID timestamp body [newline]
+> COMMENT_UUID user_uuid timestamp body [newline]
 >
-> COMMENT_UUID timestamp body [newline]
+> COMMENT_UUID user_uuid timestamp body [newline]
 >
-> COMMENT_UUID timestamp body [newline]
+> COMMENT_UUID user_uuid timestamp body [newline]
 >
 > In case channel doesn't exist and
 >
