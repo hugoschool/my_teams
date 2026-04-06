@@ -31,9 +31,8 @@ void channel_data_free(channel_data_t *data)
 {
     if (data == NULL)
         return;
-    // TODO: once threads are done
-    // if (data->threads)
-    //     threads_free(data->threads, false);
+    if (data->threads)
+        threads_free(data->threads);
     free(data);
     data = NULL;
 }
@@ -58,4 +57,14 @@ channel_data_t *channels_get_from_name(channels_t *channels, char *name)
             return channels->channels[i];
     }
     return NULL;
+}
+
+thread_data_t *channel_add_thread(channel_data_t *channel, char *title,
+    char *description)
+{
+    if (channel == NULL)
+        return NULL;
+    if (channel->threads == NULL)
+        channel->threads = threads_init();
+    return threads_add(channel->threads, title, description);
 }
