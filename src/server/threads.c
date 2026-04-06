@@ -49,7 +49,8 @@ static void threads_reallocate_size(threads_t *threads)
     }
 }
 
-thread_data_t *threads_add(threads_t *threads, char *title, char *description)
+thread_data_t *threads_add(threads_t *threads, char *user_uuid, char *title,
+    char *description)
 {
     uuid_t binuuid;
     char uuid[UUID_STR_LEN];
@@ -59,7 +60,7 @@ thread_data_t *threads_add(threads_t *threads, char *title, char *description)
     threads_reallocate_size(threads);
     uuid_generate_random(binuuid);
     uuid_unparse(binuuid, uuid);
-    threads->threads[threads->amount] = thread_data_init(uuid, title, description);
+    threads->threads[threads->amount] = thread_data_init(uuid, user_uuid, title, description);
     threads->amount++;
     return threads->threads[threads->amount - 1];
 }

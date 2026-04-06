@@ -106,13 +106,15 @@ comment_data_t *comments_add(comments_t *comments, char *user_uuid, char *body);
 // Threads
 typedef struct {
     char uuid[UUID_STR_LEN];
+    char user_uuid[UUID_STR_LEN];
     char title[MAX_NAME_LENGTH + 1];
     char description[MAX_DESCRIPTION_LENGTH + 1];
     comments_t *comments;
     time_t timestamp;
 } thread_data_t;
 
-thread_data_t *thread_data_init(char *uuid, char *title, char *description);
+thread_data_t *thread_data_init(char *uuid, char *user_uuid, char *title,
+    char *description);
 void thread_data_free(thread_data_t *data);
 
 typedef struct {
@@ -124,7 +126,8 @@ typedef struct {
 threads_t *threads_init(void);
 void threads_free(threads_t *threads);
 
-thread_data_t *threads_add(threads_t *threads, char *title, char *description);
+thread_data_t *threads_add(threads_t *threads, char *user_uuid, char *title,
+    char *description);
 comment_data_t *thread_add_comment(thread_data_t *thread, char *user_uuid, char *body);
 
 thread_data_t *threads_get_from_uuid(threads_t *threads, char *uuid);
@@ -151,8 +154,8 @@ channels_t *channels_init(void);
 void channels_free(channels_t *channels);
 
 channel_data_t *channels_add(channels_t *channels, char *name, char *description);
-thread_data_t *channel_add_thread(channel_data_t *channel, char *title,
-    char *description);
+thread_data_t *channel_add_thread(channel_data_t *channel, char *user_uuid,
+    char *title, char *description);
 
 channel_data_t *channels_get_from_uuid(channels_t *channels, char *uuid);
 channel_data_t *channels_get_from_name(channels_t *channels, char *name);

@@ -18,8 +18,9 @@ static void send_event_all_clients(server_t *server, thread_data_t *thread)
     for (unsigned int i = INITIAL_AMOUNT; i < server->clients->amount; i++) {
         if (i == server->index || CLIENT_I(i)->login_step == LOGGED_OUT)
             continue;
-        dprintf(*CLIENT_I(i)->fd, NEW_THREAD" %s %s %s %ld"CRLF,
-            thread->uuid, thread->title, thread->description, thread->timestamp);
+        dprintf(*CLIENT_I(i)->fd, NEW_THREAD" %s %s %s %ld %s"CRLF,
+            thread->uuid, thread->user_uuid, thread->title,
+            thread->timestamp, thread->description);
     }
 }
 
@@ -49,7 +50,7 @@ void command_create_thread(server_t *server)
     }
     title = get_arg(server->buffer, 3);
     description = get_arg(server->buffer, 4);
-    thread = channel_add_thread(channel, title, description);
+    thread = channel_add_thread(channel, CLIENT->user->uuid, title, description);
     free(title);
     free(description);
     WRITE_STATUS(*CLIENT->fd, 200);

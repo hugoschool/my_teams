@@ -12,7 +12,8 @@
 #include <string.h>
 #include <unistd.h>
 
-thread_data_t *thread_data_init(char *uuid, char *title, char *description)
+thread_data_t *thread_data_init(char *uuid, char *user_uuid, char *title,
+    char *description)
 {
     thread_data_t *data = malloc(sizeof(thread_data_t));
 
@@ -21,6 +22,7 @@ thread_data_t *thread_data_init(char *uuid, char *title, char *description)
         exit(84);
     }
     strncpy(data->uuid, uuid, UUID_STR_LEN);
+    strncpy(data->user_uuid, user_uuid, UUID_STR_LEN);
     strncpy(data->title, title, MAX_NAME_LENGTH + 1);
     strncpy(data->description, description, MAX_DESCRIPTION_LENGTH + 1);
     data->comments = NULL;

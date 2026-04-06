@@ -34,7 +34,8 @@ void command_threads(server_t *server)
     WRITE_STATUS(*CLIENT->fd, 200);
     for (unsigned int i = 0; i < channel->threads->amount; i++) {
         thread = channel->threads->threads[i];
-        dprintf(*CLIENT->fd, "%s %s %s %ld\n", thread->title, thread->uuid,
-            thread->description, thread->timestamp);
+        dprintf(*CLIENT->fd, "%s %s %s %ld %s\n", thread->title,
+            thread->uuid, thread->user_uuid,
+            thread->timestamp, thread->description);
     }
 }

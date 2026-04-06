@@ -59,12 +59,12 @@ channel_data_t *channels_get_from_name(channels_t *channels, char *name)
     return NULL;
 }
 
-thread_data_t *channel_add_thread(channel_data_t *channel, char *title,
-    char *description)
+thread_data_t *channel_add_thread(channel_data_t *channel, char *user_uuid,
+    char *title, char *description)
 {
     if (channel == NULL)
         return NULL;
     if (channel->threads == NULL)
         channel->threads = threads_init();
-    return threads_add(channel->threads, title, description);
+    return threads_add(channel->threads, user_uuid, title, description);
 }
