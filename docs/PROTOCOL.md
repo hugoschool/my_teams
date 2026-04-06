@@ -543,7 +543,9 @@ Example:
 >
 > 200 Success. [Ending sequence]
 >
-> USERNAME uuid 0
+> USERNAME uuid 0 [newline]
+>
+> USERNAME uuid 1 [newline]
 >
 > In case team doesn't exist:
 >
@@ -554,12 +556,6 @@ Example:
 > In case user isn't logged in:
 >
 > LIST_SUBSCRIBED_USERS uuid
->
-> USERNAME uuid 0 [newline]
->
-> USERNAME uuid 1 [newline]
->
-> USERNAME uuid 0 [newline]
 >
 > 435 User isn't logged in.
 
