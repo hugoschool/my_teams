@@ -2,15 +2,28 @@
 #include "client/args.h"
 #include <stdbool.h>
 #include <stdio.h>
+#include <string.h>
 
 int client_loop(client_t *client)
 {
+    char *cmd_line = NULL;
+    size_t len = 0;
+    int bytes = 0;
 
+    while (1) {
+        memset(client->buffer, '\0', 4096);
+        bytes = getline(&cmd_line, &len, stdin);
+        if (bytes == -1) {
+            return -1;
+        }
+        command_parser(cmd_line, client);
+    }
+    return 0;
 }
 
 bool teams_client(client_args_t *args)
 {
-    client_t client = {.socket_fd = -1, .logged = false, .user_name = NULL, .uuid = NULL, .context = {NULL, NULL, NULL}};
+    client_t client = {.socket_fd = -1, .logged = false, .user_name = NULL, .uuid = "\0", .context = {"\0", "\0", "\0"}};
 
     client.sockaddr.sin_addr.s_addr = args->ip;
     client.sockaddr.sin_port = htons(args->port);
@@ -25,11 +38,9 @@ bool teams_client(client_args_t *args)
         perror("connect");
         return false;
     }
-    char buff[4096];
-    recv(client.socket_fd, buff, 4096, 0);
-    printf("%s", buff);
-    send(client.socket_fd, "LOGIN doug\r\n", 12, 0);
-    recv(client.socket_fd, buff, 4096, 0);
-    printf("%s", buff);
+    memset(client.buffer, '\0', 4096);
+    recv(client.socket_fd, client.buffer, 4096, 0);
+    printf("%s", client.buffer);
+    client_loop(&client);
     return true;
 }
