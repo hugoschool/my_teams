@@ -32,9 +32,8 @@ void thread_data_free(thread_data_t *data)
 {
     if (data == NULL)
         return;
-    // TODO: once comments are done
-    // if (data->comments)
-    //     comments_free(data->comments);
+    if (data->comments)
+        comments_free(data->comments);
     free(data);
     data = NULL;
 }
@@ -59,4 +58,13 @@ thread_data_t *threads_get_from_title(threads_t *threads, char *title)
             return threads->threads[i];
     }
     return NULL;
+}
+
+comment_data_t *thread_add_comment(thread_data_t *thread, char *body)
+{
+    if (thread == NULL)
+        return NULL;
+    if (thread->comments == NULL)
+        thread->comments = comments_init();
+    return comments_add(thread->comments, body);
 }

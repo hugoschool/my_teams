@@ -33,7 +33,9 @@ SERVER_SRC	:= 	$(UTILS_SRC) \
 				src/server/channels.c \
 				src/server/channel_data.c \
 				src/server/threads.c \
-				src/server/thread_data.c
+				src/server/thread_data.c \
+				src/server/comments.c \
+				src/server/comment_data.c
 
 # Commands
 SERVER_SRC	+=	src/server/commands/handler.c \
