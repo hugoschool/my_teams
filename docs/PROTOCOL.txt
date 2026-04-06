@@ -99,10 +99,10 @@ Table of Contents
      10.1.  Newly created team . . . . . . . . . . . . . . . . . . .  23
      10.2.  Newly created channel  . . . . . . . . . . . . . . . . .  23
      10.3.  Newly created thread . . . . . . . . . . . . . . . . . .  23
-     10.4.  Newly created comment  . . . . . . . . . . . . . . . . .  23
-     10.5.  Newly created private message  . . . . . . . . . . . . .  24
-     10.6.  User logged in . . . . . . . . . . . . . . . . . . . . .  24
-     10.7.  User logged out  . . . . . . . . . . . . . . . . . . . .  24
+     10.4.  Newly created private message  . . . . . . . . . . . . .  23
+     10.5.  User logged in . . . . . . . . . . . . . . . . . . . . .  24
+     10.6.  User logged out  . . . . . . . . . . . . . . . . . . . .  24
+
 
 
 
@@ -1278,10 +1278,10 @@ Internet-Draft               MAICHE Protocol                  March 2026
    The message is NEW_THREAD [thread_uuid] [thread_title] [thread_body]
    [thread_timestamp].
 
-10.4.  Newly created comment
+10.4.  Newly created private message
 
-   If a new comment has been created, a message is sent to all clients
-   that are subscribed to the related team.
+   If a new private message has been sent by a user to another user, a
+   message is sent to the user receiving the message.
 
 
 
@@ -1290,27 +1290,27 @@ MAICHE                   Expires 1 October 2026                [Page 23]
 Internet-Draft               MAICHE Protocol                  March 2026
 
 
-   The message is NEW_COMMENT [team_uuid] [thread_uuid] [user_uuid]
-   [comment_body].
-
-10.5.  Newly created private message
-
-   If a new private message has been sent by a user to another user, a
-   message is sent to the user receiving the message.
-
    The message is NEW_MESSAGE [user_uuid] [message_body]
 
-10.6.  User logged in
+10.5.  User logged in
 
    When a user logged in, a message is sent to every other client.
 
    The message is CLIENT_JOINED [user_uuid] [user_name]
 
-10.7.  User logged out
+10.6.  User logged out
 
    When a user logged out, a message is sent to every other client.
 
    The message is CLIENT_LEFT [user_uuid] [user_name]
+
+
+
+
+
+
+
+
 
 
 

@@ -11,7 +11,6 @@
     #define NEW_TEAM "NEW_TEAM"
     #define NEW_CHANNEL "NEW_CHANNEL"
     #define NEW_THREAD "NEW_THREAD"
-    #define NEW_COMMENT "NEW_COMMENT"
     #define NEW_MESSAGE "NEW_MESSAGE"
 
     #define CLIENT_JOINED "CLIENT_JOINED"
