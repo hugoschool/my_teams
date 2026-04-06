@@ -49,7 +49,7 @@ static void comments_reallocate_size(comments_t *comments)
     }
 }
 
-comment_data_t *comments_add(comments_t *comments, char *body)
+comment_data_t *comments_add(comments_t *comments, char *user_uuid, char *body)
 {
     uuid_t binuuid;
     char uuid[UUID_STR_LEN];
@@ -59,7 +59,7 @@ comment_data_t *comments_add(comments_t *comments, char *body)
     comments_reallocate_size(comments);
     uuid_generate_random(binuuid);
     uuid_unparse(binuuid, uuid);
-    comments->comments[comments->amount] = comment_data_init(uuid, body);
+    comments->comments[comments->amount] = comment_data_init(uuid, user_uuid, body);
     comments->amount++;
     return comments->comments[comments->amount - 1];
 }

@@ -12,7 +12,7 @@
 #include <string.h>
 #include <unistd.h>
 
-comment_data_t *comment_data_init(char *uuid, char *body)
+comment_data_t *comment_data_init(char *uuid, char *user_uuid, char *body)
 {
     comment_data_t *data = malloc(sizeof(comment_data_t));
 
@@ -21,6 +21,7 @@ comment_data_t *comment_data_init(char *uuid, char *body)
         exit(84);
     }
     strncpy(data->uuid, uuid, UUID_STR_LEN);
+    strncpy(data->user_uuid, user_uuid, UUID_STR_LEN);
     strncpy(data->body, body, MAX_BODY_LENGTH + 1);
     data->timestamp = time(NULL);
     return data;

@@ -43,7 +43,7 @@ void command_comments(server_t *server)
     WRITE_STATUS(*CLIENT->fd, 200);
     for (unsigned int i = 0; i < thread->comments->amount; i++) {
         comment = thread->comments->comments[i];
-        dprintf(*CLIENT->fd, "%s %ld %s\n", comment->uuid, comment->timestamp,
-            comment->body);
+        dprintf(*CLIENT->fd, "%s %s %ld %s\n", comment->uuid, comment->user_uuid,
+            comment->timestamp, comment->body);
     }
 }

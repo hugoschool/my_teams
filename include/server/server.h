@@ -84,11 +84,12 @@ void users_remove_by_data(users_t *users, user_data_t *data);
 // Comments
 typedef struct {
     char uuid[UUID_STR_LEN];
+    char user_uuid[UUID_STR_LEN];
     char body[MAX_BODY_LENGTH + 1];
     time_t timestamp;
 } comment_data_t;
 
-comment_data_t *comment_data_init(char *uuid, char *body);
+comment_data_t *comment_data_init(char *uuid, char *user_uuid, char *body);
 void comment_data_free(comment_data_t *data);
 
 typedef struct {
@@ -100,7 +101,7 @@ typedef struct {
 comments_t *comments_init(void);
 void comments_free(comments_t *comments);
 
-comment_data_t *comments_add(comments_t *comments, char *body);
+comment_data_t *comments_add(comments_t *comments, char *user_uuid, char *body);
 
 // Threads
 typedef struct {
@@ -124,7 +125,7 @@ threads_t *threads_init(void);
 void threads_free(threads_t *threads);
 
 thread_data_t *threads_add(threads_t *threads, char *title, char *description);
-comment_data_t *thread_add_comment(thread_data_t *thread, char *body);
+comment_data_t *thread_add_comment(thread_data_t *thread, char *user_uuid, char *body);
 
 thread_data_t *threads_get_from_uuid(threads_t *threads, char *uuid);
 thread_data_t *threads_get_from_title(threads_t *threads, char *title);

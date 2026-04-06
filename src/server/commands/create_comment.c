@@ -45,7 +45,7 @@ void command_create_comment(server_t *server)
     }
     body = get_arg(server->buffer, 4);
     WRITE_STATUS(*CLIENT->fd, 200);
-    comment = thread_add_comment(thread, body);
+    comment = thread_add_comment(thread, CLIENT->user->uuid, body);
     server_event_reply_created(thread->uuid, CLIENT->user->uuid, comment->body);
     free(body);
 }

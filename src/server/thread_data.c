@@ -60,11 +60,11 @@ thread_data_t *threads_get_from_title(threads_t *threads, char *title)
     return NULL;
 }
 
-comment_data_t *thread_add_comment(thread_data_t *thread, char *body)
+comment_data_t *thread_add_comment(thread_data_t *thread, char *user_uuid, char *body)
 {
     if (thread == NULL)
         return NULL;
     if (thread->comments == NULL)
         thread->comments = comments_init();
-    return comments_add(thread->comments, body);
+    return comments_add(thread->comments, user_uuid, body);
 }
