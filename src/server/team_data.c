@@ -36,6 +36,8 @@ void team_data_free(team_data_t *data)
         return;
     if (data->users)
         users_free(data->users, false);
+    if (data->channels)
+        channels_free(data->channels);
     free(data);
     data = NULL;
 }
@@ -69,4 +71,14 @@ bool team_is_user_subscribed(team_data_t *team, user_data_t *user)
         }
     }
     return false;
+}
+
+channel_data_t *team_add_channel(team_data_t *team, char *name,
+    char *description)
+{
+    if (team == NULL)
+        return NULL;
+    if (team->channels == NULL)
+        team->channels = channels_init();
+    return channels_add(team->channels, name, description);
 }

@@ -40,6 +40,8 @@ void channel_data_free(channel_data_t *data)
 
 channel_data_t *channels_get_from_uuid(channels_t *channels, char *uuid)
 {
+    if (channels == NULL)
+        return NULL;
     for (unsigned int i = 0; i < channels->amount; i++) {
         if (strncmp(channels->channels[i]->uuid, uuid, UUID_STR_LEN) == 0)
             return channels->channels[i];
@@ -49,6 +51,8 @@ channel_data_t *channels_get_from_uuid(channels_t *channels, char *uuid)
 
 channel_data_t *channels_get_from_name(channels_t *channels, char *name)
 {
+    if (channels == NULL)
+        return NULL;
     for (unsigned int i = 0; i < channels->amount; i++) {
         if (strncmp(channels->channels[i]->name, name, MAX_NAME_LENGTH + 1) == 0)
             return channels->channels[i];
