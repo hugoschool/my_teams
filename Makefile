@@ -43,7 +43,8 @@ SERVER_SRC	+=	src/server/commands/handler.c \
 				src/server/commands/teams.c \
 				src/server/commands/team.c \
 				src/server/commands/subscribe_team.c \
-				src/server/commands/unsubscribe_team.c
+				src/server/commands/unsubscribe_team.c \
+				src/server/commands/subscribed.c
 
 SERVER_OBJ	:=	$(SERVER_SRC:.c=.o)
 

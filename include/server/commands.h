@@ -32,6 +32,7 @@ void command_teams(server_t *server);
 void command_team(server_t *server);
 void command_subscribe_team(server_t *server);
 void command_unsubscribe_team(server_t *server);
+void command_subscribed(server_t *server);
 
 static const commands_t cmds[] = {
     {
@@ -98,6 +99,12 @@ static const commands_t cmds[] = {
         .command = "UNSUBSCRIBE_TEAM",
         .function = &command_unsubscribe_team,
         .args_amount = 1,
+        .needs_auth = true
+    },
+    {
+        .command = "SUBSCRIBED",
+        .function = &command_subscribed,
+        .args_amount = 0,
         .needs_auth = true
     },
     {.command = NULL, .function = NULL, .args_amount = 0, .needs_auth = false}
