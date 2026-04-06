@@ -117,11 +117,22 @@ typedef struct {
     threads_t *threads;
 } channel_data_t;
 
+channel_data_t *channel_data_init(char *uuid, char *name, char *description);
+void channel_data_free(channel_data_t *data);
+
 typedef struct {
     channel_data_t **channels;
     unsigned int amount;
     unsigned int size;
 } channels_t;
+
+channels_t *channels_init(void);
+void channels_free(channels_t *channels);
+
+channel_data_t *channels_add(channels_t *channels, char *name, char *description);
+
+channel_data_t *channels_get_from_uuid(channels_t *channels, char *uuid);
+channel_data_t *channels_get_from_name(channels_t *channels, char *name);
 
 // Teams
 typedef struct {

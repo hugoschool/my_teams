@@ -29,7 +29,9 @@ SERVER_SRC	:= 	$(UTILS_SRC) \
 				src/server/messages.c \
 				src/server/message_data.c \
 				src/server/teams.c \
-				src/server/team_data.c
+				src/server/team_data.c \
+				src/server/channels.c \
+				src/server/channel_data.c
 
 # Commands
 SERVER_SRC	+=	src/server/commands/handler.c \
