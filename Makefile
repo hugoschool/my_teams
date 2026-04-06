@@ -49,7 +49,8 @@ SERVER_SRC	+=	src/server/commands/handler.c \
 				src/server/commands/subscribed.c \
 				src/server/commands/list_subscribed_users.c \
 				src/server/commands/create_channel.c \
-				src/server/commands/channel.c
+				src/server/commands/channel.c \
+				src/server/commands/channels.c
 
 SERVER_OBJ	:=	$(SERVER_SRC:.c=.o)
 
