@@ -116,6 +116,53 @@ All responses from the server must be formatted as such (without the brackets, o
 
 All timestamps must be UNIX timestamps (time_t in C).
 
+# Text objects
+
+For whatever needed text, the client needs to send a command to create the text first.
+
+The "text" objects are only one time use. Once consummed, they are instantly deleted.
+
+"Text" objects can be:
+
+- titles
+
+- description
+
+- body
+
+Anything referring to a `TEXT_UUID` is a text object UUID.
+
+## Encoding
+
+Supported for now:
+
+- `none` (no encoding)
+
+## Create text
+
+Command is sent as such: `CREATE_TEXT [encoding] [bytes] [body]`
+
+What should be sent is:
+
+- the encoding used
+
+- the number of bytes in the body
+
+- the body
+
+Example:
+> CREATE_TEXT [encoding] [bytes] [body]
+>
+> 200 Success. [Ending sequence]
+>
+> TEXT_UUID
+>
+> In case user isn't logged in:
+>
+> CREATE_TEXT [encoding] [bytes] [body]
+>
+> 435 User isn't logged in.
+
 # User-related events
 
 ## Connection of a user
@@ -127,6 +174,8 @@ Citing the subject:
 > There is no password authentication required for this subject but you should always develop with security in mind.
 
 Connecting as a user should be done using the `LOGIN username` command.
+
+The username is only composed of `a-zA-Z_0-9` characters.
 
 A user can only be logged in once. You cannot login as the same user in another window.
 
