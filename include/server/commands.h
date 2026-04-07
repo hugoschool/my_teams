@@ -15,8 +15,9 @@ typedef struct {
     const char *command;
     void (*function)(server_t *server);
     // Represents the amount of arguments the command can take.
+    // A negative amount means the command is doing the handling of the arguments itself.
     // Ex: USER a takes in 1 argument
-    const unsigned int args_amount;
+    const char args_amount;
     // Needs for user to be logged in
     bool needs_auth;
 } commands_t;

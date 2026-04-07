@@ -23,7 +23,8 @@ static bool verify_command(server_t *server, int i)
             WRITE_STATUS(*CLIENT->fd, 435);
             return true;
         }
-        if (cmds[i].args_amount != arg_amount(server->buffer) - 1) {
+        if (cmds[i].args_amount >= 0 &&
+            (const size_t)cmds[i].args_amount != arg_amount(server->buffer) - 1) {
             WRITE_STATUS(*CLIENT->fd, 499);
             return true;
         }
