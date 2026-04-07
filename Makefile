@@ -63,7 +63,8 @@ SERVER_SRC	+=	src/server/commands/handler.c \
 				src/server/commands/thread.c \
 				src/server/commands/create_comment.c \
 				src/server/commands/comments.c \
-				src/server/commands/create_text.c
+				src/server/commands/create_text.c \
+				src/server/commands/get_text.c
 
 SERVER_OBJ	:=	$(SERVER_SRC:.c=.o)
 
