@@ -13,7 +13,8 @@ UTILS_SRC	:=	src/utils/remove_crlf.c \
 				src/utils/strcmp_end.c \
 				src/utils/strcmp_start.c \
 				src/utils/get_arg.c \
-				src/utils/arg_amount.c
+				src/utils/arg_amount.c \
+				src/utils/read_bytes_from_arg_nb.c
 
 SERVER_SRC	:= 	$(UTILS_SRC) \
 				src/server/main.c \
@@ -61,7 +62,8 @@ SERVER_SRC	+=	src/server/commands/handler.c \
 				src/server/commands/threads.c \
 				src/server/commands/thread.c \
 				src/server/commands/create_comment.c \
-				src/server/commands/comments.c
+				src/server/commands/comments.c \
+				src/server/commands/create_text.c
 
 SERVER_OBJ	:=	$(SERVER_SRC:.c=.o)
 

@@ -16,5 +16,6 @@ void remove_crlf(char *str);
 size_t strccount(const char *str, char c);
 char *get_arg(char *str, int nb);
 size_t arg_amount(char *str);
+char *read_bytes_from_arg_nb(char *str, int nb, size_t bytes);
 
 #endif

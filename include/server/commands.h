@@ -43,6 +43,7 @@ void command_threads(server_t *server);
 void command_thread(server_t *server);
 void command_create_comment(server_t *server);
 void command_comments(server_t *server);
+void command_create_text(server_t *server);
 
 static const commands_t cmds[] = {
     {
@@ -169,6 +170,12 @@ static const commands_t cmds[] = {
         .command = "COMMENTS",
         .function = &command_comments,
         .args_amount = 3,
+        .needs_auth = true
+    },
+    {
+        .command = "CREATE_TEXT",
+        .function = &command_create_text,
+        .args_amount = -1,
         .needs_auth = true
     },
     {.command = NULL, .function = NULL, .args_amount = 0, .needs_auth = false}
