@@ -132,6 +132,8 @@ The "text" objects are only one time use. Once consummed, they are instantly del
 
 Anything referring to a `TEXT_UUID` is a text object UUID.
 
+All of the parameters ending with `_text_uuid` need to be retrieved using `GET_TEXT` command.
+
 ## Encoding
 
 Supported for now:
@@ -289,7 +291,7 @@ A user can send a private message to another user.
 
 On the client, this is the `/send [user_uuid] [message_body]` command.
 
-This is done using the `MESSAGE_SEND [uuid] [body]` command.
+This is done using the `MESSAGE_SEND [uuid] [text_uuid]` command.
 
 What is returned is a status code.
 
@@ -297,22 +299,26 @@ This command can error out in case
 
 - the user doesn't exist
 
+- the text uuid doesn't exist
+
 - the user isn't logged in.
 
 Example:
-> MESSAGE_SEND [uuid] [body]
+> MESSAGE_SEND [uuid] [text_uuid]
 >
 > 200 Success.
 >
-> In case user doesn't exist:
+> In case user doesn't exist or
 >
-> MESSAGE_SEND [uuid] [body]
+> In case text uuid doesn't exist:
+>
+> MESSAGE_SEND [uuid] [text_uuid]
 >
 > 460 Given parameter is invalid.
 >
 > In case user isn't logged in:
 >
-> MESSAGE_SEND [uuid] [body]
+> MESSAGE_SEND [uuid] [text_uuid]
 >
 > 435 User isn't logged in.
 
@@ -326,7 +332,7 @@ This is done using the `MESSAGES [uuid]` command.
 
 What is returned is a status code.
 
-First is the UUID of the user who sent the message, then the timestamp of the sent message then the message body.
+First is the UUID of the user who sent the message, then the timestamp of the sent message then the message body text_uuid.
 
 This command can error out in case
 
@@ -339,11 +345,11 @@ Example:
 >
 > 200 Success. [Ending sequence]
 >
-> UUID timestamp body [Newline]
+> UUID timestamp body_text_uuid [Newline]
 >
-> UUID timestamp body [Newline]
+> UUID timestamp body_text_uuid [Newline]
 >
-> UUID timestamp body [Newline]
+> UUID timestamp body_text_uuid [Newline]
 >
 > In case user doesn't exist:
 >
@@ -365,7 +371,7 @@ A user can create a team given a name and a description.
 
 On the client, this is the `/create [team_name] [team_description]` command.
 
-This is done using the `CREATE_TEAM [name] [description]` command.
+This is done using the `CREATE_TEAM [text_uuid] [text_uuid]` command.
 
 What is returned is only a 200 status code.
 
@@ -373,10 +379,12 @@ This command can error out in case
 
 - the team name already exists
 
+- any of the text uuids don't exist
+
 - the user isn't logged in.
 
 Example:
-> CREATE_TEAM [name] [description]
+> CREATE_TEAM [text_uuid] [text_uuid]
 >
 > 200 Success. [Ending sequence]
 >
@@ -384,13 +392,19 @@ Example:
 >
 > In case team name is already taken:
 >
-> CREATE_TEAM [name] [description]
+> CREATE_TEAM [text_uuid] [text_uuid]
 >
 > 440 Already exists.
 >
+> In case any of the text uuids don't exist:
+>
+> CREATE_TEAM [text_uuid] [text_uuid]
+>
+> 460 Given parameter is invalid.
+>
 > In case user isn't logged in:
 >
-> CREATE_TEAM [name] [description]
+> CREATE_TEAM [text_uuid] [text_uuid]
 >
 > 435 User isn't logged in.
 
@@ -616,7 +630,7 @@ A user can create a channel given a name and a description.
 
 On the client, this is the `/create [channel_name] [channel_description]` command whilst in a `/use [team_uuid]` context.
 
-This is done using the `CREATE_CHANNEL [team_uuid] [name] [description]` command.
+This is done using the `CREATE_CHANNEL [team_uuid] [text_uuid] [text_uuid]` command.
 
 What is returned is only a 200 status code.
 
@@ -624,32 +638,36 @@ This command can error out in case:
 
 - the team does not exist
 
+- any of the text uuids don't exist
+
 - the channel name already exists
 
 - the user isn't logged in.
 
 Example:
-> CREATE_CHANNEL [team_uuid] [name] [description]
+> CREATE_CHANNEL [team_uuid] [text_uuid] [text_uuid]
 >
 > 200 Success. [Ending sequence]
 >
 > CHANNEL_NAME uuid description
 >
-> In case team doesn't exist:
+> In case team doesn't exist or
 >
-> CREATE_CHANNEL [team_uuid] [name] [description]
+> In case any of the text uuids don't exist
+>
+> CREATE_CHANNEL [team_uuid] [text_uuid] [text_uuid]
 >
 > 460 Given parameter is invalid.
 >
 > In case channel name already exists:
 >
-> CREATE_CHANNEL [team_uuid] [name] [description]
+> CREATE_CHANNEL [team_uuid] [text_uuid] [text_uuid]
 >
 > 440 Already exists.
 >
 > In case user isn't logged in:
 >
-> CREATE_CHANNEL [team_uuid] [name] [description]
+> CREATE_CHANNEL [team_uuid] [text_uuid] [text_uuid]
 >
 > 435 User isn't logged in.
 
@@ -743,7 +761,7 @@ A user can create a thread given a title and a message.
 
 On the client, this is the `/create [thread_title] [thread_message]` command whilst in a `/use [team_uuid] [channel_uuid]` context.
 
-This is done using the `CREATE_THREAD [team_uuid] [channel_uuid] [title] [message]` command.
+This is done using the `CREATE_THREAD [team_uuid] [channel_uuid] [text_uuid] [text_uuid]` command.
 
 What is returned is only a 200 status code.
 
@@ -755,40 +773,44 @@ This command can error out in case:
 
 - the thread title already exists
 
+- any of the text uuids don't exist
+
 - the user is not subscribed to the team
 
 - the user isn't logged in.
 
 Example:
-> CREATE_THREAD [team_uuid] [channel_uuid] [title] [message]
+> CREATE_THREAD [team_uuid] [channel_uuid] [text_uuid] [text_uuid]
 >
 > 200 Success. [Ending sequence]
 >
 > THREAD_TITLE thread_uuid user_uuid timestamp message [newline]
 >
-> In case channel doesn't exist and
+> In case channel doesn't exist or
 >
-> In case team doesn't exist:
+> In case team doesn't exist or
 >
-> CREATE_THREAD [team_uuid] [channel_uuid] [title] [message]
+> In case any of the text uuids don't exist
+>
+> CREATE_THREAD [team_uuid] [channel_uuid] [text_uuid] [text_uuid]
 >
 > 460 Given parameter is invalid.
 >
 > In case thread title already exists:
 >
-> CREATE_THREAD [team_uuid] [channel_uuid] [title] [message]
+> CREATE_THREAD [team_uuid] [channel_uuid] [text_uuid] [text_uuid]
 >
 > 440 Already exists.
 >
 > In case user isn't subscribed to the team:
 >
-> CREATE_THREAD [team_uuid] [channel_uuid] [title] [message]
+> CREATE_THREAD [team_uuid] [channel_uuid] [text_uuid] [text_uuid]
 >
 > 451 User isn't subscribed to this team.
 >
 > In case user isn't logged in:
 >
-> CREATE_THREAD [team_uuid] [channel_uuid] [title] [message]
+> CREATE_THREAD [team_uuid] [channel_uuid] [text_uuid] [text_uuid]
 >
 > 435 User isn't logged in.
 
@@ -886,7 +908,7 @@ A user can create a comment with a message.
 
 On the client, this is the `/create [comment_body]` command whilst in a `/use [team_uuid] [channel_uuid] [thread_uuid]` context.
 
-This is done using the `CREATE_COMMENT [team_uuid] [channel_uuid] [thread_uuid] [body]` command.
+This is done using the `CREATE_COMMENT [team_uuid] [channel_uuid] [thread_uuid] [text_uuid]` command.
 
 What is returned is only a 200 status code.
 
@@ -898,36 +920,40 @@ This command can error out in case:
 
 - the thread does not exist
 
+- the text uuid doesn't exist
+
 - the user is not subscribed to the team
 
 - the user isn't logged in.
 
 Example:
-> CREATE_COMMENT [team_uuid] [channel_uuid] [thread_uuid] [body]
+> CREATE_COMMENT [team_uuid] [channel_uuid] [thread_uuid] [text_uuid]
 >
 > 200 Success. [Ending sequence]
 >
-> COMMENT_UUID user_uuid timestamp body
+> COMMENT_UUID user_uuid timestamp body_text_uuid
 >
-> In case channel doesn't exist and
+> In case channel doesn't exist or
 >
-> In case team doesn't exist and
+> In case team doesn't exist or
 >
-> In case thread doesn't exist
+> In case thread doesn't exist or
 >
-> CREATE_COMMENT [team_uuid] [channel_uuid] [thread_uuid] [body]
+> In case the text uuid doesn't exist
+>
+> CREATE_COMMENT [team_uuid] [channel_uuid] [thread_uuid] [text_uuid]
 >
 > 460 Given parameter is invalid.
 >
 > In case user isn't subscribed to this team:
 >
-> CREATE_COMMENT [team_uuid] [channel_uuid] [thread_uuid] [body]
+> CREATE_COMMENT [team_uuid] [channel_uuid] [thread_uuid] [text_uuid]
 >
 > 451 User isn't subscribed to this team.
 >
 > In case user isn't logged in:
 >
-> CREATE_COMMENT [team_uuid] [channel_uuid] [thread_uuid] [body]
+> CREATE_COMMENT [team_uuid] [channel_uuid] [thread_uuid] [text_uuid]
 >
 > 435 User isn't logged in.
 
@@ -956,11 +982,11 @@ Example:
 >
 > 200 Success. [Ending sequence]
 >
-> COMMENT_UUID user_uuid timestamp body [newline]
+> COMMENT_UUID user_uuid timestamp body_text_uuid [newline]
 >
-> COMMENT_UUID user_uuid timestamp body [newline]
+> COMMENT_UUID user_uuid timestamp body_text_uuid [newline]
 >
-> COMMENT_UUID user_uuid timestamp body [newline]
+> COMMENT_UUID user_uuid timestamp body_text_uuid [newline]
 >
 > In case channel doesn't exist and
 >
@@ -986,25 +1012,25 @@ Received events are events that can be received anytime for all clients dependin
 
 If a new team has been created, a message is sent to all clients.
 
-The message is `NEW_TEAM [team_uuid] [team_name] [team_description]`.
+The message is `NEW_TEAM [team_uuid] [team_name_text_uuid] [team_description_text_uuid]`.
 
 ## Newly created channel
 
 If a new channel has been created, a message is sent to all clients that are subscribed to the related team.
 
-The message is `NEW_CHANNEL [channel_uuid] [channel_name] [channel_description]`.
+The message is `NEW_CHANNEL [channel_uuid] [channel_name_text_uuid] [channel_description_text_uuid]`.
 
 ## Newly created thread
 
 If a new thread has been created, a message is sent to all clients that are subscribed to the related team.
 
-The message is `NEW_THREAD [thread_uuid] [user_uuid] [thread_title] [thread_timestamp] [thread_body]`.
+The message is `NEW_THREAD [thread_uuid] [user_uuid] [thread_title_text_uuid] [thread_timestamp] [thread_body_text_uuid]`.
 
 ## Newly created private message
 
 If a new private message has been sent by a user to another user, a message is sent to the user receiving the message.
 
-The message is `NEW_MESSAGE [user_uuid] [message_body]`
+The message is `NEW_MESSAGE [user_uuid] [message_body_text_uuid]`
 
 ## User logged in
 
