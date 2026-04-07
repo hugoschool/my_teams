@@ -165,6 +165,31 @@ Example:
 >
 > 435 User isn't logged in.
 
+## Get text content
+
+Command is sent as such: `GET_TEXT [text_uuid]`
+
+What is then sent the amount of bytes of the body and the body content.
+
+Example:
+> GET_TEXT [text_uuid]
+>
+> 200 Success. [Ending sequence]
+>
+> [bytes] [raw_body]
+>
+> If text doesn't exist:
+>
+> GET_TEXT [text_uuid]
+>
+> 460 Given parameter is invalid.
+>
+> In case user isn't logged in:
+>
+> GET_TEXT [text_uuid]
+>
+> 435 User isn't logged in.
+
 # User-related events
 
 ## Connection of a user
