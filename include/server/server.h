@@ -54,6 +54,30 @@ void poller_free(poller_t *poller);
 // Socket
 int socket_init(in_port_t port);
 
+// Texts
+typedef struct {
+    char uuid[UUID_STR_LEN];
+    char *body;
+    size_t length;
+} text_data_t;
+
+text_data_t *text_data_init(char *body, size_t length);
+void text_data_free(text_data_t *data);
+
+typedef struct {
+    text_data_t **texts;
+    unsigned int amount;
+    unsigned int size;
+} texts_t;
+
+texts_t *texts_init(void);
+void texts_free(texts_t *texts);
+
+text_data_t *texts_add(texts_t *texts, char *body, size_t length);
+
+// Caller's responsibility to free the given text_data.
+text_data_t *texts_consume(texts_t *texts, char *uuid);
+
 // Users
 typedef struct {
     char uuid[UUID_STR_LEN];
@@ -249,6 +273,7 @@ void messages_free(messages_t *messages);
 typedef struct {
     poller_t *poller;
     clients_t *clients;
+    texts_t *texts;
 
     users_t *users;
     messages_t *messages;

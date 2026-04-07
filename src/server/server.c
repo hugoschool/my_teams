@@ -27,9 +27,10 @@ static server_t *server_init(void)
     server->users = users_init();
     server->messages = messages_init();
     server->teams = teams_init();
+    server->texts = texts_init();
     if (server->poller == NULL || server->clients == NULL
         || server->users == NULL || server->messages == NULL
-        || server->teams == NULL) {
+        || server->teams == NULL || server->texts == NULL) {
         free(server);
         return NULL;
     }
@@ -52,6 +53,8 @@ void server_free(server_t *server)
         messages_free(server->messages);
     if (server->teams)
         teams_free(server->teams);
+    if (server->texts)
+        texts_free(server->texts);
     free(server);
 }
 

@@ -35,7 +35,9 @@ SERVER_SRC	:= 	$(UTILS_SRC) \
 				src/server/threads.c \
 				src/server/thread_data.c \
 				src/server/comments.c \
-				src/server/comment_data.c
+				src/server/comment_data.c \
+				src/server/texts.c \
+				src/server/text_data.c
 
 # Commands
 SERVER_SRC	+=	src/server/commands/handler.c \
