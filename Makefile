@@ -13,7 +13,8 @@ UTILS_SRC	:=	src/utils/remove_crlf.c \
 				src/utils/strcmp_end.c \
 				src/utils/strcmp_start.c \
 				src/utils/get_arg.c \
-				src/utils/arg_amount.c
+				src/utils/arg_amount.c \
+				src/utils/read_bytes_starting_arg.c
 
 SERVER_SRC	:= 	$(UTILS_SRC) \
 				src/server/main.c \
