@@ -17,7 +17,8 @@ void command_teams(server_t *server)
     WRITE_STATUS(*CLIENT->fd, 200);
     for (unsigned int i = 0; i < server->teams->amount; i++) {
         team = TEAM_I(i);
-        dprintf(*CLIENT->fd, "%s %s %s\n", team->name, team->uuid,
+        dprintf(*CLIENT->fd, "%s %ld %ld %s %s\n", team->uuid,
+            strlen(team->name), strlen(team->description), team->name,
             team->description);
     }
 }

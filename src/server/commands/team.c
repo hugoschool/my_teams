@@ -27,6 +27,7 @@ void command_team(server_t *server)
         return;
     }
     WRITE_STATUS(*CLIENT->fd, 200);
-    dprintf(*CLIENT->fd, "%s %s %s\n", team->name, team->uuid,
+    dprintf(*CLIENT->fd, "%s %ld %ld %s %s\n", team->uuid,
+        strlen(team->name), strlen(team->description), team->name,
         team->description);
 }

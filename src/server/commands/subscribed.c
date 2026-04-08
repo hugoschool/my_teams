@@ -19,7 +19,8 @@ void command_subscribed(server_t *server)
         team = TEAM_I(i);
         for (unsigned int user_i = 0; user_i < team->users->amount; user_i++) {
             if (CLIENT->user == team->users->users[i])
-                dprintf(*CLIENT->fd, "%s %s %s\n", team->name, team->uuid,
+                dprintf(*CLIENT->fd, "%s %ld %ld %s %s\n", team->uuid,
+                    strlen(team->name), strlen(team->description), team->name,
                     team->description);
         }
     }
