@@ -38,7 +38,8 @@ static void send_to_other_user(server_t *server, message_data_t *message)
 void command_message_send(server_t *server)
 {
     user_data_t *user = NULL;
-    char *arg_body = NULL;
+    char *text_uuid = NULL;
+    text_data_t *text = NULL;
     message_data_t *message = NULL;
 
     user = get_user(server);
@@ -46,12 +47,18 @@ void command_message_send(server_t *server)
         WRITE_STATUS(*CLIENT->fd, 460);
         return;
     }
-    arg_body = get_arg(server->buffer, 2);
-    if (arg_body == NULL)
+    text_uuid = get_arg(server->buffer, 2);
+    if (text_uuid == NULL)
         return;
+    text = texts_consume(server->texts, text_uuid);
+    if (text == NULL) {
+        WRITE_STATUS(*CLIENT->fd, 460);
+        return;
+    }
+    free(text_uuid);
     message = messages_add(server->messages, CLIENT->user->uuid,
-        user->uuid, arg_body);
-    free(arg_body);
+        user->uuid, text->body);
+    text_data_free(text);
     if (message == NULL)
         return;
     WRITE_STATUS(*CLIENT->fd, 200);

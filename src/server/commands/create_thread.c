@@ -24,14 +24,37 @@ static void send_event_all_clients(server_t *server, thread_data_t *thread)
     }
 }
 
+static thread_data_t *get_thread(server_t *server, channel_data_t *channel)
+{
+    char *title_text_uuid = get_arg(server->buffer, 3);
+    char *description_text_uuid = get_arg(server->buffer, 4);
+    text_data_t *title = NULL;
+    text_data_t *description = NULL;
+    thread_data_t *thread = NULL;
+
+    if (title_text_uuid == NULL)
+        return NULL;
+    if (description_text_uuid == NULL) {
+        free(title_text_uuid);
+        return NULL;
+    }
+    free(description_text_uuid);
+    title = texts_consume(server->texts, title_text_uuid);
+    description = texts_consume(server->texts, description_text_uuid);
+    free(title_text_uuid);
+    free(description_text_uuid);
+    thread = channel_add_thread(channel, CLIENT->user->uuid, title->body, description->body);
+    text_data_free(title);
+    text_data_free(description);
+    return thread;
+}
+
 // TODO: not respecting protocol here
 // Same as LOGIN
 void command_create_thread(server_t *server)
 {
     char *team_uuid = get_arg(server->buffer, 1);
     char *channel_uuid = NULL;
-    char *title = NULL;
-    char *description = NULL;
     team_data_t *team = teams_get_from_uuid(server->teams, team_uuid);
     channel_data_t *channel = NULL;
     thread_data_t *thread = NULL;
@@ -48,11 +71,11 @@ void command_create_thread(server_t *server)
         WRITE_STATUS(*CLIENT->fd, 440);
         return;
     }
-    title = get_arg(server->buffer, 3);
-    description = get_arg(server->buffer, 4);
-    thread = channel_add_thread(channel, CLIENT->user->uuid, title, description);
-    free(title);
-    free(description);
+    thread = get_thread(server, channel);
+    if (thread == NULL) {
+        WRITE_STATUS(*CLIENT->fd, 460);
+        return;
+    }
     WRITE_STATUS(*CLIENT->fd, 200);
     server_event_thread_created(channel->uuid, thread->uuid, CLIENT->user->uuid,
         thread->title, thread->description);
