@@ -18,8 +18,9 @@ static void send_event_all_clients(server_t *server, channel_data_t *channel)
     for (unsigned int i = INITIAL_AMOUNT; i < server->clients->amount; i++) {
         if (i == server->index || CLIENT_I(i)->login_step == LOGGED_OUT)
             continue;
-        dprintf(*CLIENT_I(i)->fd, NEW_CHANNEL" %s %s %s"CRLF,
-            channel->uuid, channel->name, channel->description);
+        dprintf(*CLIENT_I(i)->fd, NEW_CHANNEL" %s %ld %ld %s %s"CRLF,
+            channel->uuid, strlen(channel->name), strlen(channel->description),
+            channel->name, channel->description);
     }
 }
 
@@ -28,7 +29,11 @@ static void send_event_all_clients(server_t *server, channel_data_t *channel)
 void command_create_channel(server_t *server)
 {
     char *team_uuid = get_arg(server->buffer, 1);
+    char *name_len_text = NULL;
+    int name_len;
     char *name = NULL;
+    char *description_len_text = NULL;
+    int description_len;
     char *description = NULL;
     team_data_t *team = teams_get_from_uuid(server->teams, team_uuid);
     channel_data_t *channel = NULL;
@@ -38,15 +43,33 @@ void command_create_channel(server_t *server)
         WRITE_STATUS(*CLIENT->fd, 460);
         return;
     }
-    name = get_arg(server->buffer, 2);
+
+    name_len_text = get_arg(server->buffer, 2);
+    if (name_len_text == NULL) {
+        WRITE_STATUS(*CLIENT->fd, 460);
+        return;
+    }
+    name_len = atoi(name_len_text);
+    free(name_len_text);
+
+    description_len_text = get_arg(server->buffer, 3);
+    if (description_len_text == NULL) {
+        WRITE_STATUS(*CLIENT->fd, 460);
+        return;
+    }
+    description_len = atoi(description_len_text);
+    free(description_len_text);
+
+    name = read_bytes_starting_arg(server->buffer, 4, name_len);
+    description = read_bytes_starting_arg(server->buffer, 4, name_len + 1 + description_len);
+
     channel = channels_get_from_name(team->channels, name);
     if (channel != NULL) {
         free(name);
         WRITE_STATUS(*CLIENT->fd, 440);
         return;
     }
-    description = get_arg(server->buffer, 3);
-    channel = team_add_channel(team, name, description);
+    channel = team_add_channel(team, name, description + name_len + 1);
     free(name);
     free(description);
     WRITE_STATUS(*CLIENT->fd, 200);

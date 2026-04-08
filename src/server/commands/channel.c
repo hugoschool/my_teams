@@ -34,6 +34,7 @@ void command_channel(server_t *server)
         return;
     }
     WRITE_STATUS(*CLIENT->fd, 200);
-    dprintf(*CLIENT->fd, "%s %s %s\n", channel->name, channel->uuid,
-        channel->description);
+    dprintf(*CLIENT->fd, "%s %ld %ld %s %s\n", channel->uuid,
+        strlen(channel->name), strlen(channel->description),
+        channel->name, channel->description);
 }

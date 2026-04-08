@@ -25,7 +25,8 @@ void command_channels(server_t *server)
     WRITE_STATUS(*CLIENT->fd, 200);
     for (unsigned int i = 0; i < team->channels->amount; i++) {
         channel = team->channels->channels[i];
-        dprintf(*CLIENT->fd, "%s %s %s\n", channel->name, channel->uuid,
-            channel->description);
+        dprintf(*CLIENT->fd, "%s %ld %ld %s %s\n", channel->uuid,
+            strlen(channel->name), strlen(channel->description),
+            channel->name, channel->description);
     }
 }
