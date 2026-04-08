@@ -72,7 +72,7 @@ static const commands_t cmds[] = {
     {
         .command = "MESSAGE_SEND",
         .function = &command_message_send,
-        .args_amount = 2,
+        .args_amount = -1,
         .needs_auth = true
     },
     {
@@ -84,7 +84,7 @@ static const commands_t cmds[] = {
     {
         .command = "CREATE_TEAM",
         .function = &command_create_team,
-        .args_amount = 2,
+        .args_amount = -1,
         .needs_auth = true
     },
     {
@@ -126,7 +126,7 @@ static const commands_t cmds[] = {
     {
         .command = "CREATE_CHANNEL",
         .function = &command_create_channel,
-        .args_amount = 3,
+        .args_amount = -1,
         .needs_auth = true
     },
     {
@@ -144,7 +144,7 @@ static const commands_t cmds[] = {
     {
         .command = "CREATE_THREAD",
         .function = &command_create_thread,
-        .args_amount = 4,
+        .args_amount = -1,
         .needs_auth = true
     },
     {
@@ -162,7 +162,7 @@ static const commands_t cmds[] = {
     {
         .command = "CREATE_COMMENT",
         .function = &command_create_comment,
-        .args_amount = 4,
+        .args_amount = -1,
         .needs_auth = true
     },
     {
