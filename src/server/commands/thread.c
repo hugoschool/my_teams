@@ -43,7 +43,8 @@ void command_thread(server_t *server)
         return;
     }
     WRITE_STATUS(*CLIENT->fd, 200);
-    dprintf(*CLIENT->fd, "%s %s %s %ld %s\n", thread->title,
-        thread->uuid, thread->user_uuid,
-        thread->timestamp, thread->description);
+    dprintf(*CLIENT->fd, "%s %s %ld %ld %ld %s %s\n", thread->uuid,
+        thread->user_uuid, thread->timestamp,
+        strlen(thread->title), strlen(thread->description),
+        thread->title, thread->description);
 }
