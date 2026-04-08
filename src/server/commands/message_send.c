@@ -29,8 +29,8 @@ static void send_to_other_user(server_t *server, message_data_t *message)
 {
     for (unsigned int i = INITIAL_AMOUNT; i < server->clients->amount; i++) {
         if (strcmp(CLIENT_I(i)->user->uuid, message->user_uuid_to) == 0) {
-            dprintf(*CLIENT_I(i)->fd, NEW_MESSAGE" %s %s"CRLF,
-                message->user_uuid_from, message->body);
+            dprintf(*CLIENT_I(i)->fd, NEW_MESSAGE" %s %ld %s"CRLF,
+                message->user_uuid_from, strlen(message->body), message->body);
         }
     }
 }
@@ -38,7 +38,9 @@ static void send_to_other_user(server_t *server, message_data_t *message)
 void command_message_send(server_t *server)
 {
     user_data_t *user = NULL;
-    char *arg_body = NULL;
+    char *body_len_text = NULL;
+    int body_len = 0;
+    char *body = NULL;
     message_data_t *message = NULL;
 
     user = get_user(server);
@@ -46,12 +48,21 @@ void command_message_send(server_t *server)
         WRITE_STATUS(*CLIENT->fd, 460);
         return;
     }
-    arg_body = get_arg(server->buffer, 2);
-    if (arg_body == NULL)
+    body_len_text = get_arg(server->buffer, 2);
+    if (body_len_text == NULL) {
+        WRITE_STATUS(*CLIENT->fd, 499);
         return;
+    }
+    body_len = atoi(body_len_text);
+    free(body_len_text);
+    body = read_bytes_starting_arg(server->buffer, 3, body_len);
+    if (body == NULL) {
+        WRITE_STATUS(*CLIENT->fd, 499);
+        return;
+    }
     message = messages_add(server->messages, CLIENT->user->uuid,
-        user->uuid, arg_body);
-    free(arg_body);
+        user->uuid, body);
+    free(body);
     if (message == NULL)
         return;
     WRITE_STATUS(*CLIENT->fd, 200);

@@ -39,7 +39,7 @@ void command_messages(server_t *server)
             && strcmp(user->uuid, message->user_uuid_to) == 0) ||
             (strcmp(CLIENT->user->uuid, message->user_uuid_to) == 0
             && strcmp(user->uuid, message->user_uuid_from) == 0))
-            dprintf(*CLIENT->fd, "%s %ld %s\n", message->user_uuid_from,
-                message->timestamp, message->body);
+            dprintf(*CLIENT->fd, "%s %ld %ld %s\n", message->user_uuid_from,
+                message->timestamp, strlen(message->body), message->body);
     }
 }
