@@ -11,6 +11,8 @@
 #include "utils.h"
 #include <stdlib.h>
 
+// TODO: send comment to all subscribed users
+
 // TODO: not respecting protocol here
 // Same as LOGIN
 void command_create_comment(server_t *server)
@@ -18,6 +20,8 @@ void command_create_comment(server_t *server)
     char *team_uuid = get_arg(server->buffer, 1);
     char *channel_uuid = NULL;
     char *thread_uuid = NULL;
+    char *body_len_text = NULL;
+    int body_len = 0;
     char *body = NULL;
     team_data_t *team = teams_get_from_uuid(server->teams, team_uuid);
     channel_data_t *channel = NULL;
@@ -43,7 +47,16 @@ void command_create_comment(server_t *server)
         WRITE_STATUS(*CLIENT->fd, 440);
         return;
     }
-    body = get_arg(server->buffer, 4);
+
+    body_len_text = get_arg(server->buffer, 4);
+    if (body_len_text == NULL) {
+        WRITE_STATUS(*CLIENT->fd, 460);
+        return;
+    }
+    body_len = atoi(body_len_text);
+    free(body_len_text);
+
+    body = read_bytes_starting_arg(server->buffer, 5, body_len);
     WRITE_STATUS(*CLIENT->fd, 200);
     comment = thread_add_comment(thread, CLIENT->user->uuid, body);
     server_event_reply_created(thread->uuid, CLIENT->user->uuid, comment->body);
