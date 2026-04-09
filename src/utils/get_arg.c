@@ -18,6 +18,8 @@ char *get_arg(char *str, int nb)
     strncpy(temp, str, strlen(str));
     i = 0;
     token = strtok(temp, " ");
+    if (nb == 0)
+        return strdup(token);
     while (i < nb && token != NULL) {
         token = strtok(NULL, " ");
         i++;

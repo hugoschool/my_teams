@@ -5,8 +5,13 @@
     #include <unistd.h>
     #include "client/client.h"
 
+    #define SEND "MESSAGE_SEND"
+
     void cmd_login(char *command, client_t * client);
     void cmd_logout(char *command, client_t * client);
+    void cmd_users(char *command, client_t * client);
+    // void cmd_send(char *command, client_t * client);
+    void cmd_user(char *command, client_t * client);
 
     typedef struct command_s {
         const char *cmd;
@@ -18,8 +23,8 @@
         {"/help", 0, NULL},
         {"/login", 1, &cmd_login},
         {"/logout", 0, &cmd_logout},
-        {"/users", 0, NULL},
-        {"/user", 1, NULL},
+        {"/users", 0, &cmd_users},
+        {"/user", 1, &cmd_user},
         {"/send", 2, NULL},
         {"/messages", 1, NULL},
         {"/subscribe", 1, NULL},
