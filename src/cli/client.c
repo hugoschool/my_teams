@@ -1,5 +1,6 @@
 #include "client/client.h"
 #include "client/args.h"
+#include "common.h"
 #include <stdbool.h>
 #include <stdio.h>
 #include <string.h>
@@ -11,7 +12,7 @@ int client_loop(client_t *client)
     int bytes = 0;
 
     while (1) {
-        memset(client->buffer, '\0', 4096);
+        memset(client->buffer, '\0', BUFFER_SIZE);
         bytes = getline(&cmd_line, &len, stdin);
         if (bytes == -1) {
             return -1;
@@ -38,8 +39,8 @@ bool teams_client(client_args_t *args)
         perror("connect");
         return false;
     }
-    memset(client.buffer, '\0', 4096);
-    recv(client.socket_fd, client.buffer, 4096, 0);
+    memset(client.buffer, '\0', BUFFER_SIZE);
+    recv(client.socket_fd, client.buffer, BUFFER_SIZE, 0);
     printf("%s", client.buffer);
     client_loop(&client);
     return true;

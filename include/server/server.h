@@ -22,8 +22,6 @@
 // This initial size macro refers to the base size used by dynamic arrays
     #define INITIAL_SIZE 50 + INITIAL_AMOUNT
 
-    #define BUFFER_SIZE 1024
-
     #define CLIENT server->clients->clients[server->index]
     #define CLIENT_I(i) server->clients->clients[i]
 

@@ -14,6 +14,7 @@
     #include <unistd.h>
     #include <uuid/uuid.h>
     #include <string.h>
+    #include "common.h"
     #include "utils.h"
 
     typedef struct context_s {
@@ -29,10 +30,11 @@
         char uuid[UUID_STR_LEN];
         char *user_name;
         context_t context;
-        char buffer[4096];
+        char buffer[BUFFER_SIZE];
     } client_t;
 
 bool teams_client(client_args_t *args);
 void command_parser(char *command, client_t *client);
-
+char *craft_command(char *command);
+// poll stdin + socket
 #endif

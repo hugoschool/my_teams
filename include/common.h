@@ -13,5 +13,6 @@
     #define MAX_NAME_LENGTH 32
     #define MAX_DESCRIPTION_LENGTH 255
     #define MAX_BODY_LENGTH 512
+    #define BUFFER_SIZE 1024
 
 #endif

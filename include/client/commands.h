@@ -6,6 +6,7 @@
     #include "client/client.h"
 
     void cmd_login(char *command, client_t * client);
+    void cmd_logout(char *command, client_t * client);
 
     typedef struct command_s {
         const char *cmd;
@@ -16,7 +17,7 @@
     const command_t commands[] = {
         {"/help", 0, NULL},
         {"/login", 1, &cmd_login},
-        {"/logout", 0, NULL},
+        {"/logout", 0, &cmd_logout},
         {"/users", 0, NULL},
         {"/user", 1, NULL},
         {"/send", 2, NULL},

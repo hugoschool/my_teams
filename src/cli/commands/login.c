@@ -7,19 +7,26 @@
 
 char *craft_command(char *command)
 {
-    char *cmd = malloc(sizeof(strlen(command)) + 3);
+    char *cmd = calloc(strlen(command) + strlen(CRLF) + 1, sizeof(char));
 
     cmd = strcat(cmd, capitalize_cmd(command));
-    cmd[strlen(cmd) - 1] = '\0';
-    cmd = strcat(cmd, CRLF);
+    cmd[strlen(cmd) - 1] = '\r';
+    cmd = strcat(cmd, "\n");
     return cmd;
 }
 
-void cmd_login(char *command, client_t * client)
+void cmd_login(char *command, client_t *client)
 {
-    printf("%s", craft_command(command));
-    send(client->socket_fd, craft_command(command), 4096, 0);
-    recv(client->socket_fd, client->buffer, 4096, 0);
+    char *real_cmd = craft_command(command);
+
+    send(client->socket_fd, real_cmd, strlen(real_cmd), 0);
+    recv(client->socket_fd, client->buffer, BUFFER_SIZE, 0);
     printf("%s", client->buffer);
-    client_event_logged_in("doug", get_arg(command, 1));
+    memset(client->buffer, '\0', BUFFER_SIZE);
+    recv(client->socket_fd, client->buffer, BUFFER_SIZE, 0);
+    client->user_name = strdup(get_arg(command, 1));
+    strcpy(client->uuid, get_arg(client->buffer, 1));
+    client_event_logged_in(client->uuid, client->user_name);
+    client->logged = true;
+    free(real_cmd);
 }

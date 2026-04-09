@@ -83,6 +83,7 @@ CLI_SRC	:= 	$(UTILS_SRC)	\
 
 # Commands
 CLI_SRC	+=	src/cli/commands/login.c \
+			src/cli/commands/logout.c
 
 CLI_OBJ	:=	$(CLI_SRC:.c=.o)
 
