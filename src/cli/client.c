@@ -4,27 +4,44 @@
 #include <stdbool.h>
 #include <stdio.h>
 #include <string.h>
+#include <sys/poll.h>
 
 int client_loop(client_t *client)
 {
     char *cmd_line = NULL;
+    struct pollfd pfds[2];
     size_t len = 0;
     int bytes = 0;
 
+    pfds[0].fd = client->socket_fd;
+    pfds[0].events = POLLIN;
+    pfds[1].fd = STDIN_FILENO;
+    pfds[1].events = POLLIN;
     while (1) {
-        memset(client->buffer, '\0', BUFFER_SIZE);
-        bytes = getline(&cmd_line, &len, stdin);
-        if (bytes == -1) {
-            return -1;
+        if (poll(pfds, 2, 0) == -1) {
+            perror("poll");
+            break;
         }
-        command_parser(cmd_line, client);
+        if (pfds[0].revents & POLLIN) {
+            recv(client->socket_fd, client->buffer, BUFFER_SIZE, 0);
+            printf("%s", client->buffer);
+            memset(client->buffer, '\0', BUFFER_SIZE);
+        }
+        if (pfds[1].revents & POLLIN) {
+            bytes = getline(&cmd_line, &len, stdin);
+            if (bytes == -1) {
+                return -1;
+            }
+            command_parser(cmd_line, client);
+            memset(client->buffer, '\0', BUFFER_SIZE);
+        }
     }
     return 0;
 }
 
 bool teams_client(client_args_t *args)
 {
-    client_t client = {.socket_fd = -1, .logged = false, .user_name = NULL, .uuid = "\0", .context = {"\0", "\0", "\0"}};
+    client_t client = {.socket_fd = -1, .logged = false, .user_name = NULL, .uuid = "\0", .buffer = {0}, .context = {"\0", "\0", "\0"}};
 
     client.sockaddr.sin_addr.s_addr = args->ip;
     client.sockaddr.sin_port = htons(args->port);
@@ -39,8 +56,8 @@ bool teams_client(client_args_t *args)
         perror("connect");
         return false;
     }
-    memset(client.buffer, '\0', BUFFER_SIZE);
     recv(client.socket_fd, client.buffer, BUFFER_SIZE, 0);
+    memset(client.buffer, '\0', BUFFER_SIZE);
     printf("%s", client.buffer);
     client_loop(&client);
     return true;

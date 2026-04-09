@@ -10,7 +10,8 @@
     void cmd_login(char *command, client_t * client);
     void cmd_logout(char *command, client_t * client);
     void cmd_users(char *command, client_t * client);
-    // void cmd_send(char *command, client_t * client);
+    void cmd_help(char *command, client_t * client);
+    void cmd_send(char *command, client_t * client);
     void cmd_user(char *command, client_t * client);
 
     typedef struct command_s {
@@ -19,13 +20,13 @@
         void (*func)(char *, client_t *);
     } command_t;
 
-    const command_t commands[] = {
-        {"/help", 0, NULL},
+    static const command_t commands[] = {
+        {"/help", 0, &cmd_help},
         {"/login", 1, &cmd_login},
         {"/logout", 0, &cmd_logout},
         {"/users", 0, &cmd_users},
         {"/user", 1, &cmd_user},
-        {"/send", 2, NULL},
+        {"/send", 2, &cmd_send},
         {"/messages", 1, NULL},
         {"/subscribe", 1, NULL},
         {"/subscribed", 1, NULL},

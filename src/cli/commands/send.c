@@ -7,7 +7,6 @@
 #include "utils.h"
 #include <stdlib.h>
 
-
 static char *craft_send_command(char *command)
 {
     char *cmd = calloc(strlen(SEND) + strlen(command), sizeof(char));

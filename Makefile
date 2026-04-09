@@ -86,7 +86,8 @@ CLI_SRC	+=	src/cli/commands/login.c \
 			src/cli/commands/logout.c	\
 			src/cli/commands/users.c	\
 			src/cli/commands/user.c	\
-			# src/cli/commands/send.c
+			src/cli/commands/send.c	\
+			src/cli/commands/help.c
 
 CLI_OBJ	:=	$(CLI_SRC:.c=.o)
 
