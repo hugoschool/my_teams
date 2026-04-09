@@ -25,8 +25,6 @@ static void send_event_all_clients(server_t *server, thread_data_t *thread)
     }
 }
 
-// TODO: not respecting protocol here
-// Same as LOGIN
 void command_create_thread(server_t *server)
 {
     char *team_uuid = get_arg(server->buffer, 1);
@@ -80,4 +78,8 @@ void command_create_thread(server_t *server)
     server_event_thread_created(channel->uuid, thread->uuid, CLIENT->user->uuid,
         thread->title, thread->description);
     send_event_all_clients(server, thread);
+    dprintf(*CLIENT->fd, "%s %s %ld %ld %ld %s %s\n", thread->uuid,
+        thread->user_uuid, thread->timestamp,
+        strlen(thread->title), strlen(thread->description),
+        thread->title, thread->description);
 }

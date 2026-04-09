@@ -9,12 +9,11 @@
 #include "server/server.h"
 #include "server/status.h"
 #include "utils.h"
+#include <stdio.h>
 #include <stdlib.h>
 
 // TODO: send comment to all subscribed users
 
-// TODO: not respecting protocol here
-// Same as LOGIN
 void command_create_comment(server_t *server)
 {
     char *team_uuid = get_arg(server->buffer, 1);
@@ -59,6 +58,8 @@ void command_create_comment(server_t *server)
     body = read_bytes_starting_arg(server->buffer, 5, body_len);
     WRITE_STATUS(*CLIENT->fd, 200);
     comment = thread_add_comment(thread, CLIENT->user->uuid, body);
-    server_event_reply_created(thread->uuid, CLIENT->user->uuid, comment->body);
     free(body);
+    server_event_reply_created(thread->uuid, CLIENT->user->uuid, comment->body);
+    dprintf(*CLIENT->fd, "%s %s %ld %ld %s\n", comment->uuid, comment->user_uuid,
+        comment->timestamp, strlen(comment->body), comment->body);
 }

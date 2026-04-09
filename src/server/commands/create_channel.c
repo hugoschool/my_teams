@@ -24,8 +24,6 @@ static void send_event_all_clients(server_t *server, channel_data_t *channel)
     }
 }
 
-// TODO: not respecting protocol here
-// Same as LOGIN
 void command_create_channel(server_t *server)
 {
     char *team_uuid = get_arg(server->buffer, 1);
@@ -75,4 +73,7 @@ void command_create_channel(server_t *server)
     WRITE_STATUS(*CLIENT->fd, 200);
     server_event_channel_created(team->uuid, channel->uuid, channel->name);
     send_event_all_clients(server, channel);
+    dprintf(*CLIENT->fd, "%s %ld %ld %s %s\n", channel->uuid,
+        strlen(channel->name), strlen(channel->description),
+        channel->name, channel->description);
 }

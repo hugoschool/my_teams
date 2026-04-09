@@ -33,8 +33,6 @@ static user_data_t *get_user(users_t *users, char *username)
     return user;
 }
 
-// TODO: not respecting protocol here, not sending:
-// USERNAME uuid status
 void command_login(server_t *server)
 {
     char *username = NULL;
@@ -57,4 +55,6 @@ void command_login(server_t *server)
     client_set_user(CLIENT, user);
     server_event_user_logged_in(user->uuid);
     send_client_joined_message(server, user);
+    dprintf(*CLIENT->fd, "%s %s %d\n", user->username, user->uuid,
+        user->status);
 }

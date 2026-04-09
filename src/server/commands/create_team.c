@@ -24,8 +24,6 @@ static void send_event_all_clients(server_t *server, team_data_t *team)
     }
 }
 
-// TODO: not respecting protocol here
-// Same as LOGIN
 void command_create_team(server_t *server)
 {
     char *name_len_text = get_arg(server->buffer, 1);
@@ -65,4 +63,7 @@ void command_create_team(server_t *server)
     WRITE_STATUS(*CLIENT->fd, 200);
     server_event_team_created(team->uuid, team->name, CLIENT->user->uuid);
     send_event_all_clients(server, team);
+    dprintf(*CLIENT->fd, "%s %ld %ld %s %s\n", team->uuid,
+        strlen(team->name), strlen(team->description), team->name,
+        team->description);
 }
