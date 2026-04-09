@@ -5,6 +5,7 @@
 ** login.c
 */
 
+#include "logging_server.h"
 #include "server/events.h"
 #include "server/server.h"
 #include "server/status.h"
@@ -21,13 +22,11 @@ static void send_client_left_message(server_t *server, user_data_t *user)
     }
 }
 
-// Client status is handled by client_quit function
-// The logging is also handled by client_quit
 void command_logout(server_t *server)
 {
-    user_data_t *user = CLIENT->user;
-
     WRITE_STATUS(*CLIENT->fd, 251);
-    send_client_left_message(server, user);
-    client_quit(server);
+    send_client_left_message(server, CLIENT->user);
+    server_event_user_logged_out(CLIENT->user->uuid);
+    CLIENT->user->status = false;
+    CLIENT->login_step = LOGGED_OUT;
 }
