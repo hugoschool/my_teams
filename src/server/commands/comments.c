@@ -5,10 +5,10 @@
 ** comments.c
 */
 
+#include "server/commands.h"
 #include "server/server.h"
 #include "server/status.h"
 #include "utils.h"
-#include <stdio.h>
 #include <stdlib.h>
 
 void command_comments(server_t *server)
@@ -43,7 +43,6 @@ void command_comments(server_t *server)
     WRITE_STATUS(*CLIENT->fd, 200);
     for (unsigned int i = 0; i < thread->comments->amount; i++) {
         comment = thread->comments->comments[i];
-        dprintf(*CLIENT->fd, "%s %s %ld %ld %s\n", comment->uuid, comment->user_uuid,
-            comment->timestamp, strlen(comment->body), comment->body);
+        comment_print(*CLIENT->fd, comment);
     }
 }

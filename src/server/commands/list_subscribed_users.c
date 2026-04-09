@@ -5,11 +5,11 @@
 ** list_subscribed_users.c
 */
 
+#include "server/commands.h"
 #include "server/server.h"
 #include "server/status.h"
 #include "utils.h"
 #include <stdbool.h>
-#include <stdio.h>
 #include <stdlib.h>
 
 static team_data_t *get_team(server_t *server)
@@ -34,7 +34,6 @@ void command_list_subscribed_users(server_t *server)
     WRITE_STATUS(*CLIENT->fd, 200);
     for (unsigned int i = 0; i < team->users->amount; i++) {
         user = team->users->users[i];
-        dprintf(*CLIENT->fd, "%s %s %d\n", user->username, user->uuid,
-            user->status);
+        user_print(*CLIENT->fd, user);
     }
 }

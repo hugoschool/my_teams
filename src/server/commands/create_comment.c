@@ -6,10 +6,10 @@
 */
 
 #include "logging_server.h"
+#include "server/commands.h"
 #include "server/server.h"
 #include "server/status.h"
 #include "utils.h"
-#include <stdio.h>
 #include <stdlib.h>
 
 // TODO: send comment to all subscribed users
@@ -60,6 +60,5 @@ void command_create_comment(server_t *server)
     comment = thread_add_comment(thread, CLIENT->user->uuid, body);
     free(body);
     server_event_reply_created(thread->uuid, CLIENT->user->uuid, comment->body);
-    dprintf(*CLIENT->fd, "%s %s %ld %ld %s\n", comment->uuid, comment->user_uuid,
-        comment->timestamp, strlen(comment->body), comment->body);
+    comment_print(*CLIENT->fd, comment);
 }

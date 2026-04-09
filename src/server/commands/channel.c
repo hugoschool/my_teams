@@ -5,10 +5,10 @@
 ** channel.c
 */
 
+#include "server/commands.h"
 #include "server/server.h"
 #include "server/status.h"
 #include "utils.h"
-#include <stdio.h>
 #include <stdlib.h>
 
 void command_channel(server_t *server)
@@ -34,7 +34,5 @@ void command_channel(server_t *server)
         return;
     }
     WRITE_STATUS(*CLIENT->fd, 200);
-    dprintf(*CLIENT->fd, "%s %ld %ld %s %s\n", channel->uuid,
-        strlen(channel->name), strlen(channel->description),
-        channel->name, channel->description);
+    channel_print(*CLIENT->fd, channel);
 }

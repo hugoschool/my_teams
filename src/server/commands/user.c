@@ -9,7 +9,6 @@
 #include "server/server.h"
 #include "server/status.h"
 #include "utils.h"
-#include <stdio.h>
 #include <stdlib.h>
 
 void command_user(server_t *server)
@@ -27,6 +26,5 @@ void command_user(server_t *server)
         return;
     }
     WRITE_STATUS(*CLIENT->fd, 200);
-    dprintf(*CLIENT->fd, "%s %s %d\n", user->username, user->uuid,
-        user->status);
+    user_print(*CLIENT->fd, user);
 }

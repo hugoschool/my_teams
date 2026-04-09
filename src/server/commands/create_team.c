@@ -6,6 +6,7 @@
 */
 
 #include "logging_server.h"
+#include "server/commands.h"
 #include "server/events.h"
 #include "server/server.h"
 #include "server/status.h"
@@ -63,7 +64,5 @@ void command_create_team(server_t *server)
     WRITE_STATUS(*CLIENT->fd, 200);
     server_event_team_created(team->uuid, team->name, CLIENT->user->uuid);
     send_event_all_clients(server, team);
-    dprintf(*CLIENT->fd, "%s %ld %ld %s %s\n", team->uuid,
-        strlen(team->name), strlen(team->description), team->name,
-        team->description);
+    team_print(*CLIENT->fd, team);
 }

@@ -60,7 +60,15 @@ SERVER_SRC	+=	src/server/commands/handler.c \
 				src/server/commands/threads.c \
 				src/server/commands/thread.c \
 				src/server/commands/create_comment.c \
-				src/server/commands/comments.c
+				src/server/commands/comments.c \
+
+# Command utils
+SERVER_SRC	+=	src/server/commands/utils/channel_print.c \
+				src/server/commands/utils/comment_print.c \
+				src/server/commands/utils/message_print.c \
+				src/server/commands/utils/team_print.c \
+				src/server/commands/utils/thread_print.c \
+				src/server/commands/utils/user_print.c
 
 SERVER_OBJ	:=	$(SERVER_SRC:.c=.o)
 

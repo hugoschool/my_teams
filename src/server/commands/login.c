@@ -6,6 +6,7 @@
 */
 
 #include "logging_server.h"
+#include "server/commands.h"
 #include "server/events.h"
 #include "server/server.h"
 #include "server/status.h"
@@ -55,6 +56,5 @@ void command_login(server_t *server)
     client_set_user(CLIENT, user);
     server_event_user_logged_in(user->uuid);
     send_client_joined_message(server, user);
-    dprintf(*CLIENT->fd, "%s %s %d\n", user->username, user->uuid,
-        user->status);
+    user_print(*CLIENT->fd, user);
 }

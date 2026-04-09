@@ -9,7 +9,6 @@
 #include "server/server.h"
 #include "server/status.h"
 #include "utils.h"
-#include <stdio.h>
 #include <stdlib.h>
 
 void command_team(server_t *server)
@@ -27,7 +26,5 @@ void command_team(server_t *server)
         return;
     }
     WRITE_STATUS(*CLIENT->fd, 200);
-    dprintf(*CLIENT->fd, "%s %ld %ld %s %s\n", team->uuid,
-        strlen(team->name), strlen(team->description), team->name,
-        team->description);
+    team_print(*CLIENT->fd, team);
 }

@@ -5,10 +5,10 @@
 ** messages.c
 */
 
+#include "server/commands.h"
 #include "server/server.h"
 #include "server/status.h"
 #include "utils.h"
-#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
@@ -39,7 +39,6 @@ void command_messages(server_t *server)
             && strcmp(user->uuid, message->user_uuid_to) == 0) ||
             (strcmp(CLIENT->user->uuid, message->user_uuid_to) == 0
             && strcmp(user->uuid, message->user_uuid_from) == 0))
-            dprintf(*CLIENT->fd, "%s %ld %ld %s\n", message->user_uuid_from,
-                message->timestamp, strlen(message->body), message->body);
+            message_print(*CLIENT->fd, message);
     }
 }

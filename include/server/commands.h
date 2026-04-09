@@ -176,4 +176,12 @@ static const commands_t cmds[] = {
 
 void commands_handler(server_t *server);
 
+// Utils
+void user_print(int fd, user_data_t *user);
+void channel_print(int fd, channel_data_t *channel);
+void comment_print(int fd, comment_data_t *comment);
+void thread_print(int fd, thread_data_t *thread);
+void team_print(int fd, team_data_t *team);
+void message_print(int fd, message_data_t *message);
+
 #endif

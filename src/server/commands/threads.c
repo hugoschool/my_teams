@@ -5,10 +5,10 @@
 ** threads.c
 */
 
+#include "server/commands.h"
 #include "server/server.h"
 #include "server/status.h"
 #include "utils.h"
-#include <stdio.h>
 #include <stdlib.h>
 
 void command_threads(server_t *server)
@@ -34,9 +34,6 @@ void command_threads(server_t *server)
     WRITE_STATUS(*CLIENT->fd, 200);
     for (unsigned int i = 0; i < channel->threads->amount; i++) {
         thread = channel->threads->threads[i];
-        dprintf(*CLIENT->fd, "%s %s %ld %ld %ld %s %s\n", thread->uuid,
-            thread->user_uuid, thread->timestamp,
-            strlen(thread->title), strlen(thread->description),
-            thread->title, thread->description);
+        thread_print(*CLIENT->fd, thread);
     }
 }

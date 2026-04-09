@@ -6,6 +6,7 @@
 */
 
 #include "logging_server.h"
+#include "server/commands.h"
 #include "server/events.h"
 #include "server/server.h"
 #include "server/status.h"
@@ -78,8 +79,5 @@ void command_create_thread(server_t *server)
     server_event_thread_created(channel->uuid, thread->uuid, CLIENT->user->uuid,
         thread->title, thread->description);
     send_event_all_clients(server, thread);
-    dprintf(*CLIENT->fd, "%s %s %ld %ld %ld %s %s\n", thread->uuid,
-        thread->user_uuid, thread->timestamp,
-        strlen(thread->title), strlen(thread->description),
-        thread->title, thread->description);
+    thread_print(*CLIENT->fd, thread);
 }

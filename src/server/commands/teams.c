@@ -5,9 +5,9 @@
 ** messages.c
 */
 
+#include "server/commands.h"
 #include "server/server.h"
 #include "server/status.h"
-#include <stdio.h>
 #include <stdlib.h>
 
 void command_teams(server_t *server)
@@ -17,8 +17,6 @@ void command_teams(server_t *server)
     WRITE_STATUS(*CLIENT->fd, 200);
     for (unsigned int i = 0; i < server->teams->amount; i++) {
         team = TEAM_I(i);
-        dprintf(*CLIENT->fd, "%s %ld %ld %s %s\n", team->uuid,
-            strlen(team->name), strlen(team->description), team->name,
-            team->description);
+        team_print(*CLIENT->fd, team);
     }
 }
