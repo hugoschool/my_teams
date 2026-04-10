@@ -87,7 +87,11 @@ CLI_SRC	+=	src/cli/commands/login.c \
 			src/cli/commands/users.c	\
 			src/cli/commands/user.c	\
 			src/cli/commands/send.c	\
-			src/cli/commands/help.c
+			src/cli/commands/help.c	\
+			src/cli/commands/messages.c	\
+			src/cli/commands/subscribe.c	\
+			src/cli/commands/use.c	\
+			src/cli/commands/create.c
 
 CLI_OBJ	:=	$(CLI_SRC:.c=.o)
 
@@ -121,6 +125,6 @@ dev-server:	all
 	LD_LIBRARY_PATH=./libs/myteams ./myteams_server 4242
 
 dev-client:	all
-	LD_LIBRARY_PATH=./libs/myteams ./myteams_cli 127.0.0.1 4242
+	LD_LIBRARY_PATH=./libs/myteams valgrind ./myteams_cli 127.0.0.1 4242
 
 .PHONY:	all clean fclean re
