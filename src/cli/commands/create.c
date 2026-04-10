@@ -32,12 +32,11 @@ static char *craft_create_command(char *command, const char *context, client_t *
     return cmd;
 }
 
-static enum context_e define_context(client_t *client)
+enum context_e define_context(client_t *client)
 {
     if (strcmp(client->context.team_uuid, "\0") == 0 && strcmp(client->context.team_uuid, "\0") == 0 && strcmp(client->context.team_uuid, "\0") == 0)
         return BASE;
     if (strcmp(client->context.team_uuid, "\0") != 0 && strcmp(client->context.team_uuid, "\0") == 0 && strcmp(client->context.team_uuid, "\0") == 0) {
-        printf("team context\n");
         return TEAM;
     }
     if (strcmp(client->context.team_uuid, "\0") != 0 && strcmp(client->context.team_uuid, "\0") != 0 && strcmp(client->context.team_uuid, "\0") == 0)
@@ -70,18 +69,20 @@ void cmd_create(char *command, client_t * client)
     }
     send(client->socket_fd, real_cmd, strlen(real_cmd), 0);
     recv(client->socket_fd, client->buffer, BUFFER_SIZE, 0);
+    char *second_recv = strtok(client->buffer, "\n");
+    second_recv = strtok(NULL, "\n");
     switch (context) {
         case BASE:
-            client_print_team_created(get_arg(client->buffer, 0), read_bytes_starting_arg(client->buffer, 3, atoi(get_arg(client->buffer, 1))), read_bytes_starting_arg(client->buffer, 3, atoi(get_arg(client->buffer, 1)) + 1 + atoi(get_arg(client->buffer, 2))));
+            client_print_team_created(get_arg(second_recv, 0), read_bytes_starting_arg(second_recv, 3, atoi(get_arg(second_recv, 1))), read_bytes_starting_arg(second_recv, 3, atoi(get_arg(second_recv, 1)) + 1 + atoi(get_arg(second_recv, 2))));
             break;
         case TEAM:
-            client_print_channel_created(get_arg(client->buffer, 0), read_bytes_starting_arg(client->buffer, 3, atoi(get_arg(client->buffer, 1))), read_bytes_starting_arg(client->buffer, 3, atoi(get_arg(client->buffer, 1)) + 1 + atoi(get_arg(client->buffer, 2))));
+            client_print_channel_created(get_arg(second_recv, 0), read_bytes_starting_arg(second_recv, 3, atoi(get_arg(second_recv, 1))), read_bytes_starting_arg(second_recv, 3, atoi(get_arg(second_recv, 1)) + 1 + atoi(get_arg(second_recv, 2))));
             break;
         case CHANNEL:
-            client_print_thread_created(get_arg(client->buffer, 0), get_arg(client->buffer, 1), atoi(get_arg(client->buffer, 2)), read_bytes_starting_arg(client->buffer, 5, atoi(get_arg(client->buffer, 3))), read_bytes_starting_arg(client->buffer, 6, atoi(get_arg(client->buffer, 1)) + 1 + atoi(get_arg(client->buffer, 4))));
+            client_print_thread_created(get_arg(second_recv, 0), get_arg(second_recv, 1), atoi(get_arg(second_recv, 2)), read_bytes_starting_arg(second_recv, 5, atoi(get_arg(second_recv, 3))), read_bytes_starting_arg(second_recv, 6, atoi(get_arg(second_recv, 1)) + 1 + atoi(get_arg(second_recv, 4))));
             break;
         case THREAD:
-            client_print_reply_created(get_arg(client->buffer, 0), get_arg(client->buffer, 1), atoi(get_arg(client->buffer, 2)), read_bytes_starting_arg(client->buffer, 4, atoi(get_arg(client->buffer, 3))));
+            client_print_reply_created(get_arg(second_recv, 0), get_arg(second_recv, 1), atoi(get_arg(second_recv, 2)), read_bytes_starting_arg(second_recv, 4, atoi(get_arg(second_recv, 3))));
             break;
     }
     free(real_cmd);

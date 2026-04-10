@@ -17,6 +17,8 @@
     #define CREATE_THREAD "CREATE_THREAD"
     #define CREATE_COMMENT "CREATE_COMMENT"
 
+    #define NO_CONTEXT "NO_CONTEXT"
+
     void cmd_help(char *command, client_t * client);
     void cmd_login(char *command, client_t * client);
     void cmd_logout(char *command, client_t * client);
@@ -27,6 +29,9 @@
     void cmd_subscribe(char *command, client_t *client);
     void cmd_use(char *command, client_t * client);
     void cmd_create(char *command, client_t * client);
+    void cmd_info(char *command, client_t * client);
+
+    enum context_e define_context(client_t *client);
 
     enum context_e {
         BASE,

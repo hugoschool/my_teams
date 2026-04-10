@@ -91,7 +91,8 @@ CLI_SRC	+=	src/cli/commands/login.c \
 			src/cli/commands/messages.c	\
 			src/cli/commands/subscribe.c	\
 			src/cli/commands/use.c	\
-			src/cli/commands/create.c
+			src/cli/commands/create.c	\
+			src/cli/commands/info.c
 
 CLI_OBJ	:=	$(CLI_SRC:.c=.o)
 
