@@ -27,7 +27,7 @@ void cmd_subscribed(char *command, client_t *client)
 
     char *real_cmd = NULL;
 
-    if (arg_amount(command) == 1) {
+    if (arg_amount_quote(command) == 1) {
         real_cmd = capitalize_cmd(command);
         send(client->socket_fd, real_cmd, strlen(real_cmd), 0);
         recv(client->socket_fd, client->buffer, BUFFER_SIZE, 0);
