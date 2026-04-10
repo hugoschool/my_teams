@@ -16,7 +16,11 @@ void cmd_users(char *command, client_t * client)
 
     send(client->socket_fd, real_cmd, strlen(real_cmd), 0);
     recv(client->socket_fd, client->buffer, BUFFER_SIZE, 0);
-    printf("%s", client->buffer);
-    client_print_users(client->uuid, client->user_name, client->logged);
+    char *second_recv = strtok(client->buffer, "\n");
+    second_recv = strtok(NULL, "\n");
+    while (second_recv != NULL) {
+        client_print_users(get_arg(second_recv, 1), get_arg(second_recv, 0), atoi(get_arg(second_recv, 2)));
+        second_recv = strtok(NULL, "\n");
+    }
     free(real_cmd);
 }

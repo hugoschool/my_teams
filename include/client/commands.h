@@ -8,6 +8,7 @@
     #define SEND "MESSAGE_SEND"
     #define SUBSCRIBE_TEAM "SUBSCRIBE_TEAM"
     #define UNSUBSCRIBE_TEAM "UNSUBSCRIBE_TEAM"
+    #define SUBSCRIBED_LIST "LIST_SUBSCRIBED_USERS"
 
     #define TEAM_INFO "TEAM"
     #define CHANNEL_INFO "CHANNEL"
@@ -33,6 +34,7 @@
     void cmd_send(char *command, client_t * client);
     void cmd_messages(char *command, client_t * client);
     void cmd_subscribe(char *command, client_t *client);
+    void cmd_subscribed(char *command, client_t *client);
     void cmd_unsubscribe(char *command, client_t *client);
     void cmd_use(char *command, client_t * client);
     void cmd_create(char *command, client_t * client);
@@ -63,7 +65,7 @@
         {"/send", 2, &cmd_send},
         {"/messages", 1, &cmd_messages},
         {"/subscribe", 1, &cmd_subscribe},
-        {"/subscribed", 1, NULL},
+        {"/subscribed", 0, &cmd_subscribed},
         {"/unsubscribe", 1, &cmd_unsubscribe},
         {"/use", 0, &cmd_use},
         {"/create", 2, &cmd_create},
