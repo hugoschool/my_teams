@@ -9,15 +9,9 @@
 
 static char *craft_send_command(char *command)
 {
-    char *cmd = calloc(strlen(SEND) + strlen(command), sizeof(char));
+    char *cmd = NULL;
 
-    cmd = strcat(cmd, SEND);
-    cmd = strcat(cmd, " ");
-    cmd = strcat(cmd, get_arg(command, 1));
-    cmd = strcat(cmd, " ");
-    cmd = strcat(cmd, get_arg(command, 2));
-    cmd[strlen(cmd) - 1] = '\r';
-    cmd = strcat(cmd, "\n");
+    asprintf(&cmd, "%s %s %s%s", SEND, get_arg(command, 1), get_arg(command, 2), CRLF);
     return cmd;
 }
 

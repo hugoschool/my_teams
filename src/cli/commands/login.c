@@ -7,11 +7,9 @@
 
 char *craft_command(char *command)
 {
-    char *cmd = calloc(strlen(command) + strlen(CRLF) + 1, sizeof(char));
+    char *cmd = NULL;
 
-    cmd = strcat(cmd, capitalize_cmd(command));
-    cmd[strlen(cmd) - 1] = '\r';
-    cmd = strcat(cmd, "\n");
+    asprintf(&cmd, "%s%s", capitalize_cmd(command), CRLF);
     return cmd;
 }
 
