@@ -23,6 +23,8 @@ static void subscribe_to_team(client_t *client, char *team_uuid)
     client->subscribed_teams ->team_uuid = realloc(client->subscribed_teams->team_uuid, sizeof(char *) * (client->subscribed_teams->amount + 1));
     client->subscribed_teams->team_uuid[client->subscribed_teams->team_index] = strdup(team_uuid);
     client->subscribed_teams->team_uuid[client->subscribed_teams->team_index + 1] = NULL;
+    client->subscribed_teams->team_index += 1;
+    client->subscribed_teams->amount += 1;
 }
 
 void cmd_subscribe(char *command, client_t *client)
