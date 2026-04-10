@@ -17,6 +17,11 @@
     #define CREATE_THREAD "CREATE_THREAD"
     #define CREATE_COMMENT "CREATE_COMMENT"
 
+    #define TEAM_LIST "TEAMS"
+    #define CHANNEL_LIST "CHANNELS"
+    #define THREAD_LIST "THREADS"
+    #define COMMENT_LIST "COMMENTS"
+
     #define NO_CONTEXT "NO_CONTEXT"
 
     void cmd_help(char *command, client_t * client);
@@ -29,6 +34,7 @@
     void cmd_subscribe(char *command, client_t *client);
     void cmd_use(char *command, client_t * client);
     void cmd_create(char *command, client_t * client);
+    void cmd_list(char *command, client_t * client);
     void cmd_info(char *command, client_t * client);
 
     enum context_e define_context(client_t *client);
@@ -59,8 +65,8 @@
         {"/unsubscribe", 1, NULL},
         {"/use", 0, &cmd_use},
         {"/create", 2, &cmd_create},
-        {"/list", 0, NULL},
-        {"/info", 0, NULL},
+        {"/list", 0, &cmd_list},
+        {"/info", 0, &cmd_info},
         {NULL, 0, NULL}
     };
 
