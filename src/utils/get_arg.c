@@ -28,3 +28,24 @@ char *get_arg(char *str, int nb)
         return NULL;
     return strdup(token);
 }
+
+char *get_arg_quote(char *str, int nb)
+{
+    char temp[strlen(str) + 1] = {};
+    int i = 0;
+    char *token = NULL;
+
+    memset(temp, 0, strlen(str) + 1);
+    strncpy(temp, str, strlen(str));
+    i = 0;
+    token = strtok(temp, "\"");
+    if (nb == 0)
+        return strdup(token);
+    while (i < nb && token != NULL) {
+        token = strtok(NULL, "\"");
+        i++;
+    }
+    if (token == NULL)
+        return NULL;
+    return strdup(token);
+}

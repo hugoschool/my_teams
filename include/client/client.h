@@ -23,6 +23,12 @@
         char thread_uuid[UUID_STR_LEN];
     } context_t;
 
+    typedef struct sub_teams_s {
+        char **team_uuid;
+        int amount;
+        int team_index;
+    } sub_teams_t;
+
     typedef struct client_s {
         int socket_fd;
         bool logged;
@@ -31,10 +37,10 @@
         char *user_name;
         context_t context;
         char buffer[BUFFER_SIZE];
+        sub_teams_t *subscribed_teams;
     } client_t;
 
 bool teams_client(client_args_t *args);
 void command_parser(char *command, client_t *client);
 char *craft_command(char *command);
-// poll stdin + socket
 #endif

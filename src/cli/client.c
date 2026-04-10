@@ -1,10 +1,23 @@
 #include "client/client.h"
 #include "client/args.h"
 #include "common.h"
+#include "logging_client.h"
+#include "server/events.h"
+#include "utils.h"
 #include <stdbool.h>
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
 #include <sys/poll.h>
+
+static void init_sub_teams(client_t *client)
+{
+    client->subscribed_teams = malloc(sizeof(sub_teams_t));
+    client->subscribed_teams->amount = 1;
+    client->subscribed_teams->team_index = 0;
+    client->subscribed_teams->team_uuid = calloc(client->subscribed_teams->amount, sizeof(char *));
+    client->subscribed_teams->team_uuid[0] = NULL;
+}
 
 int client_loop(client_t *client)
 {
@@ -24,7 +37,9 @@ int client_loop(client_t *client)
         }
         if (pfds[0].revents & POLLIN) {
             recv(client->socket_fd, client->buffer, BUFFER_SIZE, 0);
-            printf("%s", client->buffer);
+            if (strncmp(client->buffer, NEW_MESSAGE, strlen(NEW_MESSAGE)) == 0) {
+                client_event_private_message_received(get_arg(client->buffer, 1), read_bytes_starting_arg(client->buffer, 3, atoi(get_arg(client->buffer, 2))));
+            }
             memset(client->buffer, '\0', BUFFER_SIZE);
         }
         if (pfds[1].revents & POLLIN) {
@@ -43,6 +58,7 @@ bool teams_client(client_args_t *args)
 {
     client_t client = {.socket_fd = -1, .logged = false, .user_name = NULL, .uuid = "\0", .buffer = {0}, .context = {"\0", "\0", "\0"}};
 
+    init_sub_teams(&client);
     client.sockaddr.sin_addr.s_addr = args->ip;
     client.sockaddr.sin_port = htons(args->port);
     client.sockaddr.sin_family = AF_INET;

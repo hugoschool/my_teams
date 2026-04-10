@@ -1,0 +1,88 @@
+#include "client/client.h"
+#include "client/commands.h"
+#include "common.h"
+#include "logging_client.h"
+#include "server/status.h"
+#include "stdio.h"
+#include "utils.h"
+#include <stdlib.h>
+
+static char *craft_create_command(char *command, const char *context, client_t *client)
+{
+    char *cmd = NULL;
+
+    if (command[strlen(command) - 1] == '\n')
+        command[strlen(command) - 1] = '\0';
+    if (strcmp(context, CREATE_COMMENT) == 0) {
+        char *msg = get_arg_quote(command, 1);
+        asprintf(&cmd, "%s %s %s %s %lu %s%s", context, client->context.team_uuid, client->context.channel_uuid, client->context.thread_uuid, strlen(msg), msg, CRLF);
+    } else if (strcmp(context, CREATE_TEAM) == 0) {
+        char *arg = get_arg_quote(command, 1);
+        char *msg = get_arg_quote(command, 2);
+        asprintf(&cmd, "%s %lu %lu %s %s%s", context, strlen(arg), strlen(msg), arg, msg, CRLF);
+    } else if (strcmp(context, CREATE_CHANNEL) == 0) {
+        char *arg = get_arg_quote(command, 1);
+        char *msg = get_arg_quote(command, 2);
+        asprintf(&cmd, "%s %s %lu %lu %s %s%s", context, client->context.team_uuid, strlen(arg), strlen(msg), arg, msg, CRLF);
+    } else if (strcmp(context, CREATE_THREAD) == 0) {
+        char *arg = get_arg_quote(command, 1);
+        char *msg = get_arg_quote(command, 2);
+        asprintf(&cmd, "%s %s %s %lu %lu %s %s%s", context, client->context.team_uuid, client->context.channel_uuid, strlen(arg), strlen(msg), arg, msg, CRLF);
+    }
+    return cmd;
+}
+
+static enum context_e define_context(client_t *client)
+{
+    if (strcmp(client->context.team_uuid, "\0") == 0 && strcmp(client->context.team_uuid, "\0") == 0 && strcmp(client->context.team_uuid, "\0") == 0)
+        return BASE;
+    if (strcmp(client->context.team_uuid, "\0") != 0 && strcmp(client->context.team_uuid, "\0") == 0 && strcmp(client->context.team_uuid, "\0") == 0) {
+        printf("team context\n");
+        return TEAM;
+    }
+    if (strcmp(client->context.team_uuid, "\0") != 0 && strcmp(client->context.team_uuid, "\0") != 0 && strcmp(client->context.team_uuid, "\0") == 0)
+        return CHANNEL;
+    return THREAD;
+}
+
+void cmd_create(char *command, client_t * client)
+{
+    if (!client->logged) {
+        client_error_unauthorized();
+        return;
+    }
+
+    char *real_cmd = NULL;
+    enum context_e context = define_context(client);
+    switch (context) {
+        case BASE:
+            real_cmd = craft_create_command(command, CREATE_TEAM, client);
+            break;
+        case TEAM:
+            real_cmd = craft_create_command(command, CREATE_CHANNEL, client);
+            break;
+        case CHANNEL:
+            real_cmd = craft_create_command(command, CREATE_THREAD, client);
+            break;
+        case THREAD:
+            real_cmd = craft_create_command(command, CREATE_COMMENT, client);
+            break;
+    }
+    send(client->socket_fd, real_cmd, strlen(real_cmd), 0);
+    recv(client->socket_fd, client->buffer, BUFFER_SIZE, 0);
+    switch (context) {
+        case BASE:
+            client_print_team_created(get_arg(client->buffer, 0), read_bytes_starting_arg(client->buffer, 3, atoi(get_arg(client->buffer, 1))), read_bytes_starting_arg(client->buffer, 3, atoi(get_arg(client->buffer, 1)) + 1 + atoi(get_arg(client->buffer, 2))));
+            break;
+        case TEAM:
+            client_print_channel_created(get_arg(client->buffer, 0), read_bytes_starting_arg(client->buffer, 3, atoi(get_arg(client->buffer, 1))), read_bytes_starting_arg(client->buffer, 3, atoi(get_arg(client->buffer, 1)) + 1 + atoi(get_arg(client->buffer, 2))));
+            break;
+        case CHANNEL:
+            client_print_thread_created(get_arg(client->buffer, 0), get_arg(client->buffer, 1), atoi(get_arg(client->buffer, 2)), read_bytes_starting_arg(client->buffer, 5, atoi(get_arg(client->buffer, 3))), read_bytes_starting_arg(client->buffer, 6, atoi(get_arg(client->buffer, 1)) + 1 + atoi(get_arg(client->buffer, 4))));
+            break;
+        case THREAD:
+            client_print_reply_created(get_arg(client->buffer, 0), get_arg(client->buffer, 1), atoi(get_arg(client->buffer, 2)), read_bytes_starting_arg(client->buffer, 4, atoi(get_arg(client->buffer, 3))));
+            break;
+    }
+    free(real_cmd);
+}

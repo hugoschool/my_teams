@@ -6,13 +6,34 @@
     #include "client/client.h"
 
     #define SEND "MESSAGE_SEND"
+    #define SUBSCRIBE_TEAM "SUBSCRIBE_TEAM"
 
+    #define TEAM_INFO "TEAM"
+    #define CHANNEL_INFO "CHANNEL"
+    #define THREAD_INFO "THREAD"
+
+    #define CREATE_TEAM "CREATE_TEAM"
+    #define CREATE_CHANNEL "CREATE_CHANNEL"
+    #define CREATE_THREAD "CREATE_THREAD"
+    #define CREATE_COMMENT "CREATE_COMMENT"
+
+    void cmd_help(char *command, client_t * client);
     void cmd_login(char *command, client_t * client);
     void cmd_logout(char *command, client_t * client);
     void cmd_users(char *command, client_t * client);
-    void cmd_help(char *command, client_t * client);
-    void cmd_send(char *command, client_t * client);
     void cmd_user(char *command, client_t * client);
+    void cmd_send(char *command, client_t * client);
+    void cmd_messages(char *command, client_t * client);
+    void cmd_subscribe(char *command, client_t *client);
+    void cmd_use(char *command, client_t * client);
+    void cmd_create(char *command, client_t * client);
+
+    enum context_e {
+        BASE,
+        TEAM,
+        CHANNEL,
+        THREAD,
+    };
 
     typedef struct command_s {
         const char *cmd;
@@ -27,12 +48,12 @@
         {"/users", 0, &cmd_users},
         {"/user", 1, &cmd_user},
         {"/send", 2, &cmd_send},
-        {"/messages", 1, NULL},
-        {"/subscribe", 1, NULL},
+        {"/messages", 1, &cmd_messages},
+        {"/subscribe", 1, &cmd_subscribe},
         {"/subscribed", 1, NULL},
         {"/unsubscribe", 1, NULL},
-        {"/use", 3, NULL},
-        {"/create", 0, NULL},
+        {"/use", 0, &cmd_use},
+        {"/create", 2, &cmd_create},
         {"/list", 0, NULL},
         {"/info", 0, NULL},
         {NULL, 0, NULL}

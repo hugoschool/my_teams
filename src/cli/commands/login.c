@@ -9,7 +9,10 @@ char *craft_command(char *command)
 {
     char *cmd = NULL;
 
-    asprintf(&cmd, "%s%s", capitalize_cmd(command), CRLF);
+    command = capitalize_cmd(command);
+    if (command[strlen(command) - 1] == '\n')
+        command[strlen(command) - 1] = '\0';
+    asprintf(&cmd, "%s%s", command, CRLF);
     return cmd;
 }
 
@@ -22,7 +25,7 @@ void cmd_login(char *command, client_t *client)
     printf("%s", client->buffer);
     memset(client->buffer, '\0', BUFFER_SIZE);
     recv(client->socket_fd, client->buffer, BUFFER_SIZE, 0);
-    client->user_name = strdup(get_arg(command, 1));
+    client->user_name = strdup(get_arg_quote(command, 1));
     strcpy(client->uuid, get_arg(client->buffer, 1));
     client_event_logged_in(client->uuid, client->user_name);
     client->logged = true;

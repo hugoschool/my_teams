@@ -10,8 +10,9 @@
 static char *craft_send_command(char *command)
 {
     char *cmd = NULL;
+    char *msg = get_arg_quote(command, 2);
 
-    asprintf(&cmd, "%s %s %s%s", SEND, get_arg(command, 1), get_arg(command, 2), CRLF);
+    asprintf(&cmd, "%s %s %lu %s%s", SEND, get_arg_quote(command, 1), strlen(msg), msg, CRLF);
     return cmd;
 }
 
@@ -28,9 +29,8 @@ void cmd_send(char *command, client_t * client)
     recv(client->socket_fd, client->buffer, BUFFER_SIZE, 0);
     printf("%s", client->buffer);
     if (strncmp(client->buffer, GET_STATUS(460), 3) == 0) {
-        client_error_unknown_user(get_arg(command, 1));
+        client_error_unknown_user(get_arg_quote(command, 1));
         return;
     }
-    client_event_private_message_received(get_arg(real_cmd, 1), get_arg(real_cmd, 2));
     free(real_cmd);
 }

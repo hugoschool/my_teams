@@ -3,6 +3,8 @@
 
 void cmd_help(char *command, client_t * client)
 {
+    (void)command;
+    (void)client;
     printf("Commands:\n"
     "/help\n"
     "/login [username]\n"
