@@ -37,5 +37,5 @@ size_t arg_amount_quote(char *str)
         token = strtok(NULL, "\"");
         i++;
     }
-    return i;
+    return i / 2;
 }
