@@ -18,6 +18,5 @@ void cmd_logout(char *command, client_t * client)
     recv(client->socket_fd, client->buffer, BUFFER_SIZE, 0);
     printf("%s", client->buffer);
     client->logged = false;
-    client_event_logged_out(client->uuid, client->user_name);
     free(real_cmd);
 }

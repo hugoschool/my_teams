@@ -27,7 +27,6 @@ void cmd_login(char *command, client_t *client)
     recv(client->socket_fd, client->buffer, BUFFER_SIZE, 0);
     client->user_name = strdup(get_arg_quote(command, 1));
     strcpy(client->uuid, get_arg(client->buffer, 1));
-    client_event_logged_in(client->uuid, client->user_name);
     client->logged = true;
     free(real_cmd);
 }

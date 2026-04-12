@@ -40,8 +40,12 @@ int client_loop(client_t *client)
             if (strncmp(client->buffer, NEW_MESSAGE, strlen(NEW_MESSAGE)) == 0) {
                 client_event_private_message_received(get_arg(client->buffer, 1), read_bytes_starting_arg(client->buffer, 3, atoi(get_arg(client->buffer, 2))));
             }
-            if (strncmp(client->buffer, NEW_TEAM, strlen(CLIENT_JOINED)) == 0 || strncmp(client->buffer, NEW_TEAM, strlen(CLIENT_LEFT)) == 0)
-                printf("%s", client->buffer);
+            if (strncmp(client->buffer, NEW_TEAM, strlen(CLIENT_JOINED)) == 0) {
+                client_event_logged_in(get_arg(client->buffer, 1), get_arg(client->buffer, 2));
+            }
+            if (strncmp(client->buffer, NEW_TEAM, strlen(CLIENT_LEFT)) == 0) {
+                client_event_logged_out(get_arg(client->buffer, 1), get_arg(client->buffer, 2));
+            }
             //TODO mettre les events
             // if (strncmp(client->buffer, NEW_TEAM, strlen(NEW_TEAM)) == 0)
             //     ;

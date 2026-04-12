@@ -40,7 +40,7 @@ void cmd_use(char *command, client_t * client)
         client_error_unauthorized();
         return;
     }
-    switch (arg_amount(command) - 1) {
+    switch (arg_amount_quote(command)) {
         case 0:
             release_context(client);
             break;
