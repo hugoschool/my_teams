@@ -1,7 +1,6 @@
 #include "client/client.h"
 #include "common.h"
 #include "logging_client.h"
-#include "stdio.h"
 #include "utils.h"
 #include <stdlib.h>
 

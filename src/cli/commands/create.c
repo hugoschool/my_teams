@@ -10,24 +10,27 @@
 static char *craft_create_command(char *command, const char *context, client_t *client)
 {
     char *cmd = NULL;
+    char name[MAX_NAME_LENGTH] = {0};
+    char desc[MAX_DESCRIPTION_LENGTH] = {0};
 
     if (command[strlen(command) - 1] == '\n')
         command[strlen(command) - 1] = '\0';
     if (strcmp(context, CREATE_COMMENT) == 0) {
-        char *msg = get_arg_quote(command, 1);
-        asprintf(&cmd, "%s %s %s %s %lu %s%s", context, client->context.team_uuid, client->context.channel_uuid, client->context.thread_uuid, strlen(msg), msg, CRLF);
+        char body[MAX_BODY_LENGTH] = {0};
+        strncpy(body, get_arg_quote(command, 1), MAX_BODY_LENGTH);
+        asprintf(&cmd, "%s %s %s %s %lu %s%s", context, client->context.team_uuid, client->context.channel_uuid, client->context.thread_uuid, strlen(body), body, CRLF);
     } else if (strcmp(context, CREATE_TEAM) == 0) {
-        char *arg = get_arg_quote(command, 1);
-        char *msg = get_arg_quote(command, 2);
-        asprintf(&cmd, "%s %lu %lu %s %s%s", context, strlen(arg), strlen(msg), arg, msg, CRLF);
+        strncpy(name, get_arg_quote(command, 1), MAX_NAME_LENGTH);
+        strncpy(desc, get_arg_quote(command, 2), MAX_DESCRIPTION_LENGTH);
+        asprintf(&cmd, "%s %lu %lu %s %s%s", context, strlen(name), strlen(desc), name, desc, CRLF);
     } else if (strcmp(context, CREATE_CHANNEL) == 0) {
-        char *arg = get_arg_quote(command, 1);
-        char *msg = get_arg_quote(command, 2);
-        asprintf(&cmd, "%s %s %lu %lu %s %s%s", context, client->context.team_uuid, strlen(arg), strlen(msg), arg, msg, CRLF);
+        strncpy(name, get_arg_quote(command, 1), MAX_NAME_LENGTH);
+        strncpy(desc, get_arg_quote(command, 2), MAX_DESCRIPTION_LENGTH);
+        asprintf(&cmd, "%s %s %lu %lu %s %s%s", context, client->context.team_uuid, strlen(name), strlen(desc), name, desc, CRLF);
     } else if (strcmp(context, CREATE_THREAD) == 0) {
-        char *arg = get_arg_quote(command, 1);
-        char *msg = get_arg_quote(command, 2);
-        asprintf(&cmd, "%s %s %s %lu %lu %s %s%s", context, client->context.team_uuid, client->context.channel_uuid, strlen(arg), strlen(msg), arg, msg, CRLF);
+        strncpy(name, get_arg_quote(command, 1), MAX_NAME_LENGTH);
+        strncpy(desc, get_arg_quote(command, 2), MAX_DESCRIPTION_LENGTH);
+        asprintf(&cmd, "%s %s %s %lu %lu %s %s%s", context, client->context.team_uuid, client->context.channel_uuid, strlen(name), strlen(desc), name, desc, CRLF);
     }
     return cmd;
 }

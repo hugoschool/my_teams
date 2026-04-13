@@ -48,11 +48,11 @@ int client_loop(client_t *client)
             }
             //TODO mettre les events
             // if (strncmp(client->buffer, NEW_TEAM, strlen(NEW_TEAM)) == 0)
-            //     ;
-            // if (strncmp(client->buffer, NEW_TEAM, strlen(NEW_CHANNEL)) == 0)
-            //     ;
-            // if (strncmp(client->buffer, NEW_TEAM, strlen(NEW_THREAD)) == 0)
-            //     ;
+            //     client_event_team_created();
+            // if (strncmp(client->buffer, NEW_CHANNEL, strlen(NEW_CHANNEL)) == 0)
+            //     client_event_channel_created();
+            // if (strncmp(client->buffer, NEW_THREAD, strlen(NEW_THREAD)) == 0)
+            //     client_event_thread_created();
             memset(client->buffer, '\0', BUFFER_SIZE);
         }
         if (pfds[1].revents & POLLIN) {
@@ -69,7 +69,7 @@ int client_loop(client_t *client)
 
 bool teams_client(client_args_t *args)
 {
-    client_t client = {.socket_fd = -1, .logged = false, .user_name = NULL, .uuid = "\0", .buffer = {0}, .context = {"\0", "\0", "\0"}};
+    client_t client = {.socket_fd = -1, .logged = false, .user_name = "\0", .uuid = "\0", .buffer = {0}, .context = {"\0", "\0", "\0"}};
 
     init_sub_teams(&client);
     client.sockaddr.sin_addr.s_addr = args->ip;

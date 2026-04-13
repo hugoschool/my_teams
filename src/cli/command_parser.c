@@ -10,7 +10,7 @@ void command_parser(char *command, client_t *client)
                 commands[i].func(command, client);
                 continue;
             }
-            dprintf(STDERR_FILENO, "Unknown command\n");
+            dprintf(STDERR_FILENO, "Unknown command. Use /help to see which commands are available.\n");
         }
     }
 }

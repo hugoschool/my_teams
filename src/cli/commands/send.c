@@ -10,9 +10,12 @@
 static char *craft_send_command(char *command)
 {
     char *cmd = NULL;
-    char *msg = get_arg_quote(command, 2);
+    char arg[UUID_STR_LEN] = {0};
+    char msg[MAX_BODY_LENGTH] = {0};
 
-    asprintf(&cmd, "%s %s %lu %s%s", SEND, get_arg_quote(command, 1), strlen(msg), msg, CRLF);
+    strncpy(arg, get_arg_quote(command, 1), UUID_STR_LEN);
+    strncpy(msg, get_arg_quote(command, 2), MAX_BODY_LENGTH);
+    asprintf(&cmd, "%s %s %lu %s%s", SEND, arg, strlen(msg), msg, CRLF);
     return cmd;
 }
 

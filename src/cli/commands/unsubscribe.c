@@ -10,8 +10,9 @@
 static char *craft_unsubscribe_command(char *command)
 {
     char *cmd = NULL;
-    char *arg = get_arg_quote(command, 1);
+    char arg[UUID_STR_LEN] = {0};
 
+    strncpy(arg, get_arg_quote(command, 1), UUID_STR_LEN);
     if (arg[strlen(arg) - 1] == '\n')
         arg[strlen(arg) - 1] = '\0';
     asprintf(&cmd, "%s %s%s", UNSUBSCRIBE_TEAM, arg, CRLF);

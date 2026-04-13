@@ -34,7 +34,7 @@
         bool logged;
         struct sockaddr_in sockaddr;
         char uuid[UUID_STR_LEN];
-        char *user_name;
+        char user_name[MAX_NAME_LENGTH];
         context_t context;
         char buffer[BUFFER_SIZE];
         sub_teams_t *subscribed_teams;

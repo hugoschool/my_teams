@@ -17,8 +17,9 @@ static void release_context(client_t *client)
 static bool verify_arg(char *command, client_t *client, const char *info, int nbarg, const char *err)
 {
     char *cmd = NULL;
-    char *arg = get_arg_quote(command, nbarg);
+    char arg[UUID_STR_LEN] = {0};
 
+    strncpy(arg, get_arg_quote(command, nbarg), UUID_STR_LEN);
     if (arg[strlen(arg) - 1] == '\n')
         arg[strlen(arg) - 1] = '\0';
     asprintf(&cmd, "%s %s%s", info, arg, CRLF);
