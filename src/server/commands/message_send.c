@@ -45,7 +45,7 @@ void command_message_send(server_t *server)
 
     user = get_user(server);
     if (user == NULL) {
-        WRITE_STATUS(*CLIENT->fd, 460);
+        WRITE_STATUS(*CLIENT->fd, 464);
         return;
     }
     body_len_text = get_arg(server->buffer, 2);

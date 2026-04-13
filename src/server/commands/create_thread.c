@@ -43,20 +43,20 @@ void command_create_thread(server_t *server)
 
     free(team_uuid);
     if (team == NULL) {
-        WRITE_STATUS(*CLIENT->fd, 460);
+        WRITE_STATUS(*CLIENT->fd, 461);
         return;
     }
     channel_uuid = get_arg(server->buffer, 2);
     channel = channels_get_from_uuid(team->channels, channel_uuid);
     free(channel_uuid);
     if (channel == NULL) {
-        WRITE_STATUS(*CLIENT->fd, 440);
+        WRITE_STATUS(*CLIENT->fd, 462);
         return;
     }
 
     title_len_text = get_arg(server->buffer, 3);
     if (title_len_text == NULL) {
-        WRITE_STATUS(*CLIENT->fd, 460);
+        WRITE_STATUS(*CLIENT->fd, 499);
         return;
     }
     title_len = atoi(title_len_text);
@@ -64,7 +64,7 @@ void command_create_thread(server_t *server)
 
     description_len_text = get_arg(server->buffer, 4);
     if (description_len_text == NULL) {
-        WRITE_STATUS(*CLIENT->fd, 460);
+        WRITE_STATUS(*CLIENT->fd, 499);
         return;
     }
     description_len = atoi(description_len_text);

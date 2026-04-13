@@ -50,8 +50,10 @@ void command_login(server_t *server)
         return;
     user = get_user(server->users, username);
     free(username);
-    if (user == NULL)
+    if (user == NULL) {
+        WRITE_STATUS(*CLIENT->fd, 499);
         return;
+    }
     user->status = true;
     client_set_user(CLIENT, user);
     server_event_user_logged_in(user->uuid);

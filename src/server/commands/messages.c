@@ -30,7 +30,7 @@ void command_messages(server_t *server)
 
     user = get_user(server);
     if (user == NULL) {
-        WRITE_STATUS(*CLIENT->fd, 460);
+        WRITE_STATUS(*CLIENT->fd, 464);
         return;
     }
     for (unsigned int i = 0; i < server->messages->amount; i++) {

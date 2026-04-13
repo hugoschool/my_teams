@@ -22,7 +22,7 @@ void command_user(server_t *server)
     user = users_get_from_uuid(server->users, uuid);
     free(uuid);
     if (user == NULL) {
-        WRITE_STATUS(*CLIENT->fd, 460);
+        WRITE_STATUS(*CLIENT->fd, 464);
         return;
     }
     WRITE_STATUS(*CLIENT->fd, 200);

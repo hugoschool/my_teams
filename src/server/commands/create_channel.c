@@ -40,13 +40,13 @@ void command_create_channel(server_t *server)
 
     free(team_uuid);
     if (team == NULL) {
-        WRITE_STATUS(*CLIENT->fd, 460);
+        WRITE_STATUS(*CLIENT->fd, 461);
         return;
     }
 
     name_len_text = get_arg(server->buffer, 2);
     if (name_len_text == NULL) {
-        WRITE_STATUS(*CLIENT->fd, 460);
+        WRITE_STATUS(*CLIENT->fd, 499);
         return;
     }
     name_len = atoi(name_len_text);
@@ -54,7 +54,7 @@ void command_create_channel(server_t *server)
 
     description_len_text = get_arg(server->buffer, 3);
     if (description_len_text == NULL) {
-        WRITE_STATUS(*CLIENT->fd, 460);
+        WRITE_STATUS(*CLIENT->fd, 499);
         return;
     }
     description_len = atoi(description_len_text);

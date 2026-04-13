@@ -21,14 +21,14 @@ void command_threads(server_t *server)
 
     free(team_uuid);
     if (team == NULL) {
-        WRITE_STATUS(*CLIENT->fd, 460);
+        WRITE_STATUS(*CLIENT->fd, 461);
         return;
     }
     channel_uuid = get_arg(server->buffer, 2);
     channel = channels_get_from_uuid(team->channels, channel_uuid);
     free(channel_uuid);
     if (channel == NULL) {
-        WRITE_STATUS(*CLIENT->fd, 460);
+        WRITE_STATUS(*CLIENT->fd, 462);
         return;
     }
     WRITE_STATUS(*CLIENT->fd, 200);

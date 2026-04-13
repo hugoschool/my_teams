@@ -27,7 +27,7 @@ void command_unsubscribe_team(server_t *server)
     team_data_t *team = get_team(server);
 
     if (team == NULL) {
-        WRITE_STATUS(*CLIENT->fd, 460);
+        WRITE_STATUS(*CLIENT->fd, 461);
         return;
     }
     if (team_is_user_subscribed(team, CLIENT->user) == false) {

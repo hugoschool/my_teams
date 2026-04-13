@@ -23,7 +23,7 @@ void command_channel(server_t *server)
     team = teams_get_from_uuid(server->teams, team_uuid);
     free(team_uuid);
     if (team == NULL) {
-        WRITE_STATUS(*CLIENT->fd, 460);
+        WRITE_STATUS(*CLIENT->fd, 461);
         return;
     }
     uuid = get_arg(server->buffer, 2);
