@@ -42,8 +42,10 @@ pub struct users_t {
 // }
 
 #[unsafe(no_mangle)]
-fn save_user(user_data: *const user_data_t) {
-
+unsafe fn save_user(user_data: *const user_data_t) {
+    println!("{:?}", (*user_data).username);
+    // println!("{}");
+    // println!("{}");
 }
 
 #[unsafe(no_mangle)]
