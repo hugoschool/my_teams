@@ -79,7 +79,9 @@ CLI_SRC	:= 	$(UTILS_SRC)	\
 			src/cli/main.c	\
 			src/cli/client_args.c	\
 			src/cli/client.c	\
-			src/cli/command_parser.c
+			src/cli/command_parser.c	\
+			src/cli/print_unknown_error.c	\
+			src/cli/receive.c
 
 # Commands
 CLI_SRC	+=	src/cli/commands/login.c \

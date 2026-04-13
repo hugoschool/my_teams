@@ -48,9 +48,8 @@ void cmd_info(char *command, client_t * client)
             break;
     }
     send(client->socket_fd, real_cmd, strlen(real_cmd), 0);
-    recv(client->socket_fd, client->buffer, BUFFER_SIZE, 0);
-    if (strncmp(client->buffer, GET_STATUS(460), 3) == 0) {
-        print_unknown_error(context, client);
+    recv(client->socket_fd, client->buffer, BIG_BUFFER_SIZE, 0);
+    if (print_unknown_error(client)) {
         free(real_cmd);
         return;
     }

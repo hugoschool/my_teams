@@ -21,10 +21,9 @@ void cmd_login(char *command, client_t *client)
     char *real_cmd = craft_command(command);
 
     send(client->socket_fd, real_cmd, strlen(real_cmd), 0);
-    recv(client->socket_fd, client->buffer, BUFFER_SIZE, 0);
-    printf("%s", client->buffer);
-    memset(client->buffer, '\0', BUFFER_SIZE);
-    recv(client->socket_fd, client->buffer, BUFFER_SIZE, 0);
+    recv(client->socket_fd, client->buffer, BIG_BUFFER_SIZE, 0);
+    memset(client->buffer, '\0', BIG_BUFFER_SIZE);
+    recv(client->socket_fd, client->buffer, BIG_BUFFER_SIZE, 0);
     strncpy(client->user_name, get_arg_quote(command, 1), MAX_NAME_LENGTH);
     strcpy(client->uuid, get_arg(client->buffer, 1));
     client->logged = true;

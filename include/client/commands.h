@@ -42,7 +42,7 @@
     void cmd_info(char *command, client_t * client);
 
     enum context_e define_context(client_t *client);
-    void print_unknown_error(enum context_e context, client_t *client);
+    bool print_unknown_error(client_t *client);
 
     enum context_e {
         BASE,

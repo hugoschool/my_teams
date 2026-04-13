@@ -31,7 +31,7 @@ void cmd_send(char *command, client_t * client)
     send(client->socket_fd, real_cmd, strlen(real_cmd), 0);
     recv(client->socket_fd, client->buffer, BUFFER_SIZE, 0);
     printf("%s", client->buffer);
-    if (strncmp(client->buffer, GET_STATUS(460), 3) == 0) {
+    if (strncmp(client->buffer, GET_STATUS(464), 3) == 0) {
         client_error_unknown_user(get_arg_quote(command, 1));
         return;
     }

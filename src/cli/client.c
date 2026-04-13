@@ -36,14 +36,14 @@ int client_loop(client_t *client)
             break;
         }
         if (pfds[0].revents & POLLIN) {
-            recv(client->socket_fd, client->buffer, BUFFER_SIZE, 0);
+            recv(client->socket_fd, client->buffer, BIG_BUFFER_SIZE, 0);
             if (strncmp(client->buffer, NEW_MESSAGE, strlen(NEW_MESSAGE)) == 0) {
                 client_event_private_message_received(get_arg(client->buffer, 1), read_bytes_starting_arg(client->buffer, 3, atoi(get_arg(client->buffer, 2))));
             }
-            if (strncmp(client->buffer, NEW_TEAM, strlen(CLIENT_JOINED)) == 0) {
+            if (strncmp(client->buffer, CLIENT_JOINED, strlen(CLIENT_JOINED)) == 0) {
                 client_event_logged_in(get_arg(client->buffer, 1), get_arg(client->buffer, 2));
             }
-            if (strncmp(client->buffer, NEW_TEAM, strlen(CLIENT_LEFT)) == 0) {
+            if (strncmp(client->buffer, CLIENT_LEFT, strlen(CLIENT_LEFT)) == 0) {
                 client_event_logged_out(get_arg(client->buffer, 1), get_arg(client->buffer, 2));
             }
             //TODO mettre les events
@@ -53,7 +53,7 @@ int client_loop(client_t *client)
             //     client_event_channel_created();
             // if (strncmp(client->buffer, NEW_THREAD, strlen(NEW_THREAD)) == 0)
             //     client_event_thread_created();
-            memset(client->buffer, '\0', BUFFER_SIZE);
+            memset(client->buffer, '\0', BIG_BUFFER_SIZE);
         }
         if (pfds[1].revents & POLLIN) {
             bytes = getline(&cmd_line, &len, stdin);
@@ -61,7 +61,7 @@ int client_loop(client_t *client)
                 return -1;
             }
             command_parser(cmd_line, client);
-            memset(client->buffer, '\0', BUFFER_SIZE);
+            memset(client->buffer, '\0', BIG_BUFFER_SIZE);
         }
     }
     return 0;
@@ -85,8 +85,8 @@ bool teams_client(client_args_t *args)
         perror("connect");
         return false;
     }
-    recv(client.socket_fd, client.buffer, BUFFER_SIZE, 0);
-    memset(client.buffer, '\0', BUFFER_SIZE);
+    recv(client.socket_fd, client.buffer, BIG_BUFFER_SIZE, 0);
+    memset(client.buffer, '\0', BIG_BUFFER_SIZE);
     printf("%s", client.buffer);
     client_loop(&client);
     return true;

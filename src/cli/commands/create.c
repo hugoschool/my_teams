@@ -71,14 +71,13 @@ void cmd_create(char *command, client_t * client)
             break;
     }
     send(client->socket_fd, real_cmd, strlen(real_cmd), 0);
-    recv(client->socket_fd, client->buffer, BUFFER_SIZE, 0);
+    recv(client->socket_fd, client->buffer, BIG_BUFFER_SIZE, 0);
     if (strncmp(client->buffer, GET_STATUS(440), 3) == 0) {
         client_error_already_exist();
         free(real_cmd);
         return;
     }
-    if (strncmp(client->buffer, GET_STATUS(460), 3) == 0) {
-        print_unknown_error(context, client);
+    if (print_unknown_error(client)) {
         free(real_cmd);
         return;
     }
