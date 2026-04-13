@@ -8,6 +8,8 @@
 #ifndef DATABASE_H_
     #define DATABASE_H_
 
-    void hello(int a);
+    #include "server/server.h"
+
+    void save_users(users_t *users);
 
 #endif

@@ -5,7 +5,6 @@
 ** main.c
 */
 
-#include "database/database.h"
 #include "server/args.h"
 #include "server/server.h"
 #include <stdbool.h>
@@ -13,7 +12,6 @@
 
 int main(int argc, char **argv)
 {
-    hello(12);
     args_t args = parse_args(argc, argv);
 
     if (args.valid == false) {
