@@ -72,6 +72,16 @@ void cmd_create(char *command, client_t * client)
     }
     send(client->socket_fd, real_cmd, strlen(real_cmd), 0);
     recv(client->socket_fd, client->buffer, BUFFER_SIZE, 0);
+    if (strncmp(client->buffer, GET_STATUS(440), 3) == 0) {
+        client_error_already_exist();
+        free(real_cmd);
+        return;
+    }
+    if (strncmp(client->buffer, GET_STATUS(460), 3) == 0) {
+        print_unknown_error(context, client);
+        free(real_cmd);
+        return;
+    }
     char *second_recv = strtok(client->buffer, "\n");
     second_recv = strtok(NULL, "\n");
     switch (context) {

@@ -7,6 +7,23 @@
 #include "utils.h"
 #include <stdlib.h>
 
+void print_unknown_error(enum context_e context, client_t *client)
+{
+    switch (context) {
+        case TEAM:
+            client_error_unknown_team(client->context.team_uuid);
+            break;
+        case CHANNEL:
+            client_error_unknown_channel(client->context.channel_uuid);
+            break;
+        case THREAD:
+            client_error_unknown_thread(client->context.thread_uuid);
+            break;
+        default:
+            break;
+    }
+}
+
 static char *craft_list_command(const char *context, client_t *client)
 {
     char *cmd = NULL;
@@ -49,6 +66,11 @@ void cmd_list(char *command, client_t * client)
     }
     send(client->socket_fd, real_cmd, strlen(real_cmd), 0);
     recv(client->socket_fd, client->buffer, BUFFER_SIZE, 0);
+    if (strncmp(client->buffer, GET_STATUS(460), 3) == 0) {
+        print_unknown_error(context, client);
+        free(real_cmd);
+        return;
+    }
     char *second_recv = strtok(client->buffer, "\n");
     second_recv = strtok(NULL, "\n");
     while (second_recv != NULL) {
