@@ -11,7 +11,8 @@ endif
 DATABASE_SRC	:=	src/database/save.c \
 					src/database/save_users.c \
 					src/database/save_messages.c \
-					src/database/save_teams.c
+					src/database/save_teams.c \
+					src/database/save_channels.c
 
 UTILS_SRC	:=	src/utils/remove_crlf.c \
 				src/utils/strccount.c \

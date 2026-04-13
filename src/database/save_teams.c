@@ -20,6 +20,7 @@ static void save_team(FILE *database_file, team_data_t *team_data)
     fprintf(database_file, "\n");
 
     // teams channels
+    save_channels(database_file, team_data->channels);
 }
 
 void save_teams(FILE *database_file, teams_t *teams)

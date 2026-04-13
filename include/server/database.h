@@ -18,5 +18,6 @@ void save(server_t *server);
 void save_users(FILE *database_file, users_t *users);
 void save_messages(FILE *database_file, messages_t *messages);
 void save_teams(FILE *database_file, teams_t *teams);
+void save_channels(FILE *database_file, channels_t *channels);
 
 #endif
