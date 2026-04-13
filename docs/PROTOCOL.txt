@@ -99,10 +99,10 @@ Table of Contents
      10.1.  Newly created team . . . . . . . . . . . . . . . . . . .  24
      10.2.  Newly created channel  . . . . . . . . . . . . . . . . .  24
      10.3.  Newly created thread . . . . . . . . . . . . . . . . . .  24
-     10.4.  Newly created private message  . . . . . . . . . . . . .  24
-     10.5.  User logged in . . . . . . . . . . . . . . . . . . . . .  24
-     10.6.  User logged out  . . . . . . . . . . . . . . . . . . . .  25
-
+     10.4.  Newly created comment  . . . . . . . . . . . . . . . . .  24
+     10.5.  Newly created private message  . . . . . . . . . . . . .  25
+     10.6.  User logged in . . . . . . . . . . . . . . . . . . . . .  25
+     10.7.  User logged out  . . . . . . . . . . . . . . . . . . . .  25
 
 
 
@@ -1327,16 +1327,16 @@ Internet-Draft               MAICHE Protocol                  March 2026
    [thread_timestamp] [title_length] [body_length] [thread_title]
    [thread_body].
 
-10.4.  Newly created private message
+10.4.  Newly created comment
 
-   If a new private message has been sent by a user to another user, a
-   message is sent to the user receiving the message.
+   If a new comment has been created, a message is sent to all clients
+   that are subscribed to the related team.
 
-   The message is NEW_MESSAGE [user_uuid] [body_length] [message_body]
+   The message is NEW_COMMENT [comment_uuid] [user_uuid]
+   [comment_timestamp] [body_length] [comment_body].
 
-10.5.  User logged in
 
-   When a user logged in, a message is sent to every other client.
+
 
 
 
@@ -1346,24 +1346,24 @@ MAICHE                   Expires 1 October 2026                [Page 24]
 Internet-Draft               MAICHE Protocol                  March 2026
 
 
+10.5.  Newly created private message
+
+   If a new private message has been sent by a user to another user, a
+   message is sent to the user receiving the message.
+
+   The message is NEW_MESSAGE [user_uuid] [body_length] [message_body]
+
+10.6.  User logged in
+
+   When a user logged in, a message is sent to every other client.
+
    The message is CLIENT_JOINED [user_uuid] [user_name]
 
-10.6.  User logged out
+10.7.  User logged out
 
    When a user logged out, a message is sent to every other client.
 
    The message is CLIENT_LEFT [user_uuid] [user_name]
-
-
-
-
-
-
-
-
-
-
-
 
 
 
