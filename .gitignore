@@ -4,6 +4,7 @@ myteams_server
 *.a
 *.o
 *.out
+target
 
 # Cache
 .cache

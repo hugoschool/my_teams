@@ -3,9 +3,17 @@ CFLAGS	:=	-Wall -Wextra -std=gnu17
 CPPFLAGS	:=	-I ./include -I ./libs/myteams
 LDFLAGS	:= -L ./libs/myteams
 LDLIBS	:=	-lmyteams -luuid
+RELEASE	:=	--release
 
 ifeq ($(ENV), dev)
 	CFLAGS	+=	-g3
+	RELEASE	:=
+endif
+
+ifeq ($(RELEASE), --release)
+	TARGET_FOLDER	:=	target/release
+else
+	TARGET_FOLDER	:=	target/debug
 endif
 
 UTILS_SRC	:=	src/utils/remove_crlf.c \
@@ -16,6 +24,8 @@ UTILS_SRC	:=	src/utils/remove_crlf.c \
 				src/utils/arg_amount.c \
 				src/utils/read_bytes_starting_arg.c \
 				src/utils/capitalize_cmd.c
+
+DATABASE_LIB	:=	libneige_database.a
 
 SERVER_SRC	:= 	$(UTILS_SRC) \
 				src/server/main.c \
@@ -109,7 +119,13 @@ server:	$(SERVER_BINARY)
 .PHONY:	cli
 cli:	$(CLI_BINARY)
 
-$(SERVER_BINARY):	$(SERVER_OBJ)
+$(DATABASE_LIB):
+	cd src/database && cargo build $(RELEASE)
+	cp src/database/$(TARGET_FOLDER)/$(DATABASE_LIB) .
+
+$(SERVER_BINARY):	LDFLAGS	+=	-L ./
+$(SERVER_BINARY):	LDLIBS	+=	-lneige_database
+$(SERVER_BINARY):	$(DATABASE_LIB) $(SERVER_OBJ)
 	$(CC) -o $(SERVER_BINARY) $(SERVER_OBJ) $(LDFLAGS) $(LDLIBS)
 
 $(CLI_BINARY):	$(CLI_OBJ)
@@ -120,12 +136,13 @@ clean:
 	$(RM) $(CLI_OBJ)
 
 fclean:	clean
+	$(RM) $(DATABASE_LIB)
 	$(RM) $(SERVER_BINARY)
 	$(RM) $(CLI_BINARY)
 
 re:	fclean all
 
-dev-server:	all
+dev-server:	server
 	LD_LIBRARY_PATH=./libs/myteams ./myteams_server 4242
 
 dev-client:	all
