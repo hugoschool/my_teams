@@ -88,11 +88,17 @@ User failure:
 - 450 User already subscribed to this team.
 - 451 User isn't subscribed to this team.
 - 460 Given parameter is invalid. (Probably invalid UUID)
+- 461 Unknown team.
+- 462 Unknown channel.
+- 463 Unknown thread.
+- 464 Unknown user.
 - 499 Badly formed request.
 
 Server failure:
 
 - 500 Server failure.
+
+A derivation of the 46x status code indactes an invalid parameter
 
 ## Client input
 
@@ -224,7 +230,7 @@ Example:
 >
 > USER [uuid]
 >
-> 460 Given parameter is invalid.
+> 46x Given parameter is invalid.
 >
 > In case user isn't logged in:
 >
@@ -259,7 +265,7 @@ Example:
 >
 > MESSAGE_SEND [uuid] [body_length] [body]
 >
-> 460 Given parameter is invalid.
+> 46x Given parameter is invalid.
 >
 > In case user isn't logged in:
 >
@@ -300,7 +306,7 @@ Example:
 >
 > MESSAGES [uuid]
 >
-> 460 Given parameter is invalid.
+> 46x Given parameter is invalid.
 >
 > In case user isn't logged in:
 >
@@ -401,7 +407,7 @@ Example:
 >
 > TEAM uuid
 >
-> 460 Given parameter is invalid.
+> 46x Given parameter is invalid.
 >
 > In case user isn't logged in:
 >
@@ -436,7 +442,7 @@ Example:
 >
 > SUBSCRIBE_TEAM uuid
 >
-> 460 Given parameter is invalid.
+> 46x Given parameter is invalid.
 >
 > In case user isn't logged in:
 >
@@ -477,7 +483,7 @@ Example:
 >
 > UNSUBSCRIBE_TEAM uuid
 >
-> 460 Given parameter is invalid.
+> 46x Given parameter is invalid.
 >
 > In case user isn't logged in:
 >
@@ -551,7 +557,7 @@ Example:
 >
 > LIST_SUBSCRIBED_USERS uuid
 >
-> 460 Given parameter is invalid.
+> 46x Given parameter is invalid.
 >
 > In case user isn't logged in:
 >
@@ -590,7 +596,7 @@ Example:
 >
 > CREATE_CHANNEL [team_uuid] [name_length] [description_length] [name] [description]
 >
-> 460 Given parameter is invalid.
+> 46x Given parameter is invalid.
 >
 > In case channel name already exists:
 >
@@ -639,7 +645,7 @@ Example:
 >
 > CHANNEL team_uuid uuid
 >
-> 460 Given parameter is invalid.
+> 46x Given parameter is invalid.
 >
 > In case user isn't logged in:
 >
@@ -678,7 +684,7 @@ Example:
 >
 > CHANNELS [team_uuid]
 >
-> 460 Given parameter is invalid.
+> 46x Given parameter is invalid.
 >
 > In case user isn't logged in:
 >
@@ -723,7 +729,7 @@ Example:
 >
 > CREATE_THREAD [team_uuid] [channel_uuid] [title_length] [message_length] [title] [message]
 >
-> 460 Given parameter is invalid.
+> 46x Given parameter is invalid.
 >
 > In case thread title already exists:
 >
@@ -778,7 +784,7 @@ Example:
 >
 > THREAD team_uuid channel_uuid thread_uuid
 >
-> 460 Given parameter is invalid.
+> 46x Given parameter is invalid.
 >
 > In case user isn't logged in:
 >
@@ -821,7 +827,7 @@ Example:
 >
 > THREADS [team_uuid] [CHANNEL_UUID]
 >
-> 460 Given parameter is invalid.
+> 46x Given parameter is invalid.
 >
 > In case user isn't logged in:
 >
@@ -868,7 +874,7 @@ Example:
 >
 > CREATE_COMMENT [team_uuid] [channel_uuid] [thread_uuid] [body_length] [body]
 >
-> 460 Given parameter is invalid.
+> 46x Given parameter is invalid.
 >
 > In case user isn't subscribed to this team:
 >
@@ -921,7 +927,7 @@ Example:
 >
 > COMMENTS [team_uuid] [channel_uuid] [thread_uuid]
 >
-> 460 Given parameter is invalid.
+> 46x Given parameter is invalid.
 >
 > In case user isn't logged in:
 >

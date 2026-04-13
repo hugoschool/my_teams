@@ -73,7 +73,7 @@ Table of Contents
      4.2.  Disconnection of a user . . . . . . . . . . . . . . . . .   6
      4.3.  Retrieve a list of all users  . . . . . . . . . . . . . .   6
      4.4.  Retrieve information about a specific user  . . . . . . .   7
-   5.  Private message related events  . . . . . . . . . . . . . . .   7
+   5.  Private message related events  . . . . . . . . . . . . . . .   8
      5.1.  Send a private message to a user  . . . . . . . . . . . .   8
      5.2.  List all messages exchanged with a user . . . . . . . . .   8
    6.  Team-related events . . . . . . . . . . . . . . . . . . . . .   9
@@ -196,11 +196,17 @@ Internet-Draft               MAICHE Protocol                  March 2026
    *  450 User already subscribed to this team.
    *  451 User isn't subscribed to this team.
    *  460 Given parameter is invalid.  (Probably invalid UUID)
+   *  461 Unknown team.
+   *  462 Unknown channel.
+   *  463 Unknown thread.
+   *  464 Unknown user.
    *  499 Badly formed request.
 
    Server failure:
 
    *  500 Server failure.
+
+   A derivation of the 46x status code indactes an invalid parameter
 
 3.3.  Client input
 
@@ -212,12 +218,6 @@ Internet-Draft               MAICHE Protocol                  March 2026
 
    |  [Command] [Args...] [Ending sequence]
 
-   If the given input is invalid, the server shall respond with a 499
-   status code.
-
-
-
-
 
 
 
@@ -225,6 +225,9 @@ MAICHE                   Expires 1 October 2026                 [Page 4]
 
 Internet-Draft               MAICHE Protocol                  March 2026
 
+
+   If the given input is invalid, the server shall respond with a 499
+   status code.
 
 3.4.  Server response
 
@@ -271,9 +274,6 @@ Internet-Draft               MAICHE Protocol                  March 2026
    |  In case user is already logged in:
    |  
    |  LOGIN username
-   |  
-   |  430 User already logged in.
-
 
 
 
@@ -281,6 +281,9 @@ MAICHE                   Expires 1 October 2026                 [Page 5]
 
 Internet-Draft               MAICHE Protocol                  March 2026
 
+
+   |  
+   |  430 User already logged in.
 
 4.2.  Disconnection of a user
 
@@ -327,9 +330,6 @@ Internet-Draft               MAICHE Protocol                  March 2026
    |  200 Success.  [Ending sequence]
    |  
    |  USERNAME uuid 0 [newline]
-   |  
-   |  USERNAME uuid 1 [newline]
-   |  
 
 
 
@@ -338,6 +338,9 @@ MAICHE                   Expires 1 October 2026                 [Page 6]
 Internet-Draft               MAICHE Protocol                  March 2026
 
 
+   |  
+   |  USERNAME uuid 1 [newline]
+   |  
    |  USERNAME uuid 0 [newline]
    |  
    |  In case user isn't logged in:
@@ -376,7 +379,7 @@ Internet-Draft               MAICHE Protocol                  March 2026
    |  
    |  USER [uuid]
    |  
-   |  460 Given parameter is invalid.
+   |  46x Given parameter is invalid.
    |  
    |  In case user isn't logged in:
    |  
@@ -384,15 +387,14 @@ Internet-Draft               MAICHE Protocol                  March 2026
    |  
    |  435 User isn't logged in.
 
-5.  Private message related events
-
-
 
 
 MAICHE                   Expires 1 October 2026                 [Page 7]
 
 Internet-Draft               MAICHE Protocol                  March 2026
 
+
+5.  Private message related events
 
 5.1.  Send a private message to a user
 
@@ -421,7 +423,7 @@ Internet-Draft               MAICHE Protocol                  March 2026
    |  
    |  MESSAGE_SEND [uuid] [body_length] [body]
    |  
-   |  460 Given parameter is invalid.
+   |  46x Given parameter is invalid.
    |  
    |  In case user isn't logged in:
    |  
@@ -439,8 +441,6 @@ Internet-Draft               MAICHE Protocol                  March 2026
 
    What is returned is a status code.
 
-   First is the UUID of the user who sent the message, then the
-   timestamp of the sent message then the message body.
 
 
 
@@ -449,6 +449,9 @@ MAICHE                   Expires 1 October 2026                 [Page 8]
 
 Internet-Draft               MAICHE Protocol                  March 2026
 
+
+   First is the UUID of the user who sent the message, then the
+   timestamp of the sent message then the message body.
 
    This command can error out in case
 
@@ -472,7 +475,7 @@ Internet-Draft               MAICHE Protocol                  March 2026
    |  
    |  MESSAGES [uuid]
    |  
-   |  460 Given parameter is invalid.
+   |  46x Given parameter is invalid.
    |  
    |  In case user isn't logged in:
    |  
@@ -496,15 +499,14 @@ Internet-Draft               MAICHE Protocol                  March 2026
 
    This command can error out in case
 
-   *  the team name already exists
-
-
 
 
 MAICHE                   Expires 1 October 2026                 [Page 9]
 
 Internet-Draft               MAICHE Protocol                  March 2026
 
+
+   *  the team name already exists
 
    *  the user isn't logged in.
 
@@ -551,9 +553,7 @@ Internet-Draft               MAICHE Protocol                  March 2026
    |  
    |  200 Success.  [Ending sequence]
    |  
-   |  TEAM_UUID name_length description_length name description
-   |  [newline]
-   |  
+
 
 
 
@@ -562,6 +562,9 @@ MAICHE                   Expires 1 October 2026                [Page 10]
 Internet-Draft               MAICHE Protocol                  March 2026
 
 
+   |  TEAM_UUID name_length description_length name description
+   |  [newline]
+   |  
    |  TEAM_UUID name_length description_length name description
    |  [newline]
    |  
@@ -605,11 +608,8 @@ Internet-Draft               MAICHE Protocol                  March 2026
    |  
    |  TEAM uuid
    |  
-   |  460 Given parameter is invalid.
+   |  46x Given parameter is invalid.
    |  
-   |  In case user isn't logged in:
-   |  
-   |  TEAM uuid
 
 
 
@@ -618,6 +618,9 @@ MAICHE                   Expires 1 October 2026                [Page 11]
 Internet-Draft               MAICHE Protocol                  March 2026
 
 
+   |  In case user isn't logged in:
+   |  
+   |  TEAM uuid
    |  
    |  435 User isn't logged in.
 
@@ -649,7 +652,7 @@ Internet-Draft               MAICHE Protocol                  March 2026
    |  
    |  SUBSCRIBE_TEAM uuid
    |  
-   |  460 Given parameter is invalid.
+   |  46x Given parameter is invalid.
    |  
    |  In case user isn't logged in:
    |  
@@ -662,9 +665,6 @@ Internet-Draft               MAICHE Protocol                  March 2026
    |  SUBSCRIBE_TEAM uuid
    |  
    |  450 User is already subscribed to this team.
-
-
-
 
 
 
@@ -702,7 +702,7 @@ Internet-Draft               MAICHE Protocol                  March 2026
    |  
    |  UNSUBSCRIBE_TEAM uuid
    |  
-   |  460 Given parameter is invalid.
+   |  46x Given parameter is invalid.
    |  
    |  In case user isn't logged in:
    |  
@@ -798,7 +798,7 @@ Internet-Draft               MAICHE Protocol                  March 2026
    |  
    |  LIST_SUBSCRIBED_USERS uuid
    |  
-   |  460 Given parameter is invalid.
+   |  46x Given parameter is invalid.
    |  
    |  In case user isn't logged in:
    |  
@@ -850,7 +850,7 @@ Internet-Draft               MAICHE Protocol                  March 2026
    |  CREATE_CHANNEL [team_uuid] [name_length] [description_length]
    |  [name] [description]
    |  
-   |  460 Given parameter is invalid.
+   |  46x Given parameter is invalid.
    |  
    |  In case channel name already exists:
    |  
@@ -916,7 +916,7 @@ Internet-Draft               MAICHE Protocol                  March 2026
    |  
    |  CHANNEL team_uuid uuid
    |  
-   |  460 Given parameter is invalid.
+   |  46x Given parameter is invalid.
    |  
    |  In case user isn't logged in:
    |  
@@ -968,7 +968,7 @@ Internet-Draft               MAICHE Protocol                  March 2026
    |  
    |  CHANNELS [team_uuid]
    |  
-   |  460 Given parameter is invalid.
+   |  46x Given parameter is invalid.
    |  
    |  In case user isn't logged in:
    |  
@@ -1027,7 +1027,7 @@ Internet-Draft               MAICHE Protocol                  March 2026
    |  CREATE_THREAD [team_uuid] [channel_uuid] [title_length]
    |  [message_length] [title] [message]
    |  
-   |  460 Given parameter is invalid.
+   |  46x Given parameter is invalid.
    |  
    |  In case thread title already exists:
    |  
@@ -1099,7 +1099,7 @@ Internet-Draft               MAICHE Protocol                  March 2026
    |  
    |  THREAD team_uuid channel_uuid thread_uuid
    |  
-   |  460 Given parameter is invalid.
+   |  46x Given parameter is invalid.
    |  
    |  In case user isn't logged in:
    |  
@@ -1155,7 +1155,7 @@ Internet-Draft               MAICHE Protocol                  March 2026
    |  
    |  THREADS [team_uuid] [CHANNEL_UUID]
    |  
-   |  460 Given parameter is invalid.
+   |  46x Given parameter is invalid.
    |  
    |  In case user isn't logged in:
    |  
@@ -1216,7 +1216,7 @@ Internet-Draft               MAICHE Protocol                  March 2026
    |  CREATE_COMMENT [team_uuid] [channel_uuid] [thread_uuid]
    |  [body_length] [body]
    |  
-   |  460 Given parameter is invalid.
+   |  46x Given parameter is invalid.
    |  
    |  In case user isn't subscribed to this team:
    |  
@@ -1290,7 +1290,7 @@ MAICHE                   Expires 1 October 2026                [Page 23]
 Internet-Draft               MAICHE Protocol                  March 2026
 
 
-   |  460 Given parameter is invalid.
+   |  46x Given parameter is invalid.
    |  
    |  In case user isn't logged in:
    |  
