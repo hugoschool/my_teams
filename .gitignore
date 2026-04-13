@@ -14,3 +14,6 @@ docs/*.xml
 
 # VSCode
 .vscode
+
+# Database
+.database.neige

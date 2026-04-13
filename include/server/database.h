@@ -10,12 +10,13 @@
 
     #include "server/server.h"
     #include <stdio.h>
-    #include <stdlib.h>
 
-    #define DATABASE_PATH ".database"
+    #define DATABASE_PATH ".database.neige"
 
 void save(server_t *server);
 
-void save_users(users_t *users);
+void save_users(FILE *database_file, users_t *users);
+void save_messages(FILE *database_file, messages_t *messages);
+void save_teams(FILE *database_file, teams_t *teams);
 
 #endif
