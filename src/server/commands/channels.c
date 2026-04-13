@@ -19,7 +19,7 @@ void command_channels(server_t *server)
 
     free(team_uuid);
     if (team == NULL) {
-        WRITE_STATUS(*CLIENT->fd, 460);
+        WRITE_STATUS(*CLIENT->fd, 461);
         return;
     }
     WRITE_STATUS(*CLIENT->fd, 200);

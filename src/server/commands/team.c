@@ -22,7 +22,7 @@ void command_team(server_t *server)
     team = teams_get_from_uuid(server->teams, uuid);
     free(uuid);
     if (team == NULL) {
-        WRITE_STATUS(*CLIENT->fd, 460);
+        WRITE_STATUS(*CLIENT->fd, 461);
         return;
     }
     WRITE_STATUS(*CLIENT->fd, 200);

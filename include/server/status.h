@@ -26,6 +26,10 @@ typedef struct {
     const char *_450;
     const char *_451;
     const char *_460;
+    const char *_461;
+    const char *_462;
+    const char *_463;
+    const char *_464;
     const char *_499;
     const char *_500;
 } status_codes_t;
@@ -41,6 +45,10 @@ static const status_codes_t status = {
     ._450 = "450 User already subscribed to this team."CRLF,
     ._451 = "451 User isn't subscribed to this team."CRLF,
     ._460 = "460 Given parameter is invalid."CRLF,
+    ._461 = "461 Unknown team."CRLF,
+    ._462 = "462 Unknown channel."CRLF,
+    ._463 = "463 Unknown thread."CRLF,
+    ._464 = "464 Unknown user."CRLF,
     ._499 = "499 Badly formed request."CRLF,
     ._500 = "500 Server failure."CRLF,
 };
