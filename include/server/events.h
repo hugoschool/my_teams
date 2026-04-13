@@ -12,6 +12,7 @@
     #define NEW_CHANNEL "NEW_CHANNEL"
     #define NEW_THREAD "NEW_THREAD"
     #define NEW_MESSAGE "NEW_MESSAGE"
+    #define NEW_COMMENT "NEW_COMMENT"
 
     #define CLIENT_JOINED "CLIENT_JOINED"
     #define CLIENT_LEFT "CLIENT_LEFT"
