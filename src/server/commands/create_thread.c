@@ -14,10 +14,11 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-static void send_event_all_clients(server_t *server, thread_data_t *thread)
+static void send_event_all_clients(server_t *server, team_data_t *team, thread_data_t *thread)
 {
     for (unsigned int i = INITIAL_AMOUNT; i < server->clients->amount; i++) {
-        if (i == server->index || CLIENT_I(i)->login_step == LOGGED_OUT)
+        if (i == server->index || CLIENT_I(i)->login_step == LOGGED_OUT
+            || team_is_user_subscribed(team, CLIENT_I(i)->user) == false)
             continue;
         dprintf(*CLIENT_I(i)->fd, NEW_THREAD" %s %s %ld %ld %ld %s %s"CRLF,
             thread->uuid, thread->user_uuid, thread->timestamp,
@@ -78,6 +79,6 @@ void command_create_thread(server_t *server)
     WRITE_STATUS(*CLIENT->fd, 200);
     server_event_thread_created(channel->uuid, thread->uuid, CLIENT->user->uuid,
         thread->title, thread->description);
-    send_event_all_clients(server, thread);
+    send_event_all_clients(server, team, thread);
     thread_print(*CLIENT->fd, thread);
 }
