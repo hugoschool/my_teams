@@ -951,6 +951,12 @@ If a new thread has been created, a message is sent to all clients that are subs
 
 The message is `NEW_THREAD [thread_uuid] [user_uuid] [thread_timestamp] [title_length] [body_length] [thread_title] [thread_body]`.
 
+## Newly created comment
+
+If a new comment has been created, a message is sent to all clients that are subscribed to the related team.
+
+The message is `NEW_COMMENT [comment_uuid] [user_uuid] [comment_timestamp] [body_length] [comment_body]`.
+
 ## Newly created private message
 
 If a new private message has been sent by a user to another user, a message is sent to the user receiving the message.
