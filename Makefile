@@ -8,6 +8,9 @@ ifeq ($(ENV), dev)
 	CFLAGS	+=	-g3
 endif
 
+DATABASE_SRC	:=	src/database/save.c \
+					src/database/save_users.c
+
 UTILS_SRC	:=	src/utils/remove_crlf.c \
 				src/utils/strccount.c \
 				src/utils/strcmp_end.c \
@@ -19,7 +22,8 @@ UTILS_SRC	:=	src/utils/remove_crlf.c \
 				src/utils/limit_nb.c	\
 				src/utils/super_free.c
 
-SERVER_SRC	:= 	$(UTILS_SRC) \
+SERVER_SRC	:= 	$(DATABASE_SRC) \
+				$(UTILS_SRC) \
 				src/server/main.c \
 				src/server/args.c \
 				src/server/server.c \

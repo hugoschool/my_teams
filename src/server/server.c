@@ -13,6 +13,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
+#include "server/database.h"
 
 static server_t *server_init(void)
 {
@@ -68,6 +69,7 @@ static void server_loop(server_t *server)
         }
         poll_handler(server, &running);
     }
+    save(server);
 }
 
 static int handle_signal(void)
