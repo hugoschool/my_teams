@@ -28,8 +28,10 @@ void load_users(FILE *database_file, users_t *users)
     char *line = NULL;
     size_t len = 0;
 
-    while (getline(&line, &len, database_file)){
-        if (strcmp(line, "end users\n") == 0) { break; }
+    while (getline(&line, &len, database_file)) {
+        if (strcmp(line, "end users\n") == 0) {
+            break;
+        }
         load_user(line, users);
     }
 

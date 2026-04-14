@@ -28,8 +28,10 @@ void load_comments(FILE *database_file, comments_t *comments)
     char *line = NULL;
     size_t len = 0;
 
-    while (getline(&line, &len, database_file)){
-        if (strcmp(line, "[end]\n") == 0) { break; }
+    while (getline(&line, &len, database_file)) {
+        if (strcmp(line, "[end]\n") == 0) {
+            break;
+        }
         load_comment(line, comments);
     }
 

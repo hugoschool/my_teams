@@ -27,8 +27,10 @@ void load_messages(FILE *database_file, messages_t *messages)
     char *line = NULL;
     size_t len = 0;
 
-    while (getline(&line, &len, database_file)){
-        if (strcmp(line, "end messages\n") == 0) { break; }
+    while (getline(&line, &len, database_file)) {
+        if (strcmp(line, "end messages\n") == 0) {
+            break;
+        }
         load_message(line, messages);
     }
 

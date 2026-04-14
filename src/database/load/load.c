@@ -13,9 +13,11 @@ void load_database(server_t * server)
     char *line = NULL;
     size_t len = 0;
 
-    if (database_file == NULL) { return; }
+    if (database_file == NULL) {
+        return;
+    }
 
-    while (getline(&line, &len, database_file)){
+    while (getline(&line, &len, database_file)) {
         if (strcmp(line, "users\n") == 0) {
             load_users(database_file, server->users);
         }
@@ -23,7 +25,7 @@ void load_database(server_t * server)
             load_messages(database_file, server->messages);
         }
         if (strcmp(line, "teams\n") == 0) {
-            load_teams(database_file, server->teams);
+            load_teams(database_file, server->teams, server->users);
         }
     }
 

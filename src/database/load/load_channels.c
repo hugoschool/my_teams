@@ -28,8 +28,10 @@ void load_channels(FILE *database_file, channels_t *channels)
     char *line = NULL;
     size_t len = 0;
 
-    while (getline(&line, &len, database_file)){
-        if (strcmp(line, "{end}\n") == 0) { break; }
+    while (getline(&line, &len, database_file)) {
+        if (strcmp(line, "{end}\n") == 0) {
+            break;
+        }
         load_channel(database_file, line, channels);
     }
 
