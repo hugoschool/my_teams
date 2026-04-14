@@ -16,7 +16,8 @@ DATABASE_SRC	:=	src/database/save/save.c \
 					src/database/save/save_threads.c \
 					src/database/save/save_comments.c \
 					src/database/load/load.c \
-					src/database/load/load_users.c
+					src/database/load/load_users.c \
+					src/database/load/load_messages.c
 
 UTILS_SRC	:=	src/utils/remove_crlf.c \
 				src/utils/strccount.c \
