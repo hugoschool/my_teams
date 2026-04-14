@@ -14,10 +14,10 @@
 
 message_data_t *message_data_init(const char *from, const char *to, char *body)
 {
-    message_data_t *data = malloc(sizeof(message_data_t));
+    message_data_t *data = calloc(1, sizeof(message_data_t));
 
     if (data == NULL) {
-        perror("malloc");
+        perror("calloc");
         exit(84);
     }
     data->user_uuid_from = strdup(from);

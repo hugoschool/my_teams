@@ -7,7 +7,7 @@
 
 #include "server/database.h"
 
-void load_user(char *line, users_t *users)
+static void load_user(char *line, users_t *users)
 {
     user_data_t *user_data;
 
@@ -32,5 +32,8 @@ void load_users(FILE *database_file, users_t *users)
         if (strcmp(line, "end users\n") == 0) { break; }
         load_user(line, users);
     }
-    free(line);
+
+    if (line) {
+        free(line);
+    }
 }

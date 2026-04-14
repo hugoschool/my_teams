@@ -19,12 +19,15 @@ void load_database(server_t * server)
         if (strcmp(line, "users\n") == 0) {
             load_users(database_file, server->users);
         }
-        // if (strcmp(line, "messages") == 0) {
-        //     load_messages(database_file, server->messages);
-        // }
+        if (strcmp(line, "messages\n") == 0) {
+            load_messages(database_file, server->messages);
+        }
         // if (strcmp(line, "teams\n") == 0) {
         //     load_teams(database_file, server->teams);
         // }
     }
-    free(line);
+
+    if (line) {
+        free(line);
+    }
 }
