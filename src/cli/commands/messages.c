@@ -1,4 +1,5 @@
 #include "client/client.h"
+#include "client/commands.h"
 #include "common.h"
 #include "logging_client.h"
 #include "server/status.h"
@@ -33,9 +34,12 @@ void cmd_messages(char *command, client_t * client)
 
     send(client->socket_fd, real_cmd, strlen(real_cmd), 0);
     receive(client, BUFFER_SIZE);
-    printf("%s", client->buffer);
     if (strncmp(client->buffer, GET_STATUS(464), 3) == 0) {
         client_error_unknown_user(get_arg(command, 1));
+        return;
+    }
+    if (print_error(client)) {
+        free(real_cmd);
         return;
     }
     print_messages(client);

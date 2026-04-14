@@ -30,9 +30,12 @@ void cmd_send(char *command, client_t * client)
 
     send(client->socket_fd, real_cmd, strlen(real_cmd), 0);
     receive(client, BIG_BUFFER_SIZE);
-    printf("%s", client->buffer);
     if (strncmp(client->buffer, GET_STATUS(464), 3) == 0) {
         client_error_unknown_user(get_arg_quote(command, 1));
+        return;
+    }
+    if (print_error(client)) {
+        free(real_cmd);
         return;
     }
     free(real_cmd);

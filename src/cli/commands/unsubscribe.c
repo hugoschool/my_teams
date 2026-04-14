@@ -51,12 +51,8 @@ void cmd_unsubscribe(char *command, client_t *client)
 
     send(client->socket_fd, real_cmd, strlen(real_cmd), 0);
     receive(client, BIG_BUFFER_SIZE);
-    if (strncmp(client->buffer, GET_STATUS(461), 3) == 0) {
-        client_error_unknown_team(get_arg_quote(command, 1));
-        return;
-    }
-    if (strncmp(client->buffer, GET_STATUS(451), 3) == 0) {
-        printf("%s", client->buffer);
+    if (print_error(client)) {
+        free(real_cmd);
         return;
     }
     unsubscribe_of_team(client, get_arg_quote(command, 1));

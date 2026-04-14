@@ -48,7 +48,7 @@ void cmd_list(char *command, client_t * client)
     }
     send(client->socket_fd, real_cmd, strlen(real_cmd), 0);
     receive(client, BIG_BUFFER_SIZE);
-    if (print_unknown_error(client)) {
+    if (print_error(client)) {
         free(real_cmd);
         return;
     }

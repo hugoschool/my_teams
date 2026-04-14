@@ -42,7 +42,7 @@
     void cmd_info(char *command, client_t * client);
 
     enum context_e define_context(client_t *client);
-    bool print_unknown_error(client_t *client);
+    bool print_error(client_t *client);
 
     enum context_e {
         BASE,
@@ -65,8 +65,8 @@
         {"/user", 1, &cmd_user},
         {"/send", 2, &cmd_send},
         {"/messages", 1, &cmd_messages},
-        {"/subscribe", 1, &cmd_subscribe},
         {"/subscribed", 0, &cmd_subscribed},
+        {"/subscribe", 1, &cmd_subscribe},
         {"/unsubscribe", 1, &cmd_unsubscribe},
         {"/use", 0, &cmd_use},
         {"/create", 2, &cmd_create},

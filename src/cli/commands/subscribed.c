@@ -31,24 +31,28 @@ void cmd_subscribed(char *command, client_t *client)
         real_cmd = craft_subscribed_command(command);
         send(client->socket_fd, real_cmd, strlen(real_cmd), 0);
         receive(client, BIG_BUFFER_SIZE);
-        char *second_recv = strtok(client->buffer, "\n");
-        second_recv = strtok(NULL, "\n");
-        while (second_recv != NULL) {
-            client_print_teams(get_arg(second_recv, 0), read_bytes_starting_arg(second_recv, 3, atoi(get_arg(second_recv, 1))), read_bytes_starting_arg(second_recv, 3, atoi(get_arg(second_recv, 1)) + 1 + atoi(get_arg(second_recv, 2))));
-            second_recv = strtok(NULL, "\n");
-        }
-    } else {
-        real_cmd = capitalize_cmd(command);
-        send(client->socket_fd, real_cmd, strlen(real_cmd), 0);
-        receive(client, BIG_BUFFER_SIZE);
-        if (strncmp(client->buffer, GET_STATUS(461), 3) == 0) {
-            client_error_unknown_team(get_arg_quote(command, 1));
+        if (print_error(client)) {
+            free(real_cmd);
             return;
         }
         char *second_recv = strtok(client->buffer, "\n");
         second_recv = strtok(NULL, "\n");
         while (second_recv != NULL) {
             client_print_users(get_arg(second_recv, 1), get_arg(second_recv, 0), atoi(get_arg(second_recv, 2)));
+            second_recv = strtok(NULL, "\n");
+        }
+    } else {
+        real_cmd = craft_command(command, false);
+        send(client->socket_fd, real_cmd, strlen(real_cmd), 0);
+        receive(client, BIG_BUFFER_SIZE);
+        if (print_error(client)) {
+            free(real_cmd);
+            return;
+        }
+        char *second_recv = strtok(client->buffer, "\n");
+        second_recv = strtok(NULL, "\n");
+        while (second_recv != NULL) {
+            client_print_teams(get_arg(second_recv, 0), read_bytes_starting_arg(second_recv, 3, atoi(get_arg(second_recv, 1))), read_bytes_starting_arg(second_recv, 3, atoi(get_arg(second_recv, 1)) + 1 + atoi(get_arg(second_recv, 2))));
             second_recv = strtok(NULL, "\n");
         }
     }

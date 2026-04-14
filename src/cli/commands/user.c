@@ -1,4 +1,5 @@
 #include "client/client.h"
+#include "client/commands.h"
 #include "common.h"
 #include "logging_client.h"
 #include "server/status.h"
@@ -18,6 +19,10 @@ void cmd_user(char *command, client_t * client)
     receive(client, BIG_BUFFER_SIZE);
     if (strncmp(client->buffer, GET_STATUS(464), 3) == 0) {
         client_error_unknown_user(get_arg_quote(command, 1));
+        return;
+    }
+    if (print_error(client)) {
+        free(real_cmd);
         return;
     }
     char *second_recv = strtok(client->buffer, "\n");

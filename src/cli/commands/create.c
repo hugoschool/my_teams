@@ -72,12 +72,7 @@ void cmd_create(char *command, client_t * client)
     }
     send(client->socket_fd, real_cmd, strlen(real_cmd), 0);
     receive(client, BIG_BUFFER_SIZE);
-    if (strncmp(client->buffer, GET_STATUS(440), 3) == 0) {
-        client_error_already_exist();
-        free(real_cmd);
-        return;
-    }
-    if (print_unknown_error(client)) {
+    if (print_error(client)) {
         free(real_cmd);
         return;
     }

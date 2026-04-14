@@ -1,4 +1,5 @@
 #include "client/client.h"
+#include "client/commands.h"
 #include "common.h"
 #include "logging_client.h"
 #include "server/status.h"
@@ -39,8 +40,9 @@ void cmd_login(char *command, client_t *client)
 
     send(client->socket_fd, real_cmd, strlen(real_cmd), 0);
     receive(client, BIG_BUFFER_SIZE);
-    if (strncmp(client->buffer, GET_STATUS(430), 3) == 0) {
-        dprintf(STDOUT_FILENO, "Client is already logged in.\n");
+    if (print_error(client)) {
+        free(real_cmd);
+        return;
     }
     char *second_recv = strtok(client->buffer, "\n");
     second_recv = strtok(NULL, "\n");
