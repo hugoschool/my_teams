@@ -52,8 +52,9 @@ void cmd_list(char *command, client_t * client)
         free(real_cmd);
         return;
     }
-    char *second_recv = strtok(client->buffer, "\n");
-    second_recv = strtok(NULL, "\n");
+    char *saveptr;
+    char *second_recv = strtok_r(client->buffer, "\n", &saveptr);
+    second_recv = strtok_r(NULL, "\n", &saveptr);
     while (second_recv != NULL) {
         switch (context) {
             case BASE:
@@ -69,7 +70,7 @@ void cmd_list(char *command, client_t * client)
                 client_thread_print_replies(client->context.thread_uuid, get_arg(second_recv, 1), atoi(get_arg(second_recv, 2)), read_bytes_starting_arg(second_recv, 4, atoi(get_arg(second_recv, 3))));
                 break;
         }
-        second_recv = strtok(NULL, "\n");
+        second_recv = strtok_r(NULL, "\n", &saveptr);
     }
     free(real_cmd);
 }

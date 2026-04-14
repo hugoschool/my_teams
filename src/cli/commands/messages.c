@@ -13,7 +13,9 @@ static void print_messages(client_t *client)
 
     memset(temp, 0, strlen(client->buffer) + 1);
     strncpy(temp, client->buffer, strlen(client->buffer));
-    char *token = strtok(temp, "\n");
+
+    char *saveptr;
+    char *token = strtok_r(temp, "\n", &saveptr);
 
     while (token != NULL) {
         if (token) {
@@ -27,7 +29,7 @@ static void print_messages(client_t *client)
             free(body_len);
             free(body);
         }
-        token = strtok(NULL, "\n");
+        token = strtok_r(NULL, "\n", &saveptr);
     }
 }
 

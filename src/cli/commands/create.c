@@ -76,8 +76,9 @@ void cmd_create(char *command, client_t * client)
         free(real_cmd);
         return;
     }
-    char *second_recv = strtok(client->buffer, "\n");
-    second_recv = strtok(NULL, "\n");
+    char *saveptr;
+    char *second_recv = strtok_r(client->buffer, "\n", &saveptr);
+    second_recv = strtok_r(NULL, "\n", &saveptr);
     // TODO
     switch (context) {
         case BASE:

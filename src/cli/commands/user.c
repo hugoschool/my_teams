@@ -28,8 +28,9 @@ void cmd_user(char *command, client_t * client)
         free(real_cmd);
         return;
     }
-    char *second_recv = strtok(client->buffer, "\n");
-    second_recv = strtok(NULL, "\n");
+    char *saveptr;
+    char *second_recv = strtok_r(client->buffer, "\n", &saveptr);
+    second_recv = strtok_r(NULL, "\n", &saveptr);
     char *username = get_arg(second_recv, 0);
     char *status = get_arg(second_recv, 2);
     client_print_user(user, username, atoi(status));

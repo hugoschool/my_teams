@@ -20,14 +20,15 @@ void cmd_users(char *command, client_t * client)
         free(real_cmd);
         return;
     }
-    char *second_recv = strtok(client->buffer, "\n");
-    second_recv = strtok(NULL, "\n");
+    char *saveptr;
+    char *second_recv = strtok_r(client->buffer, "\n", &saveptr);
+    second_recv = strtok_r(NULL, "\n", &saveptr);
     while (second_recv != NULL) {
         char *uuid = get_arg(second_recv, 1);
         char *username = get_arg(second_recv, 0);
         char *status = get_arg(second_recv, 2);
         client_print_users(uuid, username, atoi(status));
-        second_recv = strtok(NULL, "\n");
+        second_recv = strtok_r(NULL, "\n", &saveptr);
         free(uuid);
         free(username);
         free(status);
