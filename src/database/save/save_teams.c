@@ -9,7 +9,7 @@
 
 static void save_team(FILE *database_file, team_data_t *team_data)
 {
-    fprintf(database_file, "[%s]:\"%s\",\"%s\"\n", team_data->uuid, team_data->name, team_data->description);
+    fprintf(database_file, "%s:\"%s\",\"%s\"\n", team_data->uuid, team_data->name, team_data->description);
 
     // teams users
     fprintf(database_file, "users:");
@@ -21,8 +21,6 @@ static void save_team(FILE *database_file, team_data_t *team_data)
 
     // teams channels
     save_channels(database_file, team_data->channels);
-
-    fprintf(database_file, "[end]\n");
 }
 
 void save_teams(FILE *database_file, teams_t *teams)

@@ -15,16 +15,16 @@ void load_database(server_t * server)
 
     if (database_file == NULL) { return; }
 
-    while(getline(&line, &len, database_file)){
+    while (getline(&line, &len, database_file)){
         if (strcmp(line, "users\n") == 0) {
             load_users(database_file, server->users);
         }
         if (strcmp(line, "messages\n") == 0) {
             load_messages(database_file, server->messages);
         }
-        // if (strcmp(line, "teams\n") == 0) {
-        //     load_teams(database_file, server->teams);
-        // }
+        if (strcmp(line, "teams\n") == 0) {
+            load_teams(database_file, server->teams);
+        }
     }
 
     if (line) {
