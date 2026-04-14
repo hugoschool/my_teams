@@ -14,3 +14,7 @@ docs/*.xml
 
 # VSCode
 .vscode
+
+# Bonus
+__pycache__
+.venv
