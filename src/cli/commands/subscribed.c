@@ -2,7 +2,6 @@
 #include "client/commands.h"
 #include "common.h"
 #include "logging_client.h"
-#include "server/status.h"
 #include "stdio.h"
 #include "utils.h"
 #include <stdlib.h>
@@ -20,8 +19,9 @@ static char *craft_subscribed_command(char *command)
 
 static void subscribed_one_arg(client_t *client)
 {
-    char *second_recv = strtok(client->buffer, "\r\n");
-    second_recv = strtok(NULL, "\n");
+    char *saveptr;
+    char *second_recv = strtok_r(client->buffer, "\r\n", &saveptr);
+    second_recv = strtok_r(NULL, "\n", &saveptr);
     while (second_recv != NULL) {
         char *uuid = get_arg(second_recv, 1);
         char *username = get_arg(second_recv, 0);
@@ -30,14 +30,15 @@ static void subscribed_one_arg(client_t *client)
         free(uuid);
         free(username);
         free(status);
-        second_recv = strtok(NULL, "\n");
+        second_recv = strtok_r(NULL, "\n", &saveptr);
     }
 }
 
 static void subscribed_zero_arg(client_t *client)
 {
-    char *second_recv = strtok(client->buffer, "\r\n");
-    second_recv = strtok(NULL, "\n");
+    char *saveptr;
+    char *second_recv = strtok_r(client->buffer, "\r\n", &saveptr);
+    second_recv = strtok_r(NULL, "\n", &saveptr);
     while (second_recv != NULL) {
         char *team_uuid = get_arg(second_recv, 0);
         char *team_name_len = get_arg(second_recv, 1);
@@ -50,7 +51,7 @@ static void subscribed_zero_arg(client_t *client)
         free(team_desc_len);
         free(team_name);
         free(team_desc);
-        second_recv = strtok(NULL, "\n");
+        second_recv = strtok_r(NULL, "\n", &saveptr);
     }
 }
 
