@@ -14,7 +14,7 @@
 
 user_data_t *user_data_init(char *uuid, char *username)
 {
-    user_data_t *data = malloc(sizeof(user_data_t));
+    user_data_t *data = calloc(1, sizeof(user_data_t));
 
     if (data == NULL) {
         perror("malloc");

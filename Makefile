@@ -8,14 +8,15 @@ ifeq ($(ENV), dev)
 	CFLAGS	+=	-g3
 endif
 
-DATABASE_SRC	:=	src/database/save.c \
-					src/database/save_users.c \
-					src/database/save_messages.c \
-					src/database/save_teams.c \
-					src/database/save_channels.c \
-					src/database/save_threads.c \
-					src/database/save_comments.c
-
+DATABASE_SRC	:=	src/database/save/save.c \
+					src/database/save/save_users.c \
+					src/database/save/save_messages.c \
+					src/database/save/save_teams.c \
+					src/database/save/save_channels.c \
+					src/database/save/save_threads.c \
+					src/database/save/save_comments.c \
+					src/database/load/load.c \
+					src/database/load/load_users.c
 
 UTILS_SRC	:=	src/utils/remove_crlf.c \
 				src/utils/strccount.c \

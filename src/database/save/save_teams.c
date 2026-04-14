@@ -32,4 +32,6 @@ void save_teams(FILE *database_file, teams_t *teams)
     for (size_t i = 0; i < teams->amount; i++) {
         save_team(database_file, teams->teams[i]);
     }
+
+    fprintf(database_file, "end teams\n");
 }

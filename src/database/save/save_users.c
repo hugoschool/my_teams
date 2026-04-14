@@ -19,4 +19,6 @@ void save_users(FILE *database_file, users_t *users)
     for (size_t i = 0; i < users->amount; i++) {
         save_user(database_file, users->users[i]);
     }
+
+    fprintf(database_file, "end users\n");
 }

@@ -10,6 +10,8 @@
 
     #include "server/server.h"
     #include <stdio.h>
+    #include <string.h>
+    #include <stdlib.h>
 
     #define DATABASE_PATH ".database.neige"
 
@@ -19,9 +21,11 @@
 users
 uuid,"username",status
 ... more users
+end users
 messages
 user_uuid_to,user_uuid_from,"body",timestamp
 ... more messages
+end messages
 teams
 [team_uuid]:"name","description"
 users:user_uuid,... more user_uuid
@@ -35,6 +39,7 @@ comment_uuid,user_uuid,"body",timestamp
 ... more channels
 [end]
 ... more teams
+end teams
 */
 
 void save(server_t *server);
@@ -47,5 +52,14 @@ void save_threads(FILE *database_file, threads_t *threads);
 void save_comments(FILE *database_file, comments_t *comments);
 
 // Load
+
+void load_database(server_t *server);
+
+void load_users(FILE *database_file, users_t *users);
+// messages_t *load_messages(FILE *database_file, messages_t *messages);
+// teams_t *load_teams(FILE *database_file, teams_t *teams);
+// channels_t *load_channels(FILE *database_file, channels_t *channels);
+// threads_t *load_threads(FILE *database_file, threads_t *threads);
+// comments_t *load_comments(FILE *database_file, comments_t *comments);
 
 #endif

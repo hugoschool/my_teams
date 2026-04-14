@@ -34,6 +34,7 @@ static server_t *server_init(void)
         free(server);
         return NULL;
     }
+    load_database(server);
     server->control_fd = -1;
     server->signal_fd = -1;
     return server;

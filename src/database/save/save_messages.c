@@ -19,4 +19,6 @@ void save_messages(FILE *database_file, messages_t *messages)
     for (size_t i = 0; i < messages->amount; i++) {
         save_message(database_file, messages->messages[i]);
     }
+
+    fprintf(database_file, "end messages\n");
 }
