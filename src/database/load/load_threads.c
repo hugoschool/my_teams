@@ -31,7 +31,7 @@ void load_threads(FILE *database_file, threads_t *threads)
     char *line = NULL;
     size_t len = 0;
 
-    while (getline(&line, &len, database_file)) {
+    while (getline(&line, &len, database_file) != -1) {
         if (strcmp(line, "(end)\n") == 0) {
             break;
         }

@@ -17,7 +17,7 @@ void load_database(server_t * server)
         return;
     }
 
-    while (getline(&line, &len, database_file)) {
+    while (getline(&line, &len, database_file) != -1) {
         if (strcmp(line, "users\n") == 0) {
             load_users(database_file, server->users);
         }

@@ -14,7 +14,7 @@ static void load_team_users(char *line, users_t *team_users, users_t *users)
     while (line[index] != '\n') {
         char uuid[UUID_STR_LEN] = {0};
         strncpy(uuid, line + index, UUID_STR_LEN);
-    
+
         users_add_data(team_users, users_get_from_uuid(users, uuid));
 
         index += UUID_STR_LEN;
@@ -51,7 +51,7 @@ void load_teams(FILE *database_file, teams_t *teams, users_t *users)
     char *line = NULL;
     size_t len = 0;
 
-    while (getline(&line, &len, database_file)) {
+    while (getline(&line, &len, database_file) != -1) {
         if (strcmp(line, "end teams\n") == 0) {
             break;
         }
