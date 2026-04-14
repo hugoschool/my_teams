@@ -1,10 +1,16 @@
 #include <ctype.h>
+#include <stdlib.h>
+#include <string.h>
 
 char *capitalize_cmd(char *cmd)
 {
-    cmd = &cmd[1];
+    char temp[strlen(cmd)];
 
-    for (int i = 0; cmd[i] != '\0' && cmd[i] != ' '; i++)
-        cmd[i] = toupper(cmd[i]);
+    memset(temp, '\0', strlen(cmd));
+    strncpy(temp, &cmd[1], strlen(cmd));
+    for (int i = 0; temp[i] != '\0' && temp[i] != ' '; i++)
+        temp[i] = toupper(temp[i]);
+    free(cmd);
+    cmd = strdup(temp);
     return cmd;
 }

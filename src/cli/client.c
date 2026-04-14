@@ -36,7 +36,11 @@ int client_loop(client_t *client)
             break;
         }
         if (pfds[0].revents & POLLIN) {
-            recv(client->socket_fd, client->buffer, BIG_BUFFER_SIZE, 0);
+            int verify = recv(client->socket_fd, client->buffer, BIG_BUFFER_SIZE, 0);
+            if (verify == 0) {
+                printf("Server closed its connexion.\n");
+                break;
+            }
             if (strncmp(client->buffer, NEW_MESSAGE, strlen(NEW_MESSAGE)) == 0) {
                 client_event_private_message_received(get_arg(client->buffer, 1), read_bytes_starting_arg(client->buffer, 3, atoi(get_arg(client->buffer, 2))));
             }

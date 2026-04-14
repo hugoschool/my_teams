@@ -30,7 +30,7 @@ void cmd_subscribed(char *command, client_t *client)
     if (arg_amount_quote(command) == 1) {
         real_cmd = capitalize_cmd(command);
         send(client->socket_fd, real_cmd, strlen(real_cmd), 0);
-        recv(client->socket_fd, client->buffer, BIG_BUFFER_SIZE, 0);
+        receive(client, BIG_BUFFER_SIZE);
         char *second_recv = strtok(client->buffer, "\n");
         second_recv = strtok(NULL, "\n");
         while (second_recv != NULL) {
@@ -40,7 +40,7 @@ void cmd_subscribed(char *command, client_t *client)
     } else {
         real_cmd = craft_subscribed_command(command);
         send(client->socket_fd, real_cmd, strlen(real_cmd), 0);
-        recv(client->socket_fd, client->buffer, BIG_BUFFER_SIZE, 0);
+        receive(client, BIG_BUFFER_SIZE);
         if (strncmp(client->buffer, GET_STATUS(461), 3) == 0) {
             client_error_unknown_team(get_arg_quote(command, 1));
             return;

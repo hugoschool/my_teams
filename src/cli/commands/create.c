@@ -21,15 +21,15 @@ static char *craft_create_command(char *command, const char *context, client_t *
         asprintf(&cmd, "%s %s %s %s %lu %s%s", context, client->context.team_uuid, client->context.channel_uuid, client->context.thread_uuid, strlen(body), body, CRLF);
     } else if (strcmp(context, CREATE_TEAM) == 0) {
         strncpy(name, get_arg_quote(command, 1), MAX_NAME_LENGTH);
-        strncpy(desc, get_arg_quote(command, 2), MAX_DESCRIPTION_LENGTH);
+        strncpy(desc, get_arg_quote(command, 3), MAX_DESCRIPTION_LENGTH);
         asprintf(&cmd, "%s %lu %lu %s %s%s", context, strlen(name), strlen(desc), name, desc, CRLF);
     } else if (strcmp(context, CREATE_CHANNEL) == 0) {
         strncpy(name, get_arg_quote(command, 1), MAX_NAME_LENGTH);
-        strncpy(desc, get_arg_quote(command, 2), MAX_DESCRIPTION_LENGTH);
+        strncpy(desc, get_arg_quote(command, 3), MAX_DESCRIPTION_LENGTH);
         asprintf(&cmd, "%s %s %lu %lu %s %s%s", context, client->context.team_uuid, strlen(name), strlen(desc), name, desc, CRLF);
     } else if (strcmp(context, CREATE_THREAD) == 0) {
         strncpy(name, get_arg_quote(command, 1), MAX_NAME_LENGTH);
-        strncpy(desc, get_arg_quote(command, 2), MAX_DESCRIPTION_LENGTH);
+        strncpy(desc, get_arg_quote(command, 3), MAX_DESCRIPTION_LENGTH);
         asprintf(&cmd, "%s %s %s %lu %lu %s %s%s", context, client->context.team_uuid, client->context.channel_uuid, strlen(name), strlen(desc), name, desc, CRLF);
     }
     return cmd;
@@ -71,7 +71,7 @@ void cmd_create(char *command, client_t * client)
             break;
     }
     send(client->socket_fd, real_cmd, strlen(real_cmd), 0);
-    recv(client->socket_fd, client->buffer, BIG_BUFFER_SIZE, 0);
+    receive(client, BIG_BUFFER_SIZE);
     if (strncmp(client->buffer, GET_STATUS(440), 3) == 0) {
         client_error_already_exist();
         free(real_cmd);

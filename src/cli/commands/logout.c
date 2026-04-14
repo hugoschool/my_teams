@@ -12,10 +12,10 @@ void cmd_logout(char *command, client_t * client)
         return;
     }
 
-    char *real_cmd = craft_command(command);
+    char *real_cmd = craft_command(command, false);
 
     send(client->socket_fd, real_cmd, strlen(real_cmd), 0);
-    recv(client->socket_fd, client->buffer, BIG_BUFFER_SIZE, 0);
+    receive(client, BIG_BUFFER_SIZE);
     printf("%s", client->buffer);
     client->logged = false;
     free(real_cmd);

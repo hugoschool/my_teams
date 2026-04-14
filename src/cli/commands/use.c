@@ -31,13 +31,13 @@ void cmd_use(char *command, client_t * client)
             break;
         case 2:
             strcpy(client->context.team_uuid, get_arg_quote(command, 1));
-            strcpy(client->context.channel_uuid, get_arg_quote(command, 2));
+            strcpy(client->context.channel_uuid, get_arg_quote(command, 3));
             memset(client->context.thread_uuid, '\0', UUID_STR_LEN);
             break;
         case 3:
             strcpy(client->context.team_uuid, get_arg_quote(command, 1));
-            strcpy(client->context.channel_uuid, get_arg_quote(command, 2));
-            strcpy(client->context.thread_uuid, get_arg_quote(command, 3));
+            strcpy(client->context.channel_uuid, get_arg_quote(command, 3));
+            strcpy(client->context.thread_uuid, get_arg_quote(command, 5));
             break;
     }
 }

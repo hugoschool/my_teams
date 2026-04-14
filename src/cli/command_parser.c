@@ -8,7 +8,7 @@ void command_parser(char *command, client_t *client)
         if (strncmp(command, commands[i].cmd, strlen(commands[i].cmd)) == 0) {
             if (commands[i].func && arg_amount_quote(command) >= commands[i].nb_args) {
                 commands[i].func(command, client);
-                continue;
+                break;
             }
             dprintf(STDERR_FILENO, "Unknown command. Use /help to see which commands are available.\n");
         }

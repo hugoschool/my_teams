@@ -50,7 +50,7 @@ void cmd_unsubscribe(char *command, client_t *client)
     char *real_cmd = craft_unsubscribe_command(command);
 
     send(client->socket_fd, real_cmd, strlen(real_cmd), 0);
-    recv(client->socket_fd, client->buffer, BIG_BUFFER_SIZE, 0);
+    receive(client, BIG_BUFFER_SIZE);
     if (strncmp(client->buffer, GET_STATUS(461), 3) == 0) {
         client_error_unknown_team(get_arg_quote(command, 1));
         return;

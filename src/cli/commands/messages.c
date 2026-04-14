@@ -29,10 +29,10 @@ void cmd_messages(char *command, client_t * client)
         return;
     }
 
-    char *real_cmd = craft_command(command);
+    char *real_cmd = craft_command(command, true);
 
     send(client->socket_fd, real_cmd, strlen(real_cmd), 0);
-    recv(client->socket_fd, client->buffer, BUFFER_SIZE, 0);
+    receive(client, BUFFER_SIZE);
     printf("%s", client->buffer);
     if (strncmp(client->buffer, GET_STATUS(464), 3) == 0) {
         client_error_unknown_user(get_arg(command, 1));
