@@ -27,6 +27,9 @@ static void save_team(FILE *database_file, team_data_t *team_data)
 
 void save_teams(FILE *database_file, teams_t *teams)
 {
+    if (teams == NULL)
+        return;
+
     fprintf(database_file, "teams\n");
 
     for (size_t i = 0; i < teams->amount; i++) {

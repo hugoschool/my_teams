@@ -16,6 +16,9 @@ static void save_channel(FILE *database_file, channel_data_t *channel_data)
 
 void save_channels(FILE *database_file, channels_t *channels)
 {
+    if (channels == NULL)
+        return;
+
     for (size_t i = 0; i < channels->amount; i++) {
         save_channel(database_file, channels->channels[i]);
     }

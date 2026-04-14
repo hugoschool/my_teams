@@ -14,6 +14,9 @@ static void save_user(FILE *database_file, user_data_t *user_data)
 
 void save_users(FILE *database_file, users_t *users)
 {
+    if (users == NULL)
+        return;
+
     fprintf(database_file, "users\n");
 
     for (size_t i = 0; i < users->amount; i++) {

@@ -14,6 +14,9 @@ static void save_message(FILE *database_file, message_data_t *message_data)
 
 void save_messages(FILE *database_file, messages_t *messages)
 {
+    if (messages == NULL)
+        return;
+
     fprintf(database_file, "messages\n");
 
     for (size_t i = 0; i < messages->amount; i++) {

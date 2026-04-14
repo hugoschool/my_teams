@@ -14,6 +14,9 @@ static void save_comment(FILE *database_file, comment_data_t *comment_data)
 
 void save_comments(FILE *database_file, comments_t *comments)
 {
+    if (comments == NULL)
+        return;
+
     for (size_t i = 0; i < comments->amount; i++) {
         save_comment(database_file, comments->comments[i]);
     }

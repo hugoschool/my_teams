@@ -16,6 +16,9 @@ static void save_thread(FILE *database_file, thread_data_t *thread_data)
 
 void save_threads(FILE *database_file, threads_t *threads)
 {
+    if (threads == NULL)
+        return;
+
     for (size_t i = 0; i < threads->amount; i++) {
         save_thread( database_file, threads->threads[i]);
     }
