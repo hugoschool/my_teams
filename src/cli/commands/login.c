@@ -1,9 +1,11 @@
 #include "client/client.h"
 #include "common.h"
 #include "logging_client.h"
+#include "server/status.h"
 #include "stdio.h"
 #include "utils.h"
 #include <stdlib.h>
+#include <unistd.h>
 
 char *craft_command(char *command, bool is_arg)
 {
@@ -37,10 +39,14 @@ void cmd_login(char *command, client_t *client)
 
     send(client->socket_fd, real_cmd, strlen(real_cmd), 0);
     receive(client, BIG_BUFFER_SIZE);
+    if (strncmp(client->buffer, GET_STATUS(430), 3) == 0) {
+        dprintf(STDOUT_FILENO, "Client is already logged in.\n");
+    }
     char *second_recv = strtok(client->buffer, "\n");
     second_recv = strtok(NULL, "\n");
     strncpy(client->user_name, get_arg(real_cmd, 1), MAX_NAME_LENGTH);
     strcpy(client->uuid, get_arg(second_recv, 1));
     client->logged = true;
+    client_event_logged_in(client->uuid, client->user_name);
     free(real_cmd);
 }

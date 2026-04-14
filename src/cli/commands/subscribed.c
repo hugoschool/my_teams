@@ -28,7 +28,7 @@ void cmd_subscribed(char *command, client_t *client)
     char *real_cmd = NULL;
 
     if (arg_amount_quote(command) == 1) {
-        real_cmd = capitalize_cmd(command);
+        real_cmd = craft_subscribed_command(command);
         send(client->socket_fd, real_cmd, strlen(real_cmd), 0);
         receive(client, BIG_BUFFER_SIZE);
         char *second_recv = strtok(client->buffer, "\n");
@@ -38,7 +38,7 @@ void cmd_subscribed(char *command, client_t *client)
             second_recv = strtok(NULL, "\n");
         }
     } else {
-        real_cmd = craft_subscribed_command(command);
+        real_cmd = capitalize_cmd(command);
         send(client->socket_fd, real_cmd, strlen(real_cmd), 0);
         receive(client, BIG_BUFFER_SIZE);
         if (strncmp(client->buffer, GET_STATUS(461), 3) == 0) {

@@ -31,7 +31,7 @@ static void unsubscribe_of_team(client_t *client, char *team_uuid)
         }
         if (deleted) {
             if (client->subscribed_teams->team_uuid[i]) {
-                client->subscribed_teams->team_uuid[i - 1] = strcpy(client->subscribed_teams->team_uuid[i - 1], client->subscribed_teams->team_uuid[i]);
+                client->subscribed_teams->team_uuid[i - 1] = strdup(client->subscribed_teams->team_uuid[i]);
             }
         }
     }
