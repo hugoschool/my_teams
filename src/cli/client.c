@@ -26,6 +26,7 @@ int client_loop(client_t *client)
     size_t len = 0;
     int bytes = 0;
 
+    // TODO: signalfd
     pfds[0].fd = client->socket_fd;
     pfds[0].events = POLLIN;
     pfds[1].fd = STDIN_FILENO;
@@ -66,8 +67,10 @@ int client_loop(client_t *client)
             }
             command_parser(cmd_line, client);
             memset(client->buffer, '\0', BIG_BUFFER_SIZE);
+            cmd_line = NULL;
         }
     }
+    free(cmd_line);
     return 0;
 }
 
