@@ -20,5 +20,6 @@ size_t arg_amount(char *str);
 size_t arg_amount_quote(char *str);
 char *read_bytes_starting_arg(char *str, int nb, size_t bytes);
 char *capitalize_cmd(char *cmd);
+int limit_nb(int nb, int max);
 
 #endif

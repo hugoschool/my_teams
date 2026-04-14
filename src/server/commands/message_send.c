@@ -5,6 +5,7 @@
 ** user.c
 */
 
+#include "common.h"
 #include "logging_server.h"
 #include "server/commands.h"
 #include "server/events.h"
@@ -53,7 +54,7 @@ void command_message_send(server_t *server)
         WRITE_STATUS(*CLIENT->fd, 499);
         return;
     }
-    body_len = atoi(body_len_text);
+    body_len = limit_nb(atoi(body_len_text), MAX_BODY_LENGTH);
     free(body_len_text);
     body = read_bytes_starting_arg(server->buffer, 3, body_len);
     if (body == NULL) {

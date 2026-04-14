@@ -5,6 +5,7 @@
 ** create_channel.c
 */
 
+#include "common.h"
 #include "logging_server.h"
 #include "server/commands.h"
 #include "server/events.h"
@@ -49,7 +50,7 @@ void command_create_channel(server_t *server)
         WRITE_STATUS(*CLIENT->fd, 499);
         return;
     }
-    name_len = atoi(name_len_text);
+    name_len = limit_nb(atoi(name_len_text), MAX_NAME_LENGTH);
     free(name_len_text);
 
     description_len_text = get_arg(server->buffer, 3);
@@ -57,7 +58,7 @@ void command_create_channel(server_t *server)
         WRITE_STATUS(*CLIENT->fd, 499);
         return;
     }
-    description_len = atoi(description_len_text);
+    description_len = limit_nb(atoi(description_len_text), MAX_DESCRIPTION_LENGTH);
     free(description_len_text);
 
     name = read_bytes_starting_arg(server->buffer, 4, name_len);

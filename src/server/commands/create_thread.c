@@ -5,6 +5,7 @@
 ** create_thread.c
 */
 
+#include "common.h"
 #include "logging_server.h"
 #include "server/commands.h"
 #include "server/events.h"
@@ -59,7 +60,7 @@ void command_create_thread(server_t *server)
         WRITE_STATUS(*CLIENT->fd, 499);
         return;
     }
-    title_len = atoi(title_len_text);
+    title_len = limit_nb(atoi(title_len_text), MAX_NAME_LENGTH);
     free(title_len_text);
 
     description_len_text = get_arg(server->buffer, 4);
@@ -67,7 +68,7 @@ void command_create_thread(server_t *server)
         WRITE_STATUS(*CLIENT->fd, 499);
         return;
     }
-    description_len = atoi(description_len_text);
+    description_len = limit_nb(atoi(description_len_text), MAX_DESCRIPTION_LENGTH);
     free(description_len_text);
 
     title = read_bytes_starting_arg(server->buffer, 5, title_len);
