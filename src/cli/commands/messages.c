@@ -14,11 +14,19 @@ static void print_messages(client_t *client)
     memset(temp, 0, strlen(client->buffer) + 1);
     strncpy(temp, client->buffer, strlen(client->buffer));
     char *token = strtok(temp, "\n");
-    // token = strtok(temp, "\n");
 
     while (token != NULL) {
-        if (token)
-            client_private_message_print_messages(get_arg(token, 0), atoi(get_arg(token, 1)), read_bytes_starting_arg(token, 3, atoi(get_arg(token, 2))));
+        if (token) {
+            char *sender_uuid = get_arg(token, 0);
+            char *timestamp = get_arg(token, 1);
+            char *body_len = get_arg(token, 2);
+            char *body = read_bytes_starting_arg(token, 3, atoi(body_len));
+            client_private_message_print_messages(sender_uuid, atoi(timestamp), body);
+            free(sender_uuid);
+            free(timestamp);
+            free(body_len);
+            free(body);
+        }
         token = strtok(NULL, "\n");
     }
 }
@@ -35,7 +43,9 @@ void cmd_messages(char *command, client_t * client)
     send(client->socket_fd, real_cmd, strlen(real_cmd), 0);
     receive(client, BUFFER_SIZE);
     if (strncmp(client->buffer, GET_STATUS(464), 3) == 0) {
-        client_error_unknown_user(get_arg(command, 1));
+        char *uuid = get_arg(real_cmd, 1);
+        client_error_unknown_user(uuid);
+        free(uuid);
         return;
     }
     if (print_error(client)) {
