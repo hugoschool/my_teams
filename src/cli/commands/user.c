@@ -17,8 +17,11 @@ void cmd_user(char *command, client_t * client)
 
     send(client->socket_fd, real_cmd, strlen(real_cmd), 0);
     receive(client, BIG_BUFFER_SIZE);
+    char *user = get_arg(real_cmd, 1);
     if (strncmp(client->buffer, GET_STATUS(464), 3) == 0) {
-        client_error_unknown_user(get_arg_quote(command, 1));
+        client_error_unknown_user(user);
+        free(user);
+        free(real_cmd);
         return;
     }
     if (print_error(client)) {
@@ -27,6 +30,11 @@ void cmd_user(char *command, client_t * client)
     }
     char *second_recv = strtok(client->buffer, "\n");
     second_recv = strtok(NULL, "\n");
-    client_print_user(get_arg_quote(command, 1), get_arg(second_recv, 0), atoi(get_arg(second_recv, 2)));
+    char *username = get_arg(second_recv, 0);
+    char *status = get_arg(second_recv, 2);
+    client_print_user(user, username, atoi(status));
     free(real_cmd);
+    free(user);
+    free(username);
+    free(status);
 }

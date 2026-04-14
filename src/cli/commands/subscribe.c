@@ -11,11 +11,13 @@ static char *craft_subscribe_command(char *command)
 {
     char *cmd = NULL;
     char arg[UUID_STR_LEN] = {0};
+    char *uuid = get_arg_quote(command, 1);
 
-    strncpy(arg, get_arg_quote(command, 1), UUID_STR_LEN);
+    strncpy(arg, uuid, UUID_STR_LEN);
     if (arg[strlen(arg) - 1] == '\n')
         arg[strlen(arg) - 1] = '\0';
     asprintf(&cmd, "%s %s%s", SUBSCRIBE_TEAM, arg, CRLF);
+    free(uuid);
     return cmd;
 }
 
@@ -43,7 +45,9 @@ void cmd_subscribe(char *command, client_t *client)
         free(real_cmd);
         return;
     }
-    subscribe_to_team(client, get_arg_quote(command, 1));
-    client_print_subscribed(client->uuid, get_arg_quote(command, 1));
+    char *team_uuid = get_arg(real_cmd, 1);
+    subscribe_to_team(client, team_uuid);
+    client_print_subscribed(client->uuid, team_uuid);
+    free(team_uuid);
     free(real_cmd);
 }

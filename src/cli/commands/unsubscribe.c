@@ -11,11 +11,13 @@ static char *craft_unsubscribe_command(char *command)
 {
     char *cmd = NULL;
     char arg[UUID_STR_LEN] = {0};
+    char *uuid = get_arg_quote(command, 1);
 
-    strncpy(arg, get_arg_quote(command, 1), UUID_STR_LEN);
+    strncpy(arg, uuid, UUID_STR_LEN);
     if (arg[strlen(arg) - 1] == '\n')
         arg[strlen(arg) - 1] = '\0';
     asprintf(&cmd, "%s %s%s", UNSUBSCRIBE_TEAM, arg, CRLF);
+    free(uuid);
     return cmd;
 }
 
@@ -55,7 +57,9 @@ void cmd_unsubscribe(char *command, client_t *client)
         free(real_cmd);
         return;
     }
-    unsubscribe_of_team(client, get_arg_quote(command, 1));
-    client_print_unsubscribed(client->uuid, get_arg_quote(command, 1));
+    char *team_uuid = get_arg_quote(real_cmd, 1);
+    unsubscribe_of_team(client, team_uuid);
+    client_print_unsubscribed(client->uuid, team_uuid);
+    free(team_uuid);
     free(real_cmd);
 }

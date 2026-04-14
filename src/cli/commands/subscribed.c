@@ -18,6 +18,42 @@ static char *craft_subscribed_command(char *command)
     return cmd;
 }
 
+static void subscribed_one_arg(client_t *client)
+{
+    char *second_recv = strtok(client->buffer, "\r\n");
+    second_recv = strtok(NULL, "\n");
+    while (second_recv != NULL) {
+        char *uuid = get_arg(second_recv, 1);
+        char *username = get_arg(second_recv, 0);
+        char *status = get_arg(second_recv, 2);
+        client_print_users(uuid, username, atoi(status));
+        free(uuid);
+        free(username);
+        free(status);
+        second_recv = strtok(NULL, "\n");
+    }
+}
+
+static void subscribed_zero_arg(client_t *client)
+{
+    char *second_recv = strtok(client->buffer, "\r\n");
+    second_recv = strtok(NULL, "\n");
+    while (second_recv != NULL) {
+        char *team_uuid = get_arg(second_recv, 0);
+        char *team_name_len = get_arg(second_recv, 1);
+        char *team_desc_len = get_arg(second_recv, 2);
+        char *team_name = read_bytes_starting_arg(second_recv, 3, atoi(team_name_len));
+        char *team_desc = read_bytes_starting_arg(second_recv, 3, atoi(team_name_len) + 1 + atoi(team_desc_len)) + atoi(team_name_len) + 1;
+        client_print_teams(team_uuid, team_name, team_desc);
+        free(team_uuid);
+        free(team_name_len);
+        free(team_desc_len);
+        free(team_name);
+        free(team_desc);
+        second_recv = strtok(NULL, "\n");
+    }
+}
+
 void cmd_subscribed(char *command, client_t *client)
 {
     if (!client->logged) {
@@ -35,12 +71,7 @@ void cmd_subscribed(char *command, client_t *client)
             free(real_cmd);
             return;
         }
-        char *second_recv = strtok(client->buffer, "\n");
-        second_recv = strtok(NULL, "\n");
-        while (second_recv != NULL) {
-            client_print_users(get_arg(second_recv, 1), get_arg(second_recv, 0), atoi(get_arg(second_recv, 2)));
-            second_recv = strtok(NULL, "\n");
-        }
+        subscribed_one_arg(client);
     } else {
         real_cmd = craft_command(command, false);
         send(client->socket_fd, real_cmd, strlen(real_cmd), 0);
@@ -49,12 +80,7 @@ void cmd_subscribed(char *command, client_t *client)
             free(real_cmd);
             return;
         }
-        char *second_recv = strtok(client->buffer, "\n");
-        second_recv = strtok(NULL, "\n");
-        while (second_recv != NULL) {
-            client_print_teams(get_arg(second_recv, 0), read_bytes_starting_arg(second_recv, 3, atoi(get_arg(second_recv, 1))), read_bytes_starting_arg(second_recv, 3, atoi(get_arg(second_recv, 1)) + 1 + atoi(get_arg(second_recv, 2))));
-            second_recv = strtok(NULL, "\n");
-        }
+        subscribed_zero_arg(client);
     }
     free(real_cmd);
 }

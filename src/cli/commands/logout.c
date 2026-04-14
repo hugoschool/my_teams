@@ -21,7 +21,7 @@ void cmd_logout(char *command, client_t * client)
         free(real_cmd);
         return;
     }
-    printf("%s", client->buffer);
+    client_event_logged_out(client->uuid, client->user_name);
     client->logged = false;
     free(real_cmd);
 }

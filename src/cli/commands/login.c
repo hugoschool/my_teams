@@ -46,9 +46,13 @@ void cmd_login(char *command, client_t *client)
     }
     char *second_recv = strtok(client->buffer, "\n");
     second_recv = strtok(NULL, "\n");
-    strncpy(client->user_name, get_arg(real_cmd, 1), MAX_NAME_LENGTH);
-    strcpy(client->uuid, get_arg(second_recv, 1));
+    char *username = get_arg(real_cmd, 1);
+    char *uuid = get_arg(second_recv, 1);
+    strncpy(client->user_name, username, MAX_NAME_LENGTH);
+    strncpy(client->uuid, uuid, UUID_STR_LEN);
     client->logged = true;
     client_event_logged_in(client->uuid, client->user_name);
+    free(username);
+    free(uuid);
     free(real_cmd);
 }
