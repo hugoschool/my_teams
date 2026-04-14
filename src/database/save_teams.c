@@ -2,14 +2,14 @@
 ** EPITECH PROJECT, 2026
 ** myteams
 ** File description:
-** save_users.c
+** save_teams.c
 */
 
 #include "server/database.h"
 
 static void save_team(FILE *database_file, team_data_t *team_data)
 {
-    fprintf(database_file, "[%s,\"%s\",\"%s\"]\n", team_data->uuid, team_data->name, team_data->description);
+    fprintf(database_file, "[%s]:\"%s\",\"%s\"\n", team_data->uuid, team_data->name, team_data->description);
 
     // teams users
     fprintf(database_file, "users:");
@@ -21,11 +21,13 @@ static void save_team(FILE *database_file, team_data_t *team_data)
 
     // teams channels
     save_channels(database_file, team_data->channels);
+
+    fprintf(database_file, "[end]\n");
 }
 
 void save_teams(FILE *database_file, teams_t *teams)
 {
-    fprintf(database_file, "[teams]\n");
+    fprintf(database_file, "teams\n");
 
     for (size_t i = 0; i < teams->amount; i++) {
         save_team(database_file, teams->teams[i]);

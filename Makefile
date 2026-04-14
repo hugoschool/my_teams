@@ -12,7 +12,10 @@ DATABASE_SRC	:=	src/database/save.c \
 					src/database/save_users.c \
 					src/database/save_messages.c \
 					src/database/save_teams.c \
-					src/database/save_channels.c
+					src/database/save_channels.c \
+					src/database/save_threads.c \
+					src/database/save_comments.c
+
 
 UTILS_SRC	:=	src/utils/remove_crlf.c \
 				src/utils/strccount.c \
