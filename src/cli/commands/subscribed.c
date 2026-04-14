@@ -43,8 +43,8 @@ static void subscribed_zero_arg(client_t *client)
         char *team_name_len = get_arg(second_recv, 1);
         char *team_desc_len = get_arg(second_recv, 2);
         char *team_name = read_bytes_starting_arg(second_recv, 3, atoi(team_name_len));
-        char *team_desc = read_bytes_starting_arg(second_recv, 3, atoi(team_name_len) + 1 + atoi(team_desc_len)) + atoi(team_name_len) + 1;
-        client_print_teams(team_uuid, team_name, team_desc);
+        char *team_desc = read_bytes_starting_arg(second_recv, 3, atoi(team_name_len) + 1 + atoi(team_desc_len));
+        client_print_teams(team_uuid, team_name, team_desc + atoi(team_name_len) + 1);
         free(team_uuid);
         free(team_name_len);
         free(team_desc_len);
