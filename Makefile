@@ -18,7 +18,8 @@ UTILS_SRC	:=	src/utils/remove_crlf.c \
 				src/utils/arg_amount.c \
 				src/utils/read_bytes_starting_arg.c \
 				src/utils/capitalize_cmd.c \
-				src/utils/limit_nb.c
+				src/utils/limit_nb.c	\
+				src/utils/super_free.c
 
 SERVER_SRC	:= 	$(UTILS_SRC) \
 				src/server/main.c \
