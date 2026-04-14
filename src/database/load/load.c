@@ -32,4 +32,6 @@ void load_database(server_t * server)
     if (line) {
         free(line);
     }
+
+    fclose(database_file);
 }
