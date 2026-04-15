@@ -61,19 +61,28 @@ int client_loop(client_t *client)
 
 bool teams_client(client_args_t *args)
 {
-    client_t client = {.socket_fd = -1, .logged = false, .user_name = "\0", .uuid = "\0", .buffer = {0},
-        .context = {"\0", "\0", "\0", BASE}};
+    client_t client = {
+        .socket_fd = -1,
+        .logged = false,
+        .uuid = "\0",
+        .user_name = "\0",
+        .context = {"\0", "\0", "\0", BASE},
+        .buffer = {0},
+        .subscribed_teams = NULL
+    };
+
+    struct sockaddr_in addr;
 
     init_sub_teams(&client);
-    client.sockaddr.sin_addr.s_addr = args->ip;
-    client.sockaddr.sin_port = htons(args->port);
-    client.sockaddr.sin_family = AF_INET;
+    addr.sin_addr.s_addr = args->ip;
+    addr.sin_port = htons(args->port);
+    addr.sin_family = AF_INET;
     client.socket_fd = socket(AF_INET, SOCK_STREAM, 0);
     if (client.socket_fd == -1) {
         perror("socket");
         return false;
     }
-    if (connect(client.socket_fd, (struct sockaddr *)&client.sockaddr, sizeof(client.sockaddr)) == -1) {
+    if (connect(client.socket_fd, (struct sockaddr *)&addr, sizeof(addr)) == -1) {
         close(client.socket_fd);
         perror("connect");
         return false;

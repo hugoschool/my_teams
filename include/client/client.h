@@ -42,7 +42,6 @@
     typedef struct client_s {
         int socket_fd;
         bool logged;
-        struct sockaddr_in sockaddr;
         char uuid[UUID_STR_LEN];
         char user_name[MAX_NAME_LENGTH];
         context_t context;
