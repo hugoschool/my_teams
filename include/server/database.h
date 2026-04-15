@@ -27,11 +27,11 @@ user_uuid_from"user_uuid_to"body"timestamp
 ... more messages
 end messages
 teams
-team_uuid:"name","description"
+team_uuid"name"description"
 users:user_uuid,... more user_uuid
-{channel_uuid}:"name","description"
-(thread_uuid):user_uuid,"title","description",timestamp
-[comment_uuid]:user_uuid,"body",timestamp
+{channel_uuid"name"description"}
+(thread_uuid"user_uuid"title"description"timestamp")
+[comment_uuid"user_uuid"body"timestamp"]
 ... more comment
 [end]
 ... more threads
