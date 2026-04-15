@@ -15,14 +15,15 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-static void send_event_all_clients(server_t *server, team_data_t *team, comment_data_t *comment)
+static void send_event_all_clients(server_t *server, team_data_t *team,
+    thread_data_t *thread, comment_data_t *comment)
 {
     for (unsigned int i = INITIAL_AMOUNT; i < server->clients->amount; i++) {
         if (i == server->index || CLIENT_I(i)->login_step == LOGGED_OUT
             || team_is_user_subscribed(team, CLIENT_I(i)->user) == false)
             continue;
-        dprintf(*CLIENT_I(i)->fd, NEW_COMMENT" %s %s %ld %ld %s"CRLF, comment->uuid,
-        CLIENT_I(i)->user->uuid, comment->timestamp, strlen(comment->body), comment->body);
+        dprintf(*CLIENT_I(i)->fd, NEW_COMMENT" %s %s %s %s %ld %s"CRLF, comment->uuid,
+        team->uuid, thread->uuid, CLIENT_I(i)->user->uuid, strlen(comment->body), comment->body);
     }
 }
 
@@ -72,6 +73,6 @@ void command_create_comment(server_t *server)
     comment = thread_add_comment(thread, CLIENT->user->uuid, body);
     free(body);
     server_event_reply_created(thread->uuid, CLIENT->user->uuid, comment->body);
-    send_event_all_clients(server, team, comment);
+    send_event_all_clients(server, team, thread, comment);
     comment_print(*CLIENT->fd, comment);
 }
