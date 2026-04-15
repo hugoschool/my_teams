@@ -46,4 +46,5 @@ bool teams_client(client_args_t *args);
 ssize_t receive(client_t *client, size_t bytes_to_recv);
 void command_parser(char *command, client_t *client);
 char *craft_command(char *command, bool is_arg);
+void handle_server_events(client_t *client);
 #endif

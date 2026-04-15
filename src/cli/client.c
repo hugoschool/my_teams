@@ -42,22 +42,7 @@ int client_loop(client_t *client)
                 printf("Server closed its connexion.\n");
                 break;
             }
-            if (strncmp(client->buffer, NEW_MESSAGE, strlen(NEW_MESSAGE)) == 0) {
-                client_event_private_message_received(get_arg(client->buffer, 1), read_bytes_starting_arg(client->buffer, 3, atoi(get_arg(client->buffer, 2))));
-            }
-            if (strncmp(client->buffer, CLIENT_JOINED, strlen(CLIENT_JOINED)) == 0) {
-                client_event_logged_in(get_arg(client->buffer, 1), get_arg(client->buffer, 2));
-            }
-            if (strncmp(client->buffer, CLIENT_LEFT, strlen(CLIENT_LEFT)) == 0) {
-                client_event_logged_out(get_arg(client->buffer, 1), get_arg(client->buffer, 2));
-            }
-            //TODO mettre les events
-            // if (strncmp(client->buffer, NEW_TEAM, strlen(NEW_TEAM)) == 0)
-            //     client_event_team_created();
-            // if (strncmp(client->buffer, NEW_CHANNEL, strlen(NEW_CHANNEL)) == 0)
-            //     client_event_channel_created();
-            // if (strncmp(client->buffer, NEW_THREAD, strlen(NEW_THREAD)) == 0)
-            //     client_event_thread_created();
+            handle_server_events(client);
             memset(client->buffer, '\0', BIG_BUFFER_SIZE);
         }
         if (pfds[1].revents & POLLIN) {

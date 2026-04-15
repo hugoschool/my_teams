@@ -1,0 +1,78 @@
+#include "client/client.h"
+#include "client/args.h"
+#include "common.h"
+#include "logging_client.h"
+#include "server/events.h"
+#include "utils.h"
+#include <stdbool.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+static void event_team_created(client_t *client)
+{
+    char *team_uuid = get_arg(client->buffer, 1);
+    char *team_name_len = get_arg(client->buffer, 2);
+    char *team_desc_len = get_arg(client->buffer, 3);
+    char *team_name = read_bytes_starting_arg(client->buffer, 4, atoi(team_name_len));
+    char *team_desc = read_bytes_starting_arg(client->buffer, 4, atoi(team_name_len) + 1 + atoi(team_desc_len));
+    client_event_team_created(team_uuid, team_name, team_desc + 1 + atoi(team_name_len));
+    super_free(5, team_uuid, team_name_len, team_name, team_desc_len, team_desc);
+}
+
+static void event_channel_created(client_t *client)
+{
+    char *channel_uuid = get_arg(client->buffer, 1);
+    char *channel_name_len = get_arg(client->buffer, 2);
+    char *channel_desc_len = get_arg(client->buffer, 3);
+    char *channel_name = read_bytes_starting_arg(client->buffer, 4, atoi(channel_name_len));
+    char *channel_desc = read_bytes_starting_arg(client->buffer, 4, atoi(channel_name_len) + 1 + atoi(channel_desc_len));
+    client_event_channel_created(channel_uuid, channel_name, channel_desc + 1 + atoi(channel_name_len));
+    super_free(5, channel_uuid, channel_desc, channel_desc_len, channel_name, channel_name_len);
+}
+
+static void event_thread_created(client_t *client)
+{
+    char *thread_uuid = get_arg(client->buffer, 1);
+    char *user_uuid = get_arg(client->buffer, 2);
+    char *timestamp = get_arg(client->buffer, 3);
+    char *thread_title_len = get_arg(client->buffer, 4);
+    char *thread_desc_len = get_arg(client->buffer, 5);
+    char *thread_title = read_bytes_starting_arg(client->buffer, 6, atoi(thread_title_len));
+    char *thread_desc = read_bytes_starting_arg(client->buffer, 6, atoi(thread_title_len) + 1 + atoi(thread_desc_len));
+    client_event_thread_created(thread_uuid, user_uuid, atoi(timestamp), thread_title, thread_desc + 1 + atoi(thread_title_len));
+    super_free(7, thread_uuid, user_uuid, timestamp, thread_title_len, thread_desc_len, thread_desc, thread_title);
+}
+
+// static void event_reply_created(client_t *client)
+// {
+//     char *user_uuid = get_arg(client->buffer, 1);
+//     char *timestamp = get_arg(client->buffer, 2);
+//     char *reply_len = get_arg(client->buffer, 3);
+//     char *reply = read_bytes_starting_arg(client->buffer, 4, atoi(reply_len));
+//     client_event_thread_reply_received();
+// }
+
+
+void handle_server_events(client_t *client)
+{
+    // NEW_COMMENT [comment_uuid] [user_uuid] [comment_timestamp] [body_length] [comment_body].
+    if (strncmp(client->buffer, NEW_MESSAGE, strlen(NEW_MESSAGE)) == 0) {
+        client_event_private_message_received(get_arg(client->buffer, 1), read_bytes_starting_arg(client->buffer, 3, atoi(get_arg(client->buffer, 2))));
+    }
+    if (strncmp(client->buffer, CLIENT_JOINED, strlen(CLIENT_JOINED)) == 0) {
+        client_event_logged_in(get_arg(client->buffer, 1), get_arg(client->buffer, 2));
+    }
+    if (strncmp(client->buffer, CLIENT_LEFT, strlen(CLIENT_LEFT)) == 0) {
+        client_event_logged_out(get_arg(client->buffer, 1), get_arg(client->buffer, 2));
+    }
+    //TODO mettre les events
+    if (strncmp(client->buffer, NEW_TEAM, strlen(NEW_TEAM)) == 0)
+        event_team_created(client);
+    if (strncmp(client->buffer, NEW_CHANNEL, strlen(NEW_CHANNEL)) == 0)
+        event_channel_created(client);
+    if (strncmp(client->buffer, NEW_THREAD, strlen(NEW_THREAD)) == 0)
+        event_thread_created(client);
+    if (strncmp(client->buffer, NEW_COMMENT, strlen(NEW_COMMENT)) == 0)
+        return;
+}

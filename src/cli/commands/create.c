@@ -117,7 +117,7 @@ void cmd_create(char *command, client_t * client)
             char *thread_title_len = get_arg(second_recv, 3);
             char *thread_desc_len = get_arg(second_recv, 4);
             char *thread_title = read_bytes_starting_arg(second_recv, 5, atoi(thread_title_len));
-            char *thread_desc = read_bytes_starting_arg(second_recv, 6, atoi(thread_title_len) + 1 + atoi(thread_desc_len));
+            char *thread_desc = read_bytes_starting_arg(second_recv, 5, atoi(thread_title_len) + 1 + atoi(thread_desc_len));
             client_print_thread_created(uuid, user_uuid, atoi(timestamp), thread_title, thread_desc + atoi(thread_title_len) + 1);
             super_free(6, user_uuid, timestamp, thread_title_len, thread_desc_len, thread_title, thread_desc);
             break;

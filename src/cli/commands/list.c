@@ -83,7 +83,7 @@ void cmd_list(char *command, client_t * client)
                 char *thread_timestamp = get_arg(second_recv, 2);
                 char *thread_title_len = get_arg(second_recv, 3);
                 char *thread_desc_len = get_arg(second_recv, 4);
-                char *thread_desc = read_bytes_starting_arg(second_recv, 6, atoi(thread_title_len) + 1 + atoi(thread_desc_len));
+                char *thread_desc = read_bytes_starting_arg(second_recv, 5, atoi(thread_title_len) + 1 + atoi(thread_desc_len));
                 char *thread_title = read_bytes_starting_arg(second_recv, 5, atoi(thread_title_len));
                 client_channel_print_threads(thread_uuid, user_uuid, atoi(thread_timestamp), thread_title, thread_desc + 1 + atoi(thread_title_len));
                 super_free(7, thread_uuid, user_uuid, thread_timestamp, thread_title_len, thread_desc, thread_desc_len, thread_title);
