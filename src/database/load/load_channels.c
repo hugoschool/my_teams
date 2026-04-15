@@ -15,7 +15,7 @@ static void load_channel(FILE *database_file, char *line, channels_t *channels)
     char name[MAX_NAME_LENGTH + 1] = {0};
     char description[MAX_DESCRIPTION_LENGTH + 1] = {0};
 
-    sscanf(line, "{%s}:\"%s\",\"%s\"\n", uuid, name, description);
+    sscanf(line, "{%[^\"]\"%[^\"]\"%[^\"]\"}\n", uuid, name, description);
 
     channel_data = channels_add(channels, name, description);
     strncpy(channel_data->uuid, uuid, UUID_STR_LEN);

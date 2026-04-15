@@ -16,7 +16,7 @@ static void load_comment(char *line, comments_t *comments)
     char body[MAX_BODY_LENGTH + 1] = {0};
     time_t timestamp;
 
-    sscanf(line, "(%s):%s,\"%s\",%ld\n", uuid, user_uuid, body, &timestamp);
+    sscanf(line, "[%[^\"]\"%[^\"]\"%[^\"]\"%ld\"]\n", uuid, user_uuid, body, &timestamp);
 
     comment_data = comments_add(comments, user_uuid, body);
     strncpy(comment_data->uuid, uuid, UUID_STR_LEN);

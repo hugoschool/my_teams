@@ -17,7 +17,7 @@ static void load_thread(FILE *database_file, char *line, threads_t *threads)
     char description[MAX_DESCRIPTION_LENGTH + 1] = {0};
     time_t timestamp;
 
-    sscanf(line, "(%s):%s,\"%s\",\"%s\",%ld\n", uuid, user_uuid, title, description, &timestamp);
+    sscanf(line, "(%[^\"]\"%[^\"]\"%[^\"]\"%[^\"]\"%ld\")\n", uuid, user_uuid, title, description, &timestamp);
 
     thread_data = threads_add(threads, user_uuid, title, description);
     strcpy(thread_data->uuid, uuid);

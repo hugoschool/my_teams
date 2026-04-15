@@ -8,13 +8,14 @@
 #include "server/database.h"
 
 static void save_team(FILE *database_file, team_data_t *team_data)
+
 {
-    fprintf(database_file, "%s:\"%s\",\"%s\"\n", team_data->uuid, team_data->name, team_data->description);
+    fprintf(database_file, "%-36s\"%-32s\"%-255s\"\n", team_data->uuid, team_data->name, team_data->description);
 
     // teams users
     fprintf(database_file, "users:");
     for (size_t i = 0; i < team_data->users->amount; i++) {
-        fprintf(database_file, "%s", team_data->users->users[i]->uuid);
+        fprintf(database_file, "%-36s", team_data->users->users[i]->uuid);
         if (i + 1 < team_data->users->amount) {
             fprintf(database_file, ",");
         }
