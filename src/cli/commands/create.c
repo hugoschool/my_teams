@@ -47,18 +47,6 @@ static char *craft_create_command(char *command, const char *context, client_t *
     return cmd;
 }
 
-enum context_e define_context(client_t *client)
-{
-    if (strcmp(client->context.team_uuid, "\0") == 0 && strcmp(client->context.team_uuid, "\0") == 0 && strcmp(client->context.team_uuid, "\0") == 0)
-        return BASE;
-    if (strcmp(client->context.team_uuid, "\0") != 0 && strcmp(client->context.team_uuid, "\0") == 0 && strcmp(client->context.team_uuid, "\0") == 0) {
-        return TEAM;
-    }
-    if (strcmp(client->context.team_uuid, "\0") != 0 && strcmp(client->context.team_uuid, "\0") != 0 && strcmp(client->context.team_uuid, "\0") == 0)
-        return CHANNEL;
-    return THREAD;
-}
-
 void cmd_create(char *command, client_t * client)
 {
     if (!client->logged) {
@@ -67,8 +55,7 @@ void cmd_create(char *command, client_t * client)
     }
 
     char *real_cmd = NULL;
-    enum context_e context = define_context(client);
-    switch (context) {
+    switch (client->context.type) {
         case BASE:
             real_cmd = craft_create_command(command, CREATE_TEAM, client);
             break;
@@ -93,7 +80,7 @@ void cmd_create(char *command, client_t * client)
     char *second_recv = strtok_r(client->buffer, "\n", &saveptr);
     second_recv = strtok_r(NULL, "\n", &saveptr);
     char *uuid = get_arg(second_recv, 0);
-    switch (context) {
+    switch (client->context.type) {
         case BASE: {
             char *team_name_len = get_arg(second_recv, 1);
             char *team_desc_len = get_arg(second_recv, 2);

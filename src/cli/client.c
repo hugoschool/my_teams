@@ -61,7 +61,8 @@ int client_loop(client_t *client)
 
 bool teams_client(client_args_t *args)
 {
-    client_t client = {.socket_fd = -1, .logged = false, .user_name = "\0", .uuid = "\0", .buffer = {0}, .context = {"\0", "\0", "\0"}};
+    client_t client = {.socket_fd = -1, .logged = false, .user_name = "\0", .uuid = "\0", .buffer = {0},
+        .context = {"\0", "\0", "\0", BASE}};
 
     init_sub_teams(&client);
     client.sockaddr.sin_addr.s_addr = args->ip;

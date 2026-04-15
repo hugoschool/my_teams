@@ -19,10 +19,18 @@
 
     #define BIG_BUFFER_SIZE 4096
 
+    typedef enum {
+        BASE,
+        TEAM,
+        CHANNEL,
+        THREAD,
+    } context_type_t;
+
     typedef struct context_s {
         char team_uuid[UUID_STR_LEN];
         char channel_uuid[UUID_STR_LEN];
         char thread_uuid[UUID_STR_LEN];
+        context_type_t type;
     } context_t;
 
     typedef struct sub_teams_s {

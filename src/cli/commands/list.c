@@ -6,18 +6,25 @@
 #include "utils.h"
 #include <stdlib.h>
 
-static char *craft_list_command(const char *context, client_t *client)
+static char *craft_list_command(client_t *client)
 {
     char *cmd = NULL;
 
-    if (strcmp(context, TEAM_LIST) == 0) {
-        asprintf(&cmd, "%s%s", context, CRLF);
-    } else if (strcmp(context, CHANNEL_LIST) == 0) {
-        asprintf(&cmd, "%s %s%s", context, client->context.team_uuid, CRLF);
-    } else if (strcmp(context, THREAD_LIST) == 0) {
-        asprintf(&cmd, "%s %s %s%s", context, client->context.team_uuid, client->context.channel_uuid, CRLF);
-    } else if (strcmp(context, COMMENT_LIST) == 0) {
-        asprintf(&cmd, "%s %s %s %s%s", context, client->context.team_uuid, client->context.channel_uuid, client->context.thread_uuid, CRLF);
+    switch (client->context.type) {
+        case BASE:
+            asprintf(&cmd, TEAM_LIST CRLF);
+            break;
+        case TEAM:
+            asprintf(&cmd, CHANNEL_LIST" %s"CRLF, client->context.team_uuid);
+            break;
+        case CHANNEL:
+            asprintf(&cmd, THREAD_LIST" %s %s"CRLF, client->context.team_uuid, client->context.channel_uuid);
+            break;
+        case THREAD:
+            asprintf(&cmd, COMMENT_LIST" %s %s %s"CRLF, client->context.team_uuid, client->context.channel_uuid, client->context.thread_uuid);
+            break;
+        default:
+            break;
     }
     return cmd;
 }
@@ -30,22 +37,7 @@ void cmd_list(char *command, client_t * client)
     }
 
     (void)command;
-    char *real_cmd = NULL;
-    enum context_e context = define_context(client);
-    switch (context) {
-        case BASE:
-            real_cmd = craft_list_command(TEAM_LIST, client);
-            break;
-        case TEAM:
-            real_cmd = craft_list_command(CHANNEL_LIST, client);
-            break;
-        case CHANNEL:
-            real_cmd = craft_list_command(THREAD_LIST, client);
-            break;
-        case THREAD:
-            real_cmd = craft_list_command(COMMENT_LIST, client);
-            break;
-    }
+    char *real_cmd = craft_list_command(client);
     send(client->socket_fd, real_cmd, strlen(real_cmd), 0);
     receive(client, BIG_BUFFER_SIZE);
     if (print_error(client)) {
@@ -57,7 +49,7 @@ void cmd_list(char *command, client_t * client)
     char *second_recv = strtok_r(client->buffer, "\n", &saveptr);
     second_recv = strtok_r(NULL, "\n", &saveptr);
     while (second_recv != NULL) {
-        switch (context) {
+        switch (client->context.type) {
             case BASE: {
                 char *team_uuid = get_arg(second_recv, 0);
                 char *team_name_len = get_arg(second_recv, 1);

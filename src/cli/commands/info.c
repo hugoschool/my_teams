@@ -32,8 +32,7 @@ void cmd_info(char *command, client_t * client)
 
     (void)command;
     char *real_cmd = NULL;
-    enum context_e context = define_context(client);
-    switch (context) {
+    switch (client->context.type) {
         case BASE:
             real_cmd = craft_info_command(NO_CONTEXT, client);
             break;
@@ -57,7 +56,7 @@ void cmd_info(char *command, client_t * client)
     char *saveptr;
     char *second_recv = strtok_r(client->buffer, "\n", &saveptr);
     second_recv = strtok_r(NULL, "\n", &saveptr);
-    switch (context) {
+    switch (client->context.type) {
         case BASE: {
             char *user_uuid = get_arg(second_recv, 1);
             char *user_name = get_arg(second_recv, 0);

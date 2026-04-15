@@ -32,6 +32,7 @@ void cmd_use(char *command, client_t * client)
             strncpy(client->context.team_uuid, team_uuid, UUID_STR_LEN);
             memset(client->context.channel_uuid, '\0', UUID_STR_LEN);
             memset(client->context.thread_uuid, '\0', UUID_STR_LEN);
+            client->context.type = TEAM;
             break;
         case 2:
             team_uuid = get_arg_quote(command, 1);
@@ -39,6 +40,7 @@ void cmd_use(char *command, client_t * client)
             strncpy(client->context.team_uuid, team_uuid, UUID_STR_LEN);
             strncpy(client->context.channel_uuid, channel_uuid, UUID_STR_LEN);
             memset(client->context.thread_uuid, '\0', UUID_STR_LEN);
+            client->context.type = CHANNEL;
             break;
         case 3:
             team_uuid = get_arg_quote(command, 1);
@@ -47,6 +49,7 @@ void cmd_use(char *command, client_t * client)
             strncpy(client->context.team_uuid, team_uuid, UUID_STR_LEN);
             strncpy(client->context.channel_uuid, channel_uuid, UUID_STR_LEN);
             strncpy(client->context.thread_uuid, thread_uuid, UUID_STR_LEN);
+            client->context.type = THREAD;
             break;
     }
     super_free(3, team_uuid, channel_uuid, thread_uuid);
