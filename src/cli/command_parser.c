@@ -12,9 +12,10 @@ void command_parser(char *command, client_t *client)
             if (arg_amount_quote(command) >= commands[i].nb_args) {
                 commands[i].func(command, client);
                 free(cmd_cmp);
-                break;
+                return;
             }
-            dprintf(STDOUT_FILENO, "Unknown command. Use /help to see which commands are available.\n");
         }
     }
+    dprintf(STDOUT_FILENO, "%s: Unknown command. Use /help to see which commands are available.\n", cmd_cmp);
+    free(cmd_cmp);
 }
