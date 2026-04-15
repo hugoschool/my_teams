@@ -19,6 +19,20 @@
 
     #define BIG_BUFFER_SIZE 4096
 
+    typedef struct {
+        int name_len;
+        char *name;
+
+        char *_initial_desc;
+        int description_len;
+        char *description;
+
+        char uuid[UUID_STR_LEN];
+    } team_content_t;
+
+    team_content_t *team_parse_line(char *line, int offset);
+    void team_content_free(team_content_t *content);
+
     typedef enum {
         BASE,
         TEAM,

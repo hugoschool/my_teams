@@ -76,12 +76,9 @@ void cmd_create(char *command, client_t * client)
     char *uuid = get_arg(second_recv, 0);
     switch (client->context.type) {
         case BASE: {
-            char *team_name_len = get_arg(second_recv, 1);
-            char *team_desc_len = get_arg(second_recv, 2);
-            char *team_name = read_bytes_starting_arg(second_recv, 3, atoi(team_name_len));
-            char *team_desc = read_bytes_starting_arg(second_recv, 3, atoi(team_name_len) + 1 + atoi(team_desc_len));
-            client_print_team_created(uuid, team_name, team_desc + atoi(team_name_len) + 1);
-            super_free(4, team_name_len, team_desc_len, team_name, team_desc);
+            team_content_t *team = team_parse_line(second_recv, 0);
+            client_print_team_created(uuid, team->name, team->description);
+            team_content_free(team);
             break;
         }
         case TEAM: {

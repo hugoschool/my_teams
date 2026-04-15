@@ -11,13 +11,9 @@
 
 static void event_team_created(client_t *client)
 {
-    char *team_uuid = get_arg(client->buffer, 1);
-    char *team_name_len = get_arg(client->buffer, 2);
-    char *team_desc_len = get_arg(client->buffer, 3);
-    char *team_name = read_bytes_starting_arg(client->buffer, 4, atoi(team_name_len));
-    char *team_desc = read_bytes_starting_arg(client->buffer, 4, atoi(team_name_len) + 1 + atoi(team_desc_len));
-    client_event_team_created(team_uuid, team_name, team_desc + 1 + atoi(team_name_len));
-    super_free(5, team_uuid, team_name_len, team_name, team_desc_len, team_desc);
+    team_content_t *team = team_parse_line(client->buffer, 1);
+    client_event_team_created(team->uuid, team->name, team->description);
+    team_content_free(team);
 }
 
 static void event_channel_created(client_t *client)
