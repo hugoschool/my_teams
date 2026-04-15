@@ -24,10 +24,10 @@ size_t arg_amount(char *str)
     return i;
 }
 
-size_t arg_amount_quote(char *str)
+int arg_amount_quote(char *str)
 {
     char temp[strlen(str) + 1] = {};
-    size_t i = 0;
+    int i = 0;
     char *token = NULL;
 
     memset(temp, 0, strlen(str) + 1);
@@ -37,5 +37,8 @@ size_t arg_amount_quote(char *str)
         token = strtok(NULL, "\"");
         i++;
     }
-    return i / 2;
+    if ((i - 1) % 2 != 0) {
+        return -1;
+    }
+    return (i - 1) / 2;
 }

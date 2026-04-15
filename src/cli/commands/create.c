@@ -24,19 +24,19 @@ static char *craft_create_command(char *command, const char *context, client_t *
         asprintf(&cmd, "%s %s %s %s %lu %s%s", context, client->context.team_uuid, client->context.channel_uuid, client->context.thread_uuid, strlen(body), body, CRLF);
         free(body_);
         return cmd;
-    } else if (strcmp(context, CREATE_TEAM) == 0) {
+    } else if (strcmp(context, CREATE_TEAM) == 0 && arg_amount_quote(command) > 1) {
         name_ = get_arg_quote(command, 1);
         description = get_arg_quote(command, 3);
         strncpy(name, name_, MAX_NAME_LENGTH);
         strncpy(desc, description, MAX_DESCRIPTION_LENGTH);
         asprintf(&cmd, "%s %lu %lu %s %s%s", context, strlen(name), strlen(desc), name, desc, CRLF);
-    } else if (strcmp(context, CREATE_CHANNEL) == 0) {
+    } else if (strcmp(context, CREATE_CHANNEL) == 0 && arg_amount_quote(command) > 1) {
         name_ = get_arg_quote(command, 1);
         description = get_arg_quote(command, 3);
         strncpy(name, name_, MAX_NAME_LENGTH);
         strncpy(desc, description, MAX_DESCRIPTION_LENGTH);
         asprintf(&cmd, "%s %s %lu %lu %s %s%s", context, client->context.team_uuid, strlen(name), strlen(desc), name, desc, CRLF);
-    } else if (strcmp(context, CREATE_THREAD) == 0) {
+    } else if (strcmp(context, CREATE_THREAD) == 0 && arg_amount_quote(command) > 1) {
         name_ = get_arg_quote(command, 1);
         description = get_arg_quote(command, 3);
         strncpy(name, name_, MAX_NAME_LENGTH);

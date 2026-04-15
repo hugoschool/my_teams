@@ -69,7 +69,7 @@
         {"/subscribe", 1, &cmd_subscribe},
         {"/unsubscribe", 1, &cmd_unsubscribe},
         {"/use", 0, &cmd_use},
-        {"/create", 2, &cmd_create},
+        {"/create", 1, &cmd_create},
         {"/list", 0, &cmd_list},
         {"/info", 0, &cmd_info},
         {NULL, 0, NULL}
