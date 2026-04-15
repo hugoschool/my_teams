@@ -64,6 +64,8 @@ bool team_is_user_subscribed(team_data_t *team, user_data_t *user)
 {
     user_data_t *team_user = NULL;
 
+    if (user == NULL)
+        return false;
     for (unsigned int i = 0; i < team->users->amount; i++) {
         team_user = team->users->users[i];
         if (team_user == user) {

@@ -29,6 +29,8 @@ static user_data_t *get_user(server_t *server)
 static void send_to_other_user(server_t *server, message_data_t *message)
 {
     for (unsigned int i = INITIAL_AMOUNT; i < server->clients->amount; i++) {
+        if (CLIENT_I(i)->user == NULL)
+            continue;
         if (strcmp(CLIENT_I(i)->user->uuid, message->user_uuid_to) == 0) {
             dprintf(*CLIENT_I(i)->fd, NEW_MESSAGE" %s %ld %s"CRLF,
                 message->user_uuid_from, strlen(message->body), message->body);
