@@ -7,7 +7,7 @@
 #include "utils.h"
 #include <stdlib.h>
 
-static char *craft_create_command(char *command, const char *context, client_t *client)
+static char *craft_create_command(char *command, client_t *client)
 {
     char *cmd = NULL;
     char name[MAX_NAME_LENGTH] = {0};
@@ -17,31 +17,39 @@ static char *craft_create_command(char *command, const char *context, client_t *
 
     if (command[strlen(command) - 1] == '\n')
         command[strlen(command) - 1] = '\0';
-    if (strcmp(context, CREATE_COMMENT) == 0) {
-        char body[MAX_BODY_LENGTH] = {0};
-        char *body_ = get_arg_quote(command, 1);
-        strncpy(body, body_, MAX_BODY_LENGTH);
-        asprintf(&cmd, "%s %s %s %s %lu %s%s", context, client->context.team_uuid, client->context.channel_uuid, client->context.thread_uuid, strlen(body), body, CRLF);
-        free(body_);
-        return cmd;
-    } else if (strcmp(context, CREATE_TEAM) == 0 && arg_amount_quote(command) > 1) {
-        name_ = get_arg_quote(command, 1);
-        description = get_arg_quote(command, 3);
-        strncpy(name, name_, MAX_NAME_LENGTH);
-        strncpy(desc, description, MAX_DESCRIPTION_LENGTH);
-        asprintf(&cmd, "%s %lu %lu %s %s%s", context, strlen(name), strlen(desc), name, desc, CRLF);
-    } else if (strcmp(context, CREATE_CHANNEL) == 0 && arg_amount_quote(command) > 1) {
-        name_ = get_arg_quote(command, 1);
-        description = get_arg_quote(command, 3);
-        strncpy(name, name_, MAX_NAME_LENGTH);
-        strncpy(desc, description, MAX_DESCRIPTION_LENGTH);
-        asprintf(&cmd, "%s %s %lu %lu %s %s%s", context, client->context.team_uuid, strlen(name), strlen(desc), name, desc, CRLF);
-    } else if (strcmp(context, CREATE_THREAD) == 0 && arg_amount_quote(command) > 1) {
-        name_ = get_arg_quote(command, 1);
-        description = get_arg_quote(command, 3);
-        strncpy(name, name_, MAX_NAME_LENGTH);
-        strncpy(desc, description, MAX_DESCRIPTION_LENGTH);
-        asprintf(&cmd, "%s %s %s %lu %lu %s %s%s", context, client->context.team_uuid, client->context.channel_uuid, strlen(name), strlen(desc), name, desc, CRLF);
+    switch (client->context.type) {
+        case BASE: {
+            name_ = get_arg_quote(command, 1);
+            description = get_arg_quote(command, 3);
+            strncpy(name, name_, MAX_NAME_LENGTH);
+            strncpy(desc, description, MAX_DESCRIPTION_LENGTH);
+            asprintf(&cmd, CREATE_TEAM" %lu %lu %s %s"CRLF, strlen(name), strlen(desc), name, desc);
+            break;
+        }
+        case TEAM: {
+            name_ = get_arg_quote(command, 1);
+            description = get_arg_quote(command, 3);
+            strncpy(name, name_, MAX_NAME_LENGTH);
+            strncpy(desc, description, MAX_DESCRIPTION_LENGTH);
+            asprintf(&cmd, CREATE_CHANNEL" %s %lu %lu %s %s"CRLF, client->context.team_uuid, strlen(name), strlen(desc), name, desc);
+            break;
+        }
+        case CHANNEL: {
+            name_ = get_arg_quote(command, 1);
+            description = get_arg_quote(command, 3);
+            strncpy(name, name_, MAX_NAME_LENGTH);
+            strncpy(desc, description, MAX_DESCRIPTION_LENGTH);
+            asprintf(&cmd, CREATE_THREAD" %s %s %lu %lu %s %s"CRLF, client->context.team_uuid, client->context.channel_uuid, strlen(name), strlen(desc), name, desc);
+            break;
+        }
+        case THREAD: {
+            char body[MAX_BODY_LENGTH] = {0};
+            char *body_ = get_arg_quote(command, 1);
+            strncpy(body, body_, MAX_BODY_LENGTH);
+            asprintf(&cmd, "%s %s %s %s %lu %s%s", CREATE_COMMENT, client->context.team_uuid, client->context.channel_uuid, client->context.thread_uuid, strlen(body), body, CRLF);
+            free(body_);
+            break;
+        }
     }
     super_free(2, name_, description);
     return cmd;
@@ -54,21 +62,7 @@ void cmd_create(char *command, client_t * client)
         return;
     }
 
-    char *real_cmd = NULL;
-    switch (client->context.type) {
-        case BASE:
-            real_cmd = craft_create_command(command, CREATE_TEAM, client);
-            break;
-        case TEAM:
-            real_cmd = craft_create_command(command, CREATE_CHANNEL, client);
-            break;
-        case CHANNEL:
-            real_cmd = craft_create_command(command, CREATE_THREAD, client);
-            break;
-        case THREAD:
-            real_cmd = craft_create_command(command, CREATE_COMMENT, client);
-            break;
-    }
+    char *real_cmd = craft_create_command(command, client);
     send(client->socket_fd, real_cmd, strlen(real_cmd), 0);
     receive(client, BIG_BUFFER_SIZE);
     if (print_error(client)) {
