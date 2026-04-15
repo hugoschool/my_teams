@@ -11,11 +11,13 @@ static char *craft_unsubscribe_command(char *command)
 {
     char *cmd = NULL;
     char arg[UUID_STR_LEN] = {0};
+    char *uuid = get_arg_quote(command, 1);
 
-    strncpy(arg, get_arg_quote(command, 1), UUID_STR_LEN);
+    strncpy(arg, uuid, UUID_STR_LEN);
     if (arg[strlen(arg) - 1] == '\n')
         arg[strlen(arg) - 1] = '\0';
     asprintf(&cmd, "%s %s%s", UNSUBSCRIBE_TEAM, arg, CRLF);
+    free(uuid);
     return cmd;
 }
 
@@ -31,7 +33,7 @@ static void unsubscribe_of_team(client_t *client, char *team_uuid)
         }
         if (deleted) {
             if (client->subscribed_teams->team_uuid[i]) {
-                client->subscribed_teams->team_uuid[i - 1] = strcpy(client->subscribed_teams->team_uuid[i - 1], client->subscribed_teams->team_uuid[i]);
+                client->subscribed_teams->team_uuid[i - 1] = strdup(client->subscribed_teams->team_uuid[i]);
             }
         }
     }
@@ -50,16 +52,13 @@ void cmd_unsubscribe(char *command, client_t *client)
     char *real_cmd = craft_unsubscribe_command(command);
 
     send(client->socket_fd, real_cmd, strlen(real_cmd), 0);
-    recv(client->socket_fd, client->buffer, BIG_BUFFER_SIZE, 0);
-    if (strncmp(client->buffer, GET_STATUS(461), 3) == 0) {
-        client_error_unknown_team(get_arg_quote(command, 1));
+    receive(client, BIG_BUFFER_SIZE);
+    if (print_error(client)) {
+        free(real_cmd);
         return;
     }
-    if (strncmp(client->buffer, GET_STATUS(451), 3) == 0) {
-        printf("%s", client->buffer);
-        return;
-    }
-    unsubscribe_of_team(client, get_arg_quote(command, 1));
-    client_print_unsubscribed(client->uuid, get_arg_quote(command, 1));
-    free(real_cmd);
+    char *team_uuid = get_arg_quote(real_cmd, 1);
+    unsubscribe_of_team(client, team_uuid);
+    client_print_unsubscribed(client->uuid, team_uuid);
+    super_free(2, team_uuid, real_cmd);
 }

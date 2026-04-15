@@ -47,29 +47,60 @@ void cmd_list(char *command, client_t * client)
             break;
     }
     send(client->socket_fd, real_cmd, strlen(real_cmd), 0);
-    recv(client->socket_fd, client->buffer, BIG_BUFFER_SIZE, 0);
-    if (print_unknown_error(client)) {
+    receive(client, BIG_BUFFER_SIZE);
+    if (print_error(client)) {
         free(real_cmd);
         return;
     }
-    char *second_recv = strtok(client->buffer, "\n");
-    second_recv = strtok(NULL, "\n");
+    char *saveptr;
+    char *second_recv = strtok_r(client->buffer, "\n", &saveptr);
+    second_recv = strtok_r(NULL, "\n", &saveptr);
     while (second_recv != NULL) {
         switch (context) {
-            case BASE:
-                client_print_teams(get_arg(second_recv, 0), read_bytes_starting_arg(second_recv, 3, atoi(get_arg(second_recv, 1))), read_bytes_starting_arg(second_recv, 3, atoi(get_arg(second_recv, 1)) + 1 + atoi(get_arg(second_recv, 2))));
+            case BASE: {
+                char *team_uuid = get_arg(second_recv, 0);
+                char *team_name_len = get_arg(second_recv, 1);
+                char *team_desc_len = get_arg(second_recv, 2);
+                char *team_name = read_bytes_starting_arg(second_recv, 3, atoi(team_name_len));
+                char *team_desc = read_bytes_starting_arg(second_recv, 3, atoi(team_name_len) + 1 + atoi(team_desc_len));
+                client_print_teams(team_uuid, team_name, team_desc + 1 + atoi(team_name_len));
+                super_free(5, team_uuid, team_name, team_name_len, team_desc, team_desc_len);
                 break;
-            case TEAM:
-                client_team_print_channels(get_arg(second_recv, 0), read_bytes_starting_arg(second_recv, 3, atoi(get_arg(second_recv, 1))), read_bytes_starting_arg(second_recv, 3, atoi(get_arg(second_recv, 1)) + 1 + atoi(get_arg(second_recv, 2))));
+            }
+            case TEAM: {
+                char *channel_uuid = get_arg(second_recv, 0);
+                char *channel_name_len = get_arg(second_recv, 1);
+                char *channel_desc_len = get_arg(second_recv, 2);
+                char *channel_name = read_bytes_starting_arg(second_recv, 3, atoi(channel_name_len));
+                char *channel_desc = read_bytes_starting_arg(second_recv, 3, atoi(channel_name_len) + 1 + atoi(channel_desc_len));
+                client_team_print_channels(channel_uuid, channel_name, channel_desc + 1 + atoi(channel_desc_len));
+                super_free(5, channel_uuid, channel_name_len, channel_name, channel_desc_len, channel_desc);
                 break;
-            case CHANNEL:
-                client_channel_print_threads(get_arg(second_recv, 0), get_arg(second_recv, 1), atoi(get_arg(second_recv, 2)), read_bytes_starting_arg(second_recv, 5, atoi(get_arg(second_recv, 3))), read_bytes_starting_arg(second_recv, 6, atoi(get_arg(second_recv, 1)) + 1 + atoi(get_arg(second_recv, 4))));
+            }
+            case CHANNEL: {
+                char *thread_uuid = get_arg(second_recv, 0);
+                char *user_uuid = get_arg(second_recv, 1);
+                char *thread_timestamp = get_arg(second_recv, 2);
+                char *thread_title_len = get_arg(second_recv, 3);
+                char *thread_desc_len = get_arg(second_recv, 4);
+                char *thread_desc = read_bytes_starting_arg(second_recv, 6, atoi(thread_title_len) + 1 + atoi(thread_desc_len));
+                char *thread_title = read_bytes_starting_arg(second_recv, 5, atoi(thread_title_len));
+                client_channel_print_threads(thread_uuid, user_uuid, atoi(thread_timestamp), thread_title, thread_desc + 1 + atoi(thread_title_len));
+                super_free(7, thread_uuid, user_uuid, thread_timestamp, thread_title_len, thread_desc, thread_desc_len, thread_title);
                 break;
-            case THREAD:
-                client_thread_print_replies(client->context.thread_uuid, get_arg(second_recv, 1), atoi(get_arg(second_recv, 2)), read_bytes_starting_arg(second_recv, 4, atoi(get_arg(second_recv, 3))));
+            }
+            case THREAD: {
+                char *thread_uuid = get_arg(second_recv, 0);
+                char *user_uuid = get_arg(second_recv, 1);
+                char *timestamp = get_arg(second_recv, 2);
+                char *body_len = get_arg(second_recv, 3);
+                char *body = read_bytes_starting_arg(second_recv, 4, atoi(body_len));
+                client_thread_print_replies(thread_uuid, user_uuid, atoi(timestamp), body);
+                super_free(5, thread_uuid, user_uuid, timestamp, body_len, body);
                 break;
+            }
         }
-        second_recv = strtok(NULL, "\n");
+        second_recv = strtok_r(NULL, "\n", &saveptr);
     }
     free(real_cmd);
 }

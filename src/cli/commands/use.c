@@ -20,24 +20,34 @@ void cmd_use(char *command, client_t * client)
         client_error_unauthorized();
         return;
     }
+    char *team_uuid = NULL;
+    char *channel_uuid = NULL;
+    char *thread_uuid = NULL;
     switch (arg_amount_quote(command)) {
         case 0:
             release_context(client);
             break;
         case 1:
-            strcpy(client->context.team_uuid, get_arg_quote(command, 1));
+            team_uuid = get_arg_quote(command, 1);
+            strncpy(client->context.team_uuid, team_uuid, UUID_STR_LEN);
             memset(client->context.channel_uuid, '\0', UUID_STR_LEN);
             memset(client->context.thread_uuid, '\0', UUID_STR_LEN);
             break;
         case 2:
-            strcpy(client->context.team_uuid, get_arg_quote(command, 1));
-            strcpy(client->context.channel_uuid, get_arg_quote(command, 2));
+            team_uuid = get_arg_quote(command, 1);
+            channel_uuid = get_arg_quote(command, 3);
+            strncpy(client->context.team_uuid, team_uuid, UUID_STR_LEN);
+            strncpy(client->context.channel_uuid, channel_uuid, UUID_STR_LEN);
             memset(client->context.thread_uuid, '\0', UUID_STR_LEN);
             break;
         case 3:
-            strcpy(client->context.team_uuid, get_arg_quote(command, 1));
-            strcpy(client->context.channel_uuid, get_arg_quote(command, 2));
-            strcpy(client->context.thread_uuid, get_arg_quote(command, 3));
+            team_uuid = get_arg_quote(command, 1);
+            channel_uuid = get_arg_quote(command, 3);
+            thread_uuid = get_arg_quote(command, 5);
+            strncpy(client->context.team_uuid, team_uuid, UUID_STR_LEN);
+            strncpy(client->context.channel_uuid, channel_uuid, UUID_STR_LEN);
+            strncpy(client->context.thread_uuid, thread_uuid, UUID_STR_LEN);
             break;
     }
+    super_free(3, team_uuid, channel_uuid, thread_uuid);
 }

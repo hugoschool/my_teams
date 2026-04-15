@@ -1,4 +1,5 @@
 #include "client/client.h"
+#include "client/commands.h"
 #include "common.h"
 #include "logging_client.h"
 #include "stdio.h"
@@ -12,11 +13,15 @@ void cmd_logout(char *command, client_t * client)
         return;
     }
 
-    char *real_cmd = craft_command(command);
+    char *real_cmd = craft_command(command, false);
 
     send(client->socket_fd, real_cmd, strlen(real_cmd), 0);
-    recv(client->socket_fd, client->buffer, BIG_BUFFER_SIZE, 0);
-    printf("%s", client->buffer);
+    receive(client, BIG_BUFFER_SIZE);
+    if (print_error(client)) {
+        free(real_cmd);
+        return;
+    }
+    client_event_logged_out(client->uuid, client->user_name);
     client->logged = false;
     free(real_cmd);
 }

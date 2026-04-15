@@ -48,26 +48,55 @@ void cmd_info(char *command, client_t * client)
             break;
     }
     send(client->socket_fd, real_cmd, strlen(real_cmd), 0);
-    recv(client->socket_fd, client->buffer, BIG_BUFFER_SIZE, 0);
-    if (print_unknown_error(client)) {
+    receive(client, BIG_BUFFER_SIZE);
+    if (print_error(client)) {
         free(real_cmd);
         return;
     }
-    char *second_recv = strtok(client->buffer, "\n");
-    second_recv = strtok(NULL, "\n");
+    char *saveptr;
+    char *second_recv = strtok_r(client->buffer, "\n", &saveptr);
+    second_recv = strtok_r(NULL, "\n", &saveptr);
     switch (context) {
-        case BASE:
-            client_print_user(get_arg(second_recv, 1), get_arg(second_recv, 0), atoi(get_arg(second_recv, 2)));
+        case BASE: {
+            char *user_uuid = get_arg(second_recv, 1);
+            char *user_name = get_arg(second_recv, 0);
+            char *status = get_arg(second_recv, 2);
+            client_print_user(user_uuid, user_name, atoi(status));
+            super_free(3, user_name, user_uuid, status);
             break;
-        case TEAM:
-            client_print_team(get_arg(second_recv, 0), read_bytes_starting_arg(second_recv, 3, atoi(get_arg(second_recv, 1))), read_bytes_starting_arg(second_recv, 3, atoi(get_arg(second_recv, 1)) + 1 + atoi(get_arg(second_recv, 2))));
+        }
+        case TEAM: {
+            char *team_uuid = get_arg(second_recv, 0);
+            char *team_name_len = get_arg(second_recv, 1);
+            char *team_desc_len = get_arg(second_recv, 2);
+            char *team_name = read_bytes_starting_arg(second_recv, 3, atoi(team_name_len));
+            char *team_desc = read_bytes_starting_arg(second_recv, 3, atoi(team_name_len) + 1 + atoi(team_desc_len));
+            client_print_team(team_uuid, team_name, team_desc + 1 + atoi(team_name_len));
+            super_free(5, team_uuid, team_name, team_name_len, team_desc, team_desc_len);
             break;
-        case CHANNEL:
-            client_print_channel(get_arg(second_recv, 0), read_bytes_starting_arg(second_recv, 3, atoi(get_arg(second_recv, 1))), read_bytes_starting_arg(second_recv, 3, atoi(get_arg(second_recv, 1)) + 1 + atoi(get_arg(second_recv, 2))));
+        }
+        case CHANNEL: {
+            char *channel_uuid = get_arg(second_recv, 0);
+            char *channel_name_len = get_arg(second_recv, 1);
+            char *channel_desc_len = get_arg(second_recv, 2);
+            char *channel_name = read_bytes_starting_arg(second_recv, 3, atoi(channel_name_len));
+            char *channel_desc = read_bytes_starting_arg(second_recv, 3, atoi(channel_name_len) + 1 + atoi(channel_desc_len));
+            client_print_channel(channel_uuid, channel_name, channel_desc + 1 + atoi(channel_desc_len));
+            super_free(5, channel_uuid, channel_name_len, channel_name, channel_desc_len, channel_desc);
             break;
-        case THREAD:
-            client_print_thread(get_arg(second_recv, 0), get_arg(second_recv, 1), atoi(get_arg(second_recv, 2)), read_bytes_starting_arg(second_recv, 5, atoi(get_arg(second_recv, 3))), read_bytes_starting_arg(second_recv, 6, atoi(get_arg(second_recv, 1)) + 1 + atoi(get_arg(second_recv, 4))));
+        }
+        case THREAD: {
+            char *thread_uuid = get_arg(second_recv, 0);
+            char *user_uuid = get_arg(second_recv, 1);
+            char *thread_timestamp = get_arg(second_recv, 2);
+            char *thread_title_len = get_arg(second_recv, 3);
+            char *thread_desc_len = get_arg(second_recv, 4);
+            char *thread_desc = read_bytes_starting_arg(second_recv, 6, atoi(thread_title_len) + 1 + atoi(thread_desc_len));
+            char *thread_title = read_bytes_starting_arg(second_recv, 5, atoi(thread_title_len));
+            client_print_thread(thread_uuid, user_uuid, atoi(thread_timestamp), thread_title, thread_desc + 1 + atoi(thread_title_len));
+            super_free(7, thread_uuid, user_uuid, thread_timestamp, thread_title_len, thread_desc, thread_desc_len, thread_title);
             break;
+        }
     }
     free(real_cmd);
 }

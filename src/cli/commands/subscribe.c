@@ -11,11 +11,13 @@ static char *craft_subscribe_command(char *command)
 {
     char *cmd = NULL;
     char arg[UUID_STR_LEN] = {0};
+    char *uuid = get_arg_quote(command, 1);
 
-    strncpy(arg, get_arg_quote(command, 1), UUID_STR_LEN);
+    strncpy(arg, uuid, UUID_STR_LEN);
     if (arg[strlen(arg) - 1] == '\n')
         arg[strlen(arg) - 1] = '\0';
     asprintf(&cmd, "%s %s%s", SUBSCRIBE_TEAM, arg, CRLF);
+    free(uuid);
     return cmd;
 }
 
@@ -38,16 +40,13 @@ void cmd_subscribe(char *command, client_t *client)
     char *real_cmd = craft_subscribe_command(command);
 
     send(client->socket_fd, real_cmd, strlen(real_cmd), 0);
-    recv(client->socket_fd, client->buffer, BIG_BUFFER_SIZE, 0);
-    if (strncmp(client->buffer, GET_STATUS(461), 3) == 0) {
-        client_error_unknown_team(get_arg_quote(command, 1));
+    receive(client, BIG_BUFFER_SIZE);
+    if (print_error(client)) {
+        free(real_cmd);
         return;
     }
-    if (strncmp(client->buffer, GET_STATUS(450), 3) == 0) {
-        printf("%s", client->buffer);
-        return;
-    }
-    subscribe_to_team(client, get_arg_quote(command, 1));
-    client_print_subscribed(client->uuid, get_arg_quote(command, 1));
-    free(real_cmd);
+    char *team_uuid = get_arg(real_cmd, 1);
+    subscribe_to_team(client, team_uuid);
+    client_print_subscribed(client->uuid, team_uuid);
+    super_free(2, team_uuid, real_cmd);
 }

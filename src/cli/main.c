@@ -18,7 +18,7 @@ int main(int argc, char **argv)
     client_args_t args = parse_args(argc, argv);
 
     if (args.valid == false) {
-        fprintf(stderr, "Invalid arguments\n");
+        fprintf(stdout, "Invalid arguments\n");
         return 84;
     }
     if (args.help)
