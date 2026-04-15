@@ -19,11 +19,11 @@
 
 /* SAVE FORMAT
 users
-uuid,"username"
+uuid"username"
 ... more users
 end users
 messages
-user_uuid_from,user_uuid_to,"body",timestamp
+user_uuid_from"user_uuid_to"body"timestamp
 ... more messages
 end messages
 teams
