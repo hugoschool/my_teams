@@ -44,19 +44,20 @@ static void event_thread_created(client_t *client)
     super_free(7, thread_uuid, user_uuid, timestamp, thread_title_len, thread_desc_len, thread_desc, thread_title);
 }
 
-// static void event_reply_created(client_t *client)
-// {
-//     char *user_uuid = get_arg(client->buffer, 1);
-//     char *timestamp = get_arg(client->buffer, 2);
-//     char *reply_len = get_arg(client->buffer, 3);
-//     char *reply = read_bytes_starting_arg(client->buffer, 4, atoi(reply_len));
-//     client_event_thread_reply_received();
-// }
+static void event_reply_created(client_t *client)
+{
+    char *team_uuid = get_arg(client->buffer, 2);
+    char *thread_uuid = get_arg(client->buffer, 3);
+    char *user_uuid = get_arg(client->buffer, 4);
+    char *reply_len = get_arg(client->buffer, 5);
+    char *reply = read_bytes_starting_arg(client->buffer, 6, atoi(reply_len));
+    client_event_thread_reply_received(team_uuid, thread_uuid, user_uuid, reply);
+    super_free(5, team_uuid, thread_uuid, user_uuid, reply, reply_len);
+}
 
 
 void handle_server_events(client_t *client)
 {
-    // NEW_COMMENT [comment_uuid] [user_uuid] [comment_timestamp] [body_length] [comment_body].
     if (strncmp(client->buffer, NEW_MESSAGE, strlen(NEW_MESSAGE)) == 0) {
         client_event_private_message_received(get_arg(client->buffer, 1), read_bytes_starting_arg(client->buffer, 3, atoi(get_arg(client->buffer, 2))));
     }
@@ -66,7 +67,6 @@ void handle_server_events(client_t *client)
     if (strncmp(client->buffer, CLIENT_LEFT, strlen(CLIENT_LEFT)) == 0) {
         client_event_logged_out(get_arg(client->buffer, 1), get_arg(client->buffer, 2));
     }
-    //TODO mettre les events
     if (strncmp(client->buffer, NEW_TEAM, strlen(NEW_TEAM)) == 0)
         event_team_created(client);
     if (strncmp(client->buffer, NEW_CHANNEL, strlen(NEW_CHANNEL)) == 0)
@@ -74,5 +74,5 @@ void handle_server_events(client_t *client)
     if (strncmp(client->buffer, NEW_THREAD, strlen(NEW_THREAD)) == 0)
         event_thread_created(client);
     if (strncmp(client->buffer, NEW_COMMENT, strlen(NEW_COMMENT)) == 0)
-        return;
+        event_reply_created(client);
 }
