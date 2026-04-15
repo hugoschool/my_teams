@@ -20,10 +20,10 @@ static void load_channel(FILE *database_file, char *line, channels_t *channels)
     channel_data = channels_add(channels, name, description);
     strncpy(channel_data->uuid, uuid, UUID_STR_LEN);
 
-    load_threads(database_file, channel_data->threads);
+    load_threads(database_file, &channel_data->threads);
 }
 
-void load_channels(FILE *database_file, channels_t *channels)
+void load_channels(FILE *database_file, channels_t **channels)
 {
     char *line = NULL;
     size_t len = 0;
@@ -32,7 +32,10 @@ void load_channels(FILE *database_file, channels_t *channels)
         if (strcmp(line, "{end}\n") == 0) {
             break;
         }
-        load_channel(database_file, line, channels);
+        if (*channels == NULL) {
+            *channels = channels_init();
+        }
+        load_channel(database_file, line, *channels);
     }
 
     if (line) {

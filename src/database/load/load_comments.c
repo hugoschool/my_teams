@@ -19,11 +19,11 @@ static void load_comment(char *line, comments_t *comments)
     sscanf(line, "[%[^\"]\"%[^\"]\"%[^\"]\"%ld\"]\n", uuid, user_uuid, body, &timestamp);
 
     comment_data = comments_add(comments, user_uuid, body);
-    strncpy(comment_data->uuid, uuid, UUID_STR_LEN);
+    strncpy(comment_data->uuid, uuid, UUID_STR_LEN - 1);
     comment_data->timestamp = timestamp;
 }
 
-void load_comments(FILE *database_file, comments_t *comments)
+void load_comments(FILE *database_file, comments_t **comments)
 {
     char *line = NULL;
     size_t len = 0;
@@ -32,7 +32,10 @@ void load_comments(FILE *database_file, comments_t *comments)
         if (strcmp(line, "[end]\n") == 0) {
             break;
         }
-        load_comment(line, comments);
+        if (*comments == NULL) {
+            *comments = comments_init();
+        }
+        load_comment(line, *comments);
     }
 
     if (line) {

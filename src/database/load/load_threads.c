@@ -23,10 +23,10 @@ static void load_thread(FILE *database_file, char *line, threads_t *threads)
     strcpy(thread_data->uuid, uuid);
     thread_data->timestamp = timestamp;
 
-    load_comments(database_file, thread_data->comments);
+    load_comments(database_file, &thread_data->comments);
 }
 
-void load_threads(FILE *database_file, threads_t *threads)
+void load_threads(FILE *database_file, threads_t **threads)
 {
     char *line = NULL;
     size_t len = 0;
@@ -35,7 +35,10 @@ void load_threads(FILE *database_file, threads_t *threads)
         if (strcmp(line, "(end)\n") == 0) {
             break;
         }
-        load_thread(database_file, line, threads);
+        if (*threads == NULL) {
+            *threads = threads_init();
+        }
+        load_thread(database_file, line, *threads);
     }
 
     if (line) {

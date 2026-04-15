@@ -32,7 +32,7 @@ static void load_team(FILE *database_file, char *line, size_t len, teams_t *team
     char name[MAX_NAME_LENGTH + 1] = {0};
     char description[MAX_DESCRIPTION_LENGTH + 1] = {0};
 
-    sscanf(line, "\"%s\"%s\"%s\"\n", uuid, name, description);
+    sscanf(line, "%[^\"]\"%[^\"]\"%[^\"]\"\n", uuid, name, description);
 
     team_data = teams_add(teams, name, description);
     strncpy(team_data->uuid, uuid, UUID_STR_LEN);
@@ -43,7 +43,7 @@ static void load_team(FILE *database_file, char *line, size_t len, teams_t *team
     }
     load_team_users(line, team_data->users, users);
 
-    load_channels(database_file, team_data->channels);
+    load_channels(database_file, &team_data->channels);
 }
 
 void load_teams(FILE *database_file, teams_t *teams, users_t *users)

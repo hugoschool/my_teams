@@ -9,7 +9,7 @@
 
 static void save_channel(FILE *database_file, channel_data_t *channel_data)
 {
-    fprintf(database_file, "{%s\"%s\"%s\"}\n", channel_data->uuid, channel_data->name,channel_data->description);
+    fprintf(database_file, "{%-36s\"%-32s\"%-255s\"}\n", channel_data->uuid, channel_data->name,channel_data->description);
 
     save_threads(database_file, channel_data->threads);
 }
