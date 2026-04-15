@@ -1332,8 +1332,8 @@ Internet-Draft               MAICHE Protocol                  March 2026
    If a new comment has been created, a message is sent to all clients
    that are subscribed to the related team.
 
-   The message is NEW_COMMENT [comment_uuid] [user_uuid]
-   [comment_timestamp] [body_length] [comment_body].
+   The message is NEW_COMMENT [comment_uuid] [team_uuid] [thread_uuid]
+   [user_uuid] [body_length] [comment_body].
 
 
 
