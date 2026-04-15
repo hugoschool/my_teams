@@ -19,7 +19,7 @@
 
 /* SAVE FORMAT
 users
-uuid,"username",status
+uuid,"username"
 ... more users
 end users
 messages

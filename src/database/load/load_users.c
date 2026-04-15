@@ -13,14 +13,13 @@ static void load_user(char *line, users_t *users)
 
     char uuid[UUID_STR_LEN] = {0};
     char username[MAX_NAME_LENGTH + 1] = {0};
-    bool status;
 
-    sscanf(line, "%s,\"%s\",%d\n", uuid, username, (int *)&status);
+    sscanf(line, "%36s,\"%32s\"\n", uuid, username);
 
     user_data = user_data_init(uuid, username);
-    user_data->status = status;
 
-    users_add_data(users,user_data);
+    user_data = users_add(users, username);
+    strncpy(user_data->uuid, uuid, UUID_STR_LEN - 1);
 }
 
 void load_users(FILE *database_file, users_t *users)
