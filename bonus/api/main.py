@@ -1,4 +1,4 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, Response, status
 from pydantic import BaseModel
 
 import socket
@@ -35,18 +35,33 @@ class LoginModel(BaseModel):
     username: str
 
 @app.post("/login")
-async def login(login: LoginModel):
+async def login(login: LoginModel, response: Response):
     send_command(f"LOGIN {login.username}")
     buffer = recvall()
     if buffer.startswith(b"250"):
         return {"message": "Success"}
-    return {"message": "Failed"}
+    response.status_code = status.HTTP_400_BAD_REQUEST
+    return {"message": f"{buffer}"}
 
 @app.post("/logout")
-async def logout():
+async def logout(response: Response):
     send_command(f"LOGOUT")
     buffer = recvall()
-    print(buffer)
     if buffer.startswith(b"251"):
         return {"message": "Success"}
-    return {"message": "Failed"}
+    response.status_code = status.HTTP_400_BAD_REQUEST
+    return {"message": f"{buffer}"}
+
+class SendModel(BaseModel):
+    uuid: str
+    body: str
+
+@app.post("/send")
+async def send(message: SendModel, response: Response):
+    send_command(f"MESSAGE_SEND {message.uuid} {len(message.body)} {message.body}")
+    buffer = recvall()
+    if buffer.startswith(b"200"):
+        return {"message": "Success"}
+    response.status_code = status.HTTP_400_BAD_REQUEST
+    return {"message": f"{buffer}"}
+
