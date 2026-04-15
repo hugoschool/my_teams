@@ -60,6 +60,5 @@ void cmd_unsubscribe(char *command, client_t *client)
     char *team_uuid = get_arg_quote(real_cmd, 1);
     unsubscribe_of_team(client, team_uuid);
     client_print_unsubscribed(client->uuid, team_uuid);
-    free(team_uuid);
-    free(real_cmd);
+    super_free(2, team_uuid, real_cmd);
 }

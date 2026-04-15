@@ -34,8 +34,5 @@ void cmd_user(char *command, client_t * client)
     char *username = get_arg(second_recv, 0);
     char *status = get_arg(second_recv, 2);
     client_print_user(user, username, atoi(status));
-    free(real_cmd);
-    free(user);
-    free(username);
-    free(status);
+    super_free(4, user, username, status, real_cmd);
 }

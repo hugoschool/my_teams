@@ -27,9 +27,7 @@ static void subscribed_one_arg(client_t *client)
         char *username = get_arg(second_recv, 0);
         char *status = get_arg(second_recv, 2);
         client_print_users(uuid, username, atoi(status));
-        free(uuid);
-        free(username);
-        free(status);
+        super_free(3, uuid, username, status);
         second_recv = strtok_r(NULL, "\n", &saveptr);
     }
 }
@@ -46,11 +44,7 @@ static void subscribed_zero_arg(client_t *client)
         char *team_name = read_bytes_starting_arg(second_recv, 3, atoi(team_name_len));
         char *team_desc = read_bytes_starting_arg(second_recv, 3, atoi(team_name_len) + 1 + atoi(team_desc_len));
         client_print_teams(team_uuid, team_name, team_desc + atoi(team_name_len) + 1);
-        free(team_uuid);
-        free(team_name_len);
-        free(team_desc_len);
-        free(team_name);
-        free(team_desc);
+        super_free(5, team_uuid, team_name_len, team_desc_len, team_name, team_desc);
         second_recv = strtok_r(NULL, "\n", &saveptr);
     }
 }

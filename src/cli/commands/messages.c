@@ -24,10 +24,7 @@ static void print_messages(client_t *client)
             char *body_len = get_arg(token, 2);
             char *body = read_bytes_starting_arg(token, 3, atoi(body_len));
             client_private_message_print_messages(sender_uuid, atoi(timestamp), body);
-            free(sender_uuid);
-            free(timestamp);
-            free(body_len);
-            free(body);
+            super_free(4, sender_uuid, timestamp, body_len, body);
         }
         token = strtok_r(NULL, "\n", &saveptr);
     }

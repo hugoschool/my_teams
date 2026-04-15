@@ -53,7 +53,5 @@ void cmd_login(char *command, client_t *client)
     strncpy(client->uuid, uuid, UUID_STR_LEN);
     client->logged = true;
     client_event_logged_in(client->uuid, client->user_name);
-    free(username);
-    free(uuid);
-    free(real_cmd);
+    super_free(3, username, uuid, real_cmd);
 }

@@ -18,8 +18,7 @@ static char *craft_send_command(char *command)
     strncpy(arg, uuid, UUID_STR_LEN);
     strncpy(msg, message, MAX_BODY_LENGTH);
     asprintf(&cmd, "%s %s %lu %s%s", SEND, arg, strlen(msg), msg, CRLF);
-    free(uuid);
-    free(message);
+    super_free(2, uuid, message);
     return cmd;
 }
 

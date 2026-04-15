@@ -48,6 +48,5 @@ void cmd_subscribe(char *command, client_t *client)
     char *team_uuid = get_arg(real_cmd, 1);
     subscribe_to_team(client, team_uuid);
     client_print_subscribed(client->uuid, team_uuid);
-    free(team_uuid);
-    free(real_cmd);
+    super_free(2, team_uuid, real_cmd);
 }

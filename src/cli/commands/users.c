@@ -28,10 +28,8 @@ void cmd_users(char *command, client_t * client)
         char *username = get_arg(second_recv, 0);
         char *status = get_arg(second_recv, 2);
         client_print_users(uuid, username, atoi(status));
+        super_free(3, uuid, username, status);
         second_recv = strtok_r(NULL, "\n", &saveptr);
-        free(uuid);
-        free(username);
-        free(status);
     }
     free(real_cmd);
 }

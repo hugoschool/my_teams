@@ -49,10 +49,5 @@ void cmd_use(char *command, client_t * client)
             strncpy(client->context.thread_uuid, thread_uuid, UUID_STR_LEN);
             break;
     }
-    if (team_uuid)
-        free(team_uuid);
-    if (channel_uuid)
-        free(channel_uuid);
-    if (thread_uuid)
-        free(thread_uuid);
+    super_free(3, team_uuid, channel_uuid, thread_uuid);
 }
