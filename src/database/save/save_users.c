@@ -9,7 +9,7 @@
 
 static void save_user(FILE *database_file, user_data_t *user_data)
 {
-    fprintf(database_file, "%-36s,\"%-32s\"\n", user_data->uuid, user_data->username);
+    fprintf(database_file, "%-36s\"%-32s\"\n", user_data->uuid, user_data->username);
 }
 
 void save_users(FILE *database_file, users_t *users)

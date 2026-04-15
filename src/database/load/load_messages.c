@@ -16,7 +16,7 @@ static void load_message(char *line, messages_t *messages)
     char body[MAX_BODY_LENGTH + 1] = {0};
     time_t timestamp;
 
-    sscanf(line, "%s,%s,\"%s\",%ld\n", user_uuid_from, user_uuid_to, body, &timestamp);
+    sscanf(line, "%[^\"]\"%[^\"]\"%[^\"]\"%ld\"\n", user_uuid_from, user_uuid_to, body, &timestamp);
 
     message_data = messages_add(messages, user_uuid_from, user_uuid_to, body);;
     message_data->timestamp = timestamp;
