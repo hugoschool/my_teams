@@ -29,8 +29,11 @@ static user_data_t *get_user(users_t *users, char *username)
     user_data_t *user = NULL;
 
     user = users_get_from_username(users, username);
-    if (user == NULL)
+    if (user == NULL) {
         user = users_add(users, username);
+        server_event_user_created(user->uuid, user->username);
+    } else
+        server_event_user_loaded(user->uuid, user->username);
     return user;
 }
 
