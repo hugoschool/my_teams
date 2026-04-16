@@ -6,6 +6,7 @@
 */
 
 #include "logging_client.h"
+#include "logging_server.h"
 #include "server/commands.h"
 #include "server/server.h"
 #include "server/status.h"
@@ -42,7 +43,7 @@ void client_quit(server_t *server)
     if (fd != server->control_fd && fd != server->signal_fd) {
         if (CLIENT->user) {
             CLIENT->user->status = false;
-            client_event_logged_out(CLIENT->user->uuid, CLIENT->user->username);
+            server_event_user_logged_out(CLIENT->user->uuid);
         }
         if (close(fd) == -1)
             perror("close");
