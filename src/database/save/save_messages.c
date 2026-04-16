@@ -9,7 +9,7 @@
 
 static void save_message(FILE *database_file, message_data_t *message_data)
 {
-    fprintf(database_file, "%-36s\"%-36s\"%-512s\"%ld\"\n", message_data->user_uuid_from, message_data->user_uuid_to, message_data->body, message_data->timestamp);
+    fprintf(database_file, "%s\"%s\"%s\"%ld\"\n", message_data->user_uuid_from, message_data->user_uuid_to, message_data->body, message_data->timestamp);
 }
 
 void save_messages(FILE *database_file, messages_t *messages)
