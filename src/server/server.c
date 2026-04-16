@@ -7,7 +7,7 @@
 
 #include "server/args.h"
 #include "server/server.h"
-#include <signal.h>
+#include "utils.h"
 #include <sys/poll.h>
 #include <sys/signalfd.h>
 #include <stdio.h>
@@ -73,17 +73,6 @@ static void server_loop(server_t *server)
     save(server);
 }
 
-static int handle_signal(void)
-{
-    sigset_t mask;
-
-    sigemptyset(&mask);
-    sigaddset(&mask, SIGINT);
-    if (sigprocmask(SIG_BLOCK, &mask, NULL) == -1)
-        return -1;
-    return signalfd(-1, &mask, 0);
-}
-
 bool teams_server(args_t *args)
 {
     server_t *server = server_init();
@@ -91,7 +80,7 @@ bool teams_server(args_t *args)
     if (server == NULL)
         return false;
     server->control_fd = socket_init(args->port);
-    server->signal_fd = handle_signal();
+    server->signal_fd = create_signalfd();
     if (server->control_fd == -1 || server->signal_fd == -1) {
         server_free(server);
         return false;

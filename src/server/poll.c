@@ -5,11 +5,11 @@
 ** handler.c
 */
 
-#include "logging_client.h"
 #include "logging_server.h"
 #include "server/commands.h"
 #include "server/server.h"
 #include "server/status.h"
+#include "utils.h"
 #include <stdbool.h>
 #include <stdio.h>
 #include <string.h>
@@ -74,20 +74,12 @@ void client_handler(server_t *server)
     commands_handler(server);
 }
 
-// server is ignored for now but will be useful later
-// especially for the database
-void signal_fd_handler(server_t *server, bool *running)
-{
-    (void)server;
-    *running = false;
-}
-
 static void handle_pollin_events(server_t *server, bool *running)
 {
     if (server->poller->fds[server->index].fd == server->control_fd)
         new_client_handler(server);
     else if (server->poller->fds[server->index].fd == server->signal_fd)
-        signal_fd_handler(server, running);
+        signalfd_handler(running);
     else
         client_handler(server);
 }

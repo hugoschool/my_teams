@@ -8,6 +8,7 @@
 #ifndef UTILS_H_
     #define UTILS_H_
 
+    #include <stdbool.h>
     #include <stddef.h>
 
 int strcmp_start(const char *str, const char *start);
@@ -22,5 +23,7 @@ char *read_bytes_starting_arg(char *str, int nb, size_t bytes);
 char *capitalize_cmd(char *cmd);
 int limit_nb(int nb, int max);
 void super_free(int nb, ...);
+int create_signalfd(void);
+void signalfd_handler(bool *running);
 
 #endif

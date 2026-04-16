@@ -32,7 +32,8 @@ UTILS_SRC	:=	src/utils/remove_crlf.c \
 				src/utils/read_bytes_starting_arg.c \
 				src/utils/capitalize_cmd.c \
 				src/utils/limit_nb.c	\
-				src/utils/super_free.c
+				src/utils/super_free.c \
+				src/utils/signalfd.c
 
 SERVER_SRC	:= 	$(DATABASE_SRC) \
 				$(UTILS_SRC) \

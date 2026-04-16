@@ -18,6 +18,7 @@
     #include "utils.h"
 
     #define BIG_BUFFER_SIZE 4096
+    #define POLLFD_NB 3
 
     typedef struct {
         int name_len;

@@ -13,17 +13,19 @@
 int client_loop(client_t *client)
 {
     char *cmd_line = NULL;
-    struct pollfd pfds[2];
+    struct pollfd pfds[POLLFD_NB];
     size_t len = 0;
     int bytes = 0;
+    bool running = true;
 
-    // TODO: signalfd
     pfds[0].fd = client->socket_fd;
     pfds[0].events = POLLIN;
     pfds[1].fd = STDIN_FILENO;
     pfds[1].events = POLLIN;
-    while (1) {
-        if (poll(pfds, 2, 0) == -1) {
+    pfds[2].fd = create_signalfd();
+    pfds[2].events = POLLIN;
+    while (running) {
+        if (poll(pfds, POLLFD_NB, 0) == -1) {
             perror("poll");
             break;
         }
@@ -44,6 +46,10 @@ int client_loop(client_t *client)
             command_parser(cmd_line, client);
             memset(client->buffer, '\0', BIG_BUFFER_SIZE);
             cmd_line = NULL;
+        }
+        if (pfds[2].revents & POLLIN) {
+            signalfd_handler(&running);
+            break;
         }
     }
     free(cmd_line);
