@@ -69,10 +69,9 @@ void command_create_comment(server_t *server)
     free(body_len_text);
 
     body = read_bytes_starting_arg(server->buffer, 5, body_len);
-    WRITE_STATUS(*CLIENT->fd, 200);
     comment = thread_add_comment(thread, CLIENT->user->uuid, body);
     free(body);
     server_event_reply_created(thread->uuid, CLIENT->user->uuid, comment->body);
     send_event_all_clients(server, team, thread, comment);
-    comment_print(*CLIENT->fd, comment);
+    comment_print(*CLIENT->fd, comment, 200);
 }

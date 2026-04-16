@@ -17,6 +17,6 @@ void command_teams(server_t *server)
     WRITE_STATUS(*CLIENT->fd, 200);
     for (unsigned int i = 0; i < server->teams->amount; i++) {
         team = TEAM_I(i);
-        team_print(*CLIENT->fd, team);
+        team_print(*CLIENT->fd, team, 0);
     }
 }

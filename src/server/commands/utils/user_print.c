@@ -6,10 +6,16 @@
 */
 
 #include "server/server.h"
+#include "server/status.h"
 #include <stdio.h>
 
-extern inline void user_print(int fd, user_data_t *user)
+void user_print(int fd, user_data_t *user, int code)
 {
-    dprintf(fd, "%s %s %d\n", user->username, user->uuid,
-        user->status);
+    if (code > 0) {
+        dprintf(fd, "%s" CRLF "%s %s %d\n", get_status(code),
+            user->username, user->uuid, user->status);
+    } else {
+        dprintf(fd, "%s %s %d\n", user->username, user->uuid,
+            user->status);
+    }
 }

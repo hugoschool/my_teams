@@ -25,6 +25,5 @@ void command_user(server_t *server)
         WRITE_STATUS(*CLIENT->fd, 464);
         return;
     }
-    WRITE_STATUS(*CLIENT->fd, 200);
-    user_print(*CLIENT->fd, user);
+    user_print(*CLIENT->fd, user, 200);
 }

@@ -25,6 +25,6 @@ void command_channels(server_t *server)
     WRITE_STATUS(*CLIENT->fd, 200);
     for (unsigned int i = 0; i < team->channels->amount; i++) {
         channel = team->channels->channels[i];
-        channel_print(*CLIENT->fd, channel);
+        channel_print(*CLIENT->fd, channel, 0);
     }
 }

@@ -25,6 +25,5 @@ void command_team(server_t *server)
         WRITE_STATUS(*CLIENT->fd, 461);
         return;
     }
-    WRITE_STATUS(*CLIENT->fd, 200);
-    team_print(*CLIENT->fd, team);
+    team_print(*CLIENT->fd, team, 200);
 }

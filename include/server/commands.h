@@ -177,11 +177,12 @@ static const commands_t cmds[] = {
 void commands_handler(server_t *server);
 
 // Utils
-void user_print(int fd, user_data_t *user);
-void channel_print(int fd, channel_data_t *channel);
-void comment_print(int fd, comment_data_t *comment);
-void thread_print(int fd, thread_data_t *thread);
-void team_print(int fd, team_data_t *team);
-void message_print(int fd, message_data_t *message);
+// If status <= 0, don't add the status
+void user_print(int fd, user_data_t *user, int code);
+void channel_print(int fd, channel_data_t *channel, int code);
+void comment_print(int fd, comment_data_t *comment, int code);
+void thread_print(int fd, thread_data_t *thread, int code);
+void team_print(int fd, team_data_t *team, int code);
+void message_print(int fd, message_data_t *message, int code);
 
 #endif

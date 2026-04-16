@@ -34,6 +34,6 @@ void command_list_subscribed_users(server_t *server)
     WRITE_STATUS(*CLIENT->fd, 200);
     for (unsigned int i = 0; i < team->users->amount; i++) {
         user = team->users->users[i];
-        user_print(*CLIENT->fd, user);
+        user_print(*CLIENT->fd, user, 0);
     }
 }

@@ -34,6 +34,6 @@ void command_threads(server_t *server)
     WRITE_STATUS(*CLIENT->fd, 200);
     for (unsigned int i = 0; i < channel->threads->amount; i++) {
         thread = channel->threads->threads[i];
-        thread_print(*CLIENT->fd, thread);
+        thread_print(*CLIENT->fd, thread, 0);
     }
 }

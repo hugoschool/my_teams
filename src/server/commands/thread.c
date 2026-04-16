@@ -42,6 +42,5 @@ void command_thread(server_t *server)
         WRITE_STATUS(*CLIENT->fd, 463);
         return;
     }
-    WRITE_STATUS(*CLIENT->fd, 200);
-    thread_print(*CLIENT->fd, thread);
+    thread_print(*CLIENT->fd, thread, 200);
 }

@@ -43,7 +43,6 @@ void command_login(server_t *server)
         WRITE_STATUS(*CLIENT->fd, 430);
         return;
     }
-    WRITE_STATUS(*CLIENT->fd, 250);
     CLIENT->login_step = LOGGED_IN;
     username = get_arg(server->buffer, 1);
     if (username == NULL)
@@ -58,5 +57,5 @@ void command_login(server_t *server)
     client_set_user(CLIENT, user);
     server_event_user_logged_in(user->uuid);
     send_client_joined_message(server, user);
-    user_print(*CLIENT->fd, user);
+    user_print(*CLIENT->fd, user, 250);
 }

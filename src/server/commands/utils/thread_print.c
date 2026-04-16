@@ -6,13 +6,21 @@
 */
 
 #include "server/server.h"
+#include "server/status.h"
 #include <stdio.h>
 #include <string.h>
 
-extern inline void thread_print(int fd, thread_data_t *thread)
+void thread_print(int fd, thread_data_t *thread, int code)
 {
-    dprintf(fd, "%s %s %ld %ld %ld %s %s\n", thread->uuid,
-        thread->user_uuid, thread->timestamp,
-        strlen(thread->title), strlen(thread->description),
-        thread->title, thread->description);
+    if (code > 0) {
+        dprintf(fd, "%s" CRLF "%s %s %ld %ld %ld %s %s\n", get_status(code),
+            thread->uuid, thread->user_uuid, thread->timestamp,
+            strlen(thread->title), strlen(thread->description),
+            thread->title, thread->description);
+    } else {
+        dprintf(fd, "%s %s %ld %ld %ld %s %s\n",
+            thread->uuid, thread->user_uuid, thread->timestamp,
+            strlen(thread->title), strlen(thread->description),
+            thread->title, thread->description);
+    }
 }

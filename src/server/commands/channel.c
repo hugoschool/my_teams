@@ -33,6 +33,5 @@ void command_channel(server_t *server)
         WRITE_STATUS(*CLIENT->fd, 460);
         return;
     }
-    WRITE_STATUS(*CLIENT->fd, 200);
-    channel_print(*CLIENT->fd, channel);
+    channel_print(*CLIENT->fd, channel, 200);
 }

@@ -73,6 +73,7 @@ SERVER_SRC	+=	src/server/commands/utils/channel_print.c \
 				src/server/commands/utils/message_print.c \
 				src/server/commands/utils/team_print.c \
 				src/server/commands/utils/thread_print.c \
+				src/server/commands/utils/get_status.c \
 				src/server/commands/utils/user_print.c
 
 SERVER_OBJ	:=	$(SERVER_SRC:.c=.o)

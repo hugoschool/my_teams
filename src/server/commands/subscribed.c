@@ -19,7 +19,7 @@ void command_subscribed(server_t *server)
         team = TEAM_I(i);
         for (unsigned int user_i = 0; user_i < team->users->amount; user_i++) {
             if (CLIENT->user == team->users->users[user_i])
-                team_print(*CLIENT->fd, team);
+                team_print(*CLIENT->fd, team, 0);
         }
     }
 }

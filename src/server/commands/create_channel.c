@@ -73,8 +73,7 @@ void command_create_channel(server_t *server)
     channel = team_add_channel(team, name, description + name_len + 1);
     free(name);
     free(description);
-    WRITE_STATUS(*CLIENT->fd, 200);
     server_event_channel_created(team->uuid, channel->uuid, channel->name);
     send_event_all_clients(server, team, channel);
-    channel_print(*CLIENT->fd, channel);
+    channel_print(*CLIENT->fd, channel, 200);
 }

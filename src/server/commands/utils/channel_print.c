@@ -6,12 +6,19 @@
 */
 
 #include "server/server.h"
+#include "server/status.h"
 #include <stdio.h>
 #include <string.h>
 
-extern inline void channel_print(int fd, channel_data_t *channel)
+void channel_print(int fd, channel_data_t *channel, int code)
 {
-    dprintf(fd, "%s %ld %ld %s %s\n", channel->uuid,
-        strlen(channel->name), strlen(channel->description),
-        channel->name, channel->description);
+    if (code > 0) {
+        dprintf(fd, "%s" CRLF "%s %ld %ld %s %s\n", get_status(code),
+            channel->uuid, strlen(channel->name), strlen(channel->description),
+            channel->name, channel->description);
+    } else {
+        dprintf(fd, "%s %ld %ld %s %s\n", channel->uuid,
+            strlen(channel->name), strlen(channel->description),
+            channel->name, channel->description);
+    }
 }

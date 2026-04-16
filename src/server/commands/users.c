@@ -17,6 +17,6 @@ void command_users(server_t *server)
     WRITE_STATUS(*CLIENT->fd, 200);
     for (unsigned int i = 0; i < server->users->amount; i++) {
         user = USER_I(i);
-        user_print(*CLIENT->fd, user);
+        user_print(*CLIENT->fd, user, 0);
     }
 }

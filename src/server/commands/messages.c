@@ -39,6 +39,6 @@ void command_messages(server_t *server)
             && strcmp(user->uuid, message->user_uuid_to) == 0) ||
             (strcmp(CLIENT->user->uuid, message->user_uuid_to) == 0
             && strcmp(user->uuid, message->user_uuid_from) == 0))
-            message_print(*CLIENT->fd, message);
+            message_print(*CLIENT->fd, message, 0);
     }
 }

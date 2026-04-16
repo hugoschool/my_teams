@@ -15,6 +15,28 @@
     #define GET_STATUS(c) status._##c
     #define WRITE_STATUS(fd, c) write(fd, status._##c, strlen(status._##c))
 
+// Prefer to use the macro if you know by advance the value of your status.
+const char *get_status(int code);
+
+enum status_codes {
+    _25120 = 25120,
+    _200 = 200,
+    _250 = 250,
+    _251 = 251,
+    _430 = 430,
+    _435 = 435,
+    _440 = 440,
+    _450 = 450,
+    _451 = 451,
+    _460 = 460,
+    _461 = 461,
+    _462 = 462,
+    _463 = 463,
+    _464 = 464,
+    _499 = 499,
+    _500 = 500,
+};
+
 typedef struct {
     const char *_25120;
     const char *_200;

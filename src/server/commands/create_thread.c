@@ -77,9 +77,8 @@ void command_create_thread(server_t *server)
     thread = channel_add_thread(channel, CLIENT->user->uuid, title, description + title_len + 1);
     free(title);
     free(description);
-    WRITE_STATUS(*CLIENT->fd, 200);
     server_event_thread_created(channel->uuid, thread->uuid, CLIENT->user->uuid,
         thread->title, thread->description);
     send_event_all_clients(server, team, thread);
-    thread_print(*CLIENT->fd, thread);
+    thread_print(*CLIENT->fd, thread, 200);
 }

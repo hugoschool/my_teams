@@ -6,11 +6,18 @@
 */
 
 #include "server/server.h"
+#include "server/status.h"
 #include <stdio.h>
 #include <string.h>
 
-extern inline void message_print(int fd, message_data_t *message)
+void message_print(int fd, message_data_t *message, int code)
 {
-    dprintf(fd, "%s %ld %ld %s\n", message->user_uuid_from,
-        message->timestamp, strlen(message->body), message->body);
+    if (code > 0) {
+        dprintf(fd, "%s" CRLF "%s %ld %ld %s\n", get_status(code),
+            message->user_uuid_from,
+            message->timestamp, strlen(message->body), message->body);
+    } else {
+        dprintf(fd, "%s %ld %ld %s\n", message->user_uuid_from,
+            message->timestamp, strlen(message->body), message->body);
+    }
 }

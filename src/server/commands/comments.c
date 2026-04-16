@@ -43,6 +43,6 @@ void command_comments(server_t *server)
     WRITE_STATUS(*CLIENT->fd, 200);
     for (unsigned int i = 0; i < thread->comments->amount; i++) {
         comment = thread->comments->comments[i];
-        comment_print(*CLIENT->fd, comment);
+        comment_print(*CLIENT->fd, comment, 0);
     }
 }
