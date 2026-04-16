@@ -13,6 +13,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
+#include "server/database.h"
 
 static server_t *server_init(void)
 {
@@ -33,6 +34,7 @@ static server_t *server_init(void)
         free(server);
         return NULL;
     }
+    load_database(server);
     server->control_fd = -1;
     server->signal_fd = -1;
     return server;
@@ -68,6 +70,7 @@ static void server_loop(server_t *server)
         }
         poll_handler(server, &running);
     }
+    save(server);
 }
 
 static int handle_signal(void)
