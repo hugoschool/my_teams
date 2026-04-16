@@ -21,27 +21,6 @@ static char *craft_unsubscribe_command(char *command)
     return cmd;
 }
 
-static void unsubscribe_of_team(client_t *client, char *team_uuid)
-{
-    bool deleted = false;
-    for (int i = 0; client->subscribed_teams->team_uuid[i] != NULL; i++) {
-        if (strcmp(client->subscribed_teams->team_uuid[i], team_uuid) == 0) {
-            free(client->subscribed_teams->team_uuid[i]);
-            client->subscribed_teams->team_uuid[i] = NULL;
-            deleted = true;
-            continue;
-        }
-        if (deleted) {
-            if (client->subscribed_teams->team_uuid[i]) {
-                client->subscribed_teams->team_uuid[i - 1] = strdup(client->subscribed_teams->team_uuid[i]);
-            }
-        }
-    }
-    client->subscribed_teams->amount -= 1;
-    client->subscribed_teams->team_index -= 1;
-    client->subscribed_teams->team_uuid[client->subscribed_teams->team_index + 1] = NULL;
-}
-
 void cmd_unsubscribe(char *command, client_t *client)
 {
     if (!client->logged) {
@@ -59,7 +38,6 @@ void cmd_unsubscribe(char *command, client_t *client)
     }
     remove_crlf(real_cmd);
     char *team_uuid = get_arg_quote(real_cmd, 1);
-    unsubscribe_of_team(client, team_uuid);
     client_print_unsubscribed(client->uuid, team_uuid);
     super_free(2, team_uuid, real_cmd);
 }

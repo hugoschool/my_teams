@@ -21,15 +21,6 @@ static char *craft_subscribe_command(char *command)
     return cmd;
 }
 
-static void subscribe_to_team(client_t *client, char *team_uuid)
-{
-    client->subscribed_teams ->team_uuid = realloc(client->subscribed_teams->team_uuid, sizeof(char *) * (client->subscribed_teams->amount + 1));
-    client->subscribed_teams->team_uuid[client->subscribed_teams->team_index] = strdup(team_uuid);
-    client->subscribed_teams->team_uuid[client->subscribed_teams->team_index + 1] = NULL;
-    client->subscribed_teams->team_index += 1;
-    client->subscribed_teams->amount += 1;
-}
-
 void cmd_subscribe(char *command, client_t *client)
 {
     if (!client->logged) {
@@ -47,7 +38,6 @@ void cmd_subscribe(char *command, client_t *client)
         return;
     }
     char *team_uuid = get_arg(real_cmd, 1);
-    subscribe_to_team(client, team_uuid);
     client_print_subscribed(client->uuid, team_uuid);
     super_free(2, team_uuid, real_cmd);
 }

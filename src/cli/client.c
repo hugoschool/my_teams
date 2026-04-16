@@ -10,15 +10,6 @@
 #include <string.h>
 #include <sys/poll.h>
 
-static void init_sub_teams(client_t *client)
-{
-    client->subscribed_teams = malloc(sizeof(sub_teams_t));
-    client->subscribed_teams->amount = 1;
-    client->subscribed_teams->team_index = 0;
-    client->subscribed_teams->team_uuid = calloc(client->subscribed_teams->amount, sizeof(char *));
-    client->subscribed_teams->team_uuid[0] = NULL;
-}
-
 int client_loop(client_t *client)
 {
     char *cmd_line = NULL;
@@ -68,12 +59,10 @@ bool teams_client(client_args_t *args)
         .user_name = "\0",
         .context = {"\0", "\0", "\0", BASE},
         .buffer = {0},
-        .subscribed_teams = NULL
     };
 
     struct sockaddr_in addr;
 
-    init_sub_teams(&client);
     addr.sin_addr.s_addr = args->ip;
     addr.sin_port = htons(args->port);
     addr.sin_family = AF_INET;
