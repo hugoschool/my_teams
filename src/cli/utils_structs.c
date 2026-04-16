@@ -16,9 +16,7 @@ team_content_t *team_parse_line(char *line, int offset)
     content->name = read_bytes_starting_arg(line, offset + 3, content->name_len);
     content->description = content->_initial_desc + content->name_len + 1;
 
-    free(team_uuid);
-    free(team_name_len);
-    free(team_desc_len);
+    super_free(3, team_uuid, team_desc_len, team_name_len);
     return content;
 }
 
@@ -26,7 +24,5 @@ void team_content_free(team_content_t *content)
 {
     if (content == NULL)
         return;
-    free(content->_initial_desc);
-    free(content->name);
-    free(content);
+    super_free(3, content->_initial_desc, content->name, content);
 }
