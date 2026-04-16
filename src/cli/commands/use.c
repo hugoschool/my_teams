@@ -12,6 +12,7 @@ static void release_context(client_t *client)
     memset(client->context.channel_uuid, '\0', UUID_STR_LEN);
     memset(client->context.team_uuid, '\0', UUID_STR_LEN);
     memset(client->context.thread_uuid, '\0', UUID_STR_LEN);
+    client->context.type = BASE;
 }
 
 void cmd_use(char *command, client_t * client)
