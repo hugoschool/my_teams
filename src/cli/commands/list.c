@@ -57,13 +57,9 @@ void cmd_list(char *command, client_t * client)
                 break;
             }
             case TEAM: {
-                char *channel_uuid = get_arg(second_recv, 0);
-                char *channel_name_len = get_arg(second_recv, 1);
-                char *channel_desc_len = get_arg(second_recv, 2);
-                char *channel_name = read_bytes_starting_arg(second_recv, 3, atoi(channel_name_len));
-                char *channel_desc = read_bytes_starting_arg(second_recv, 3, atoi(channel_name_len) + 1 + atoi(channel_desc_len));
-                client_team_print_channels(channel_uuid, channel_name, channel_desc + 1 + atoi(channel_desc_len));
-                super_free(5, channel_uuid, channel_name_len, channel_name, channel_desc_len, channel_desc);
+                channel_content_t *channel = channel_parse_line(second_recv, 0);
+                client_team_print_channels(channel->uuid, channel->name, channel->description);
+                channel_content_free(channel);
                 break;
             }
             case CHANNEL: {

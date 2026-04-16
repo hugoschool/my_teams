@@ -30,8 +30,21 @@
         char uuid[UUID_STR_LEN];
     } team_content_t;
 
+    typedef struct {
+        int name_len;
+        char *name;
+
+        char *_initial_desc;
+        int description_len;
+        char *description;
+
+        char uuid[UUID_STR_LEN];
+    } channel_content_t;
+
     team_content_t *team_parse_line(char *line, int offset);
     void team_content_free(team_content_t *content);
+    channel_content_t *channel_parse_line(char *line, int offset);
+    void channel_content_free(channel_content_t *content);
 
     typedef enum {
         BASE,
@@ -60,7 +73,6 @@
         char user_name[MAX_NAME_LENGTH];
         context_t context;
         char buffer[BIG_BUFFER_SIZE];
-        sub_teams_t *subscribed_teams;
     } client_t;
 
 bool teams_client(client_args_t *args);
