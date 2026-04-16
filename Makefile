@@ -4,10 +4,8 @@ CPPFLAGS	:=	-I ./include -I ./libs/myteams
 LDFLAGS	:= -L ./libs/myteams
 LDLIBS	:=	-lmyteams -luuid
 
-VALGRIND :=
 ifeq ($(ENV), dev)
 	CFLAGS	+=	-g3
-	VALGRIND	:=	valgrind
 endif
 
 UTILS_SRC	:=	src/utils/remove_crlf.c \
@@ -134,9 +132,9 @@ fclean:	clean
 re:	fclean all
 
 dev-server:	all
-	LD_LIBRARY_PATH=./libs/myteams $(VALGRIND) ./myteams_server 4242
+	LD_LIBRARY_PATH=./libs/myteams ./myteams_server 4242
 
 dev-client:	all
-	LD_LIBRARY_PATH=./libs/myteams $(VALGRIND) ./myteams_cli 127.0.0.1 4242
+	LD_LIBRARY_PATH=./libs/myteams ./myteams_cli 127.0.0.1 4242
 
 .PHONY:	all clean fclean re
