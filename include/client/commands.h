@@ -41,15 +41,7 @@
     void cmd_list(char *command, client_t * client);
     void cmd_info(char *command, client_t * client);
 
-    enum context_e define_context(client_t *client);
     bool print_error(client_t *client);
-
-    enum context_e {
-        BASE,
-        TEAM,
-        CHANNEL,
-        THREAD,
-    };
 
     typedef struct command_s {
         const char *cmd;

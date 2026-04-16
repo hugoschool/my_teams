@@ -19,10 +19,61 @@
 
     #define BIG_BUFFER_SIZE 4096
 
+    typedef struct {
+        int name_len;
+        char *name;
+
+        char *_initial_desc;
+        int description_len;
+        char *description;
+
+        char uuid[UUID_STR_LEN];
+    } team_content_t;
+
+    typedef struct {
+        int name_len;
+        char *name;
+
+        char *_initial_desc;
+        int description_len;
+        char *description;
+
+        char uuid[UUID_STR_LEN];
+    } channel_content_t;
+
+    typedef struct {
+        int title_len;
+        char *title;
+
+        char *_initial_desc;
+        int description_len;
+        char *description;
+
+        int timestamp;
+
+        char thread_uuid[UUID_STR_LEN];
+        char user_uuid[UUID_STR_LEN];
+    } thread_content_t;
+
+    team_content_t *team_parse_line(char *line, int offset);
+    void team_content_free(team_content_t *content);
+    channel_content_t *channel_parse_line(char *line, int offset);
+    void channel_content_free(channel_content_t *content);
+    thread_content_t *thread_parse_line(char *line, int offset);
+    void thread_content_free(thread_content_t *content);
+
+    typedef enum {
+        BASE,
+        TEAM,
+        CHANNEL,
+        THREAD,
+    } context_type_t;
+
     typedef struct context_s {
         char team_uuid[UUID_STR_LEN];
         char channel_uuid[UUID_STR_LEN];
         char thread_uuid[UUID_STR_LEN];
+        context_type_t type;
     } context_t;
 
     typedef struct sub_teams_s {
@@ -34,12 +85,10 @@
     typedef struct client_s {
         int socket_fd;
         bool logged;
-        struct sockaddr_in sockaddr;
         char uuid[UUID_STR_LEN];
         char user_name[MAX_NAME_LENGTH];
         context_t context;
         char buffer[BIG_BUFFER_SIZE];
-        sub_teams_t *subscribed_teams;
     } client_t;
 
 bool teams_client(client_args_t *args);

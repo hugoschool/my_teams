@@ -11,37 +11,23 @@
 
 static void event_team_created(client_t *client)
 {
-    char *team_uuid = get_arg(client->buffer, 1);
-    char *team_name_len = get_arg(client->buffer, 2);
-    char *team_desc_len = get_arg(client->buffer, 3);
-    char *team_name = read_bytes_starting_arg(client->buffer, 4, atoi(team_name_len));
-    char *team_desc = read_bytes_starting_arg(client->buffer, 4, atoi(team_name_len) + 1 + atoi(team_desc_len));
-    client_event_team_created(team_uuid, team_name, team_desc + 1 + atoi(team_name_len));
-    super_free(5, team_uuid, team_name_len, team_name, team_desc_len, team_desc);
+    team_content_t *team = team_parse_line(client->buffer, 1);
+    client_event_team_created(team->uuid, team->name, team->description);
+    team_content_free(team);
 }
 
 static void event_channel_created(client_t *client)
 {
-    char *channel_uuid = get_arg(client->buffer, 1);
-    char *channel_name_len = get_arg(client->buffer, 2);
-    char *channel_desc_len = get_arg(client->buffer, 3);
-    char *channel_name = read_bytes_starting_arg(client->buffer, 4, atoi(channel_name_len));
-    char *channel_desc = read_bytes_starting_arg(client->buffer, 4, atoi(channel_name_len) + 1 + atoi(channel_desc_len));
-    client_event_channel_created(channel_uuid, channel_name, channel_desc + 1 + atoi(channel_name_len));
-    super_free(5, channel_uuid, channel_desc, channel_desc_len, channel_name, channel_name_len);
+    channel_content_t *channel = channel_parse_line(client->buffer, 1);
+    client_event_channel_created(channel->uuid, channel->name, channel->description);
+    channel_content_free(channel);
 }
 
 static void event_thread_created(client_t *client)
 {
-    char *thread_uuid = get_arg(client->buffer, 1);
-    char *user_uuid = get_arg(client->buffer, 2);
-    char *timestamp = get_arg(client->buffer, 3);
-    char *thread_title_len = get_arg(client->buffer, 4);
-    char *thread_desc_len = get_arg(client->buffer, 5);
-    char *thread_title = read_bytes_starting_arg(client->buffer, 6, atoi(thread_title_len));
-    char *thread_desc = read_bytes_starting_arg(client->buffer, 6, atoi(thread_title_len) + 1 + atoi(thread_desc_len));
-    client_event_thread_created(thread_uuid, user_uuid, atoi(timestamp), thread_title, thread_desc + 1 + atoi(thread_title_len));
-    super_free(7, thread_uuid, user_uuid, timestamp, thread_title_len, thread_desc_len, thread_desc, thread_title);
+    thread_content_t *thread = thread_parse_line(client->buffer, 1);
+    client_event_thread_created(thread->thread_uuid, thread->user_uuid, thread->timestamp, thread->title, thread->description);
+    thread_content_free(thread);
 }
 
 static void event_reply_created(client_t *client)
