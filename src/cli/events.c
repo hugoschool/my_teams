@@ -25,15 +25,9 @@ static void event_channel_created(client_t *client)
 
 static void event_thread_created(client_t *client)
 {
-    char *thread_uuid = get_arg(client->buffer, 1);
-    char *user_uuid = get_arg(client->buffer, 2);
-    char *timestamp = get_arg(client->buffer, 3);
-    char *thread_title_len = get_arg(client->buffer, 4);
-    char *thread_desc_len = get_arg(client->buffer, 5);
-    char *thread_title = read_bytes_starting_arg(client->buffer, 6, atoi(thread_title_len));
-    char *thread_desc = read_bytes_starting_arg(client->buffer, 6, atoi(thread_title_len) + 1 + atoi(thread_desc_len));
-    client_event_thread_created(thread_uuid, user_uuid, atoi(timestamp), thread_title, thread_desc + 1 + atoi(thread_title_len));
-    super_free(7, thread_uuid, user_uuid, timestamp, thread_title_len, thread_desc_len, thread_desc, thread_title);
+    thread_content_t *thread = thread_parse_line(client->buffer, 1);
+    client_event_thread_created(thread->thread_uuid, thread->user_uuid, thread->timestamp, thread->title, thread->description);
+    thread_content_free(thread);
 }
 
 static void event_reply_created(client_t *client)

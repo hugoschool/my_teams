@@ -88,14 +88,9 @@ void cmd_create(char *command, client_t * client)
             break;
         }
         case CHANNEL: {
-            char *user_uuid = get_arg(second_recv, 1);
-            char *timestamp = get_arg(second_recv, 2);
-            char *thread_title_len = get_arg(second_recv, 3);
-            char *thread_desc_len = get_arg(second_recv, 4);
-            char *thread_title = read_bytes_starting_arg(second_recv, 5, atoi(thread_title_len));
-            char *thread_desc = read_bytes_starting_arg(second_recv, 5, atoi(thread_title_len) + 1 + atoi(thread_desc_len));
-            client_print_thread_created(uuid, user_uuid, atoi(timestamp), thread_title, thread_desc + atoi(thread_title_len) + 1);
-            super_free(6, user_uuid, timestamp, thread_title_len, thread_desc_len, thread_title, thread_desc);
+            thread_content_t *thread = thread_parse_line(second_recv, 0);
+            client_print_thread_created(thread->thread_uuid, thread->user_uuid, thread->timestamp, thread->title, thread->description);
+            thread_content_free(thread);
             break;
         }
         case THREAD: {

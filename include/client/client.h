@@ -41,10 +41,26 @@
         char uuid[UUID_STR_LEN];
     } channel_content_t;
 
+    typedef struct {
+        int title_len;
+        char *title;
+
+        char *_initial_desc;
+        int description_len;
+        char *description;
+
+        int timestamp;
+
+        char thread_uuid[UUID_STR_LEN];
+        char user_uuid[UUID_STR_LEN];
+    } thread_content_t;
+
     team_content_t *team_parse_line(char *line, int offset);
     void team_content_free(team_content_t *content);
     channel_content_t *channel_parse_line(char *line, int offset);
     void channel_content_free(channel_content_t *content);
+    thread_content_t *thread_parse_line(char *line, int offset);
+    void thread_content_free(thread_content_t *content);
 
     typedef enum {
         BASE,

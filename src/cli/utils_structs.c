@@ -51,3 +51,32 @@ void channel_content_free(channel_content_t *content)
         return;
     super_free(3, content->_initial_desc, content->name, content);
 }
+
+thread_content_t *thread_parse_line(char *line, int offset)
+{
+    char *thread_uuid = get_arg(line, offset + 0);
+    char *user_uuid = get_arg(line, offset + 1);
+    char *timestamp = get_arg(line, offset + 2);
+    char *thread_title_len = get_arg(line, offset + 3);
+    char *thread_desc_len = get_arg(line, offset + 4);
+
+    thread_content_t *content = malloc(sizeof(thread_content_t));
+    strncpy(content->thread_uuid, thread_uuid, UUID_STR_LEN);
+    strncpy(content->user_uuid, user_uuid, UUID_STR_LEN);
+    content->title_len = atoi(thread_title_len);
+    content->description_len = atoi(thread_desc_len);
+    content->timestamp = atoi(timestamp);
+    content->_initial_desc = read_bytes_starting_arg(line, offset + 5, content->title_len + 1 + content->description_len);
+    content->title = read_bytes_starting_arg(line, offset + 5, content->title_len);
+    content->description = content->_initial_desc + content->title_len + 1;
+
+    super_free(5, thread_uuid, user_uuid, timestamp, thread_title_len, thread_desc_len);
+    return content;
+}
+
+void thread_content_free(thread_content_t *content)
+{
+    if (content == NULL)
+        return;
+    super_free(3, content->_initial_desc, content->title, content);
+}
