@@ -44,6 +44,7 @@ static void event_reply_created(client_t *client)
 
 void handle_server_events(client_t *client)
 {
+    remove_crlf(client->buffer);
     if (strncmp(client->buffer, NEW_MESSAGE, strlen(NEW_MESSAGE)) == 0) {
         client_event_private_message_received(get_arg(client->buffer, 1), read_bytes_starting_arg(client->buffer, 3, atoi(get_arg(client->buffer, 2))));
     }
