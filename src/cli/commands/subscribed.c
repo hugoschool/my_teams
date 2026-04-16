@@ -62,6 +62,7 @@ void cmd_subscribed(char *command, client_t *client)
         real_cmd = craft_subscribed_command(command);
         send(client->socket_fd, real_cmd, strlen(real_cmd), 0);
         receive(client, BIG_BUFFER_SIZE);
+        remove_crlf(real_cmd);
         if (print_error(client)) {
             free(real_cmd);
             return;
@@ -71,6 +72,7 @@ void cmd_subscribed(char *command, client_t *client)
         real_cmd = craft_command(command, false);
         send(client->socket_fd, real_cmd, strlen(real_cmd), 0);
         receive(client, BIG_BUFFER_SIZE);
+        remove_crlf(real_cmd);
         if (print_error(client)) {
             free(real_cmd);
             return;

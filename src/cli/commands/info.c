@@ -53,6 +53,7 @@ void cmd_info(char *command, client_t * client)
         free(real_cmd);
         return;
     }
+    remove_crlf(real_cmd);
     char *saveptr;
     char *second_recv = strtok_r(client->buffer, "\n", &saveptr);
     second_recv = strtok_r(NULL, "\n", &saveptr);

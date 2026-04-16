@@ -41,6 +41,7 @@ void cmd_subscribe(char *command, client_t *client)
 
     send(client->socket_fd, real_cmd, strlen(real_cmd), 0);
     receive(client, BIG_BUFFER_SIZE);
+    remove_crlf(real_cmd);
     if (print_error(client)) {
         free(real_cmd);
         return;

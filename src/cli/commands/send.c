@@ -33,6 +33,7 @@ void cmd_send(char *command, client_t * client)
 
     send(client->socket_fd, real_cmd, strlen(real_cmd), 0);
     receive(client, BIG_BUFFER_SIZE);
+    remove_crlf(real_cmd);
     if (strncmp(client->buffer, GET_STATUS(464), 3) == 0) {
         char *uuid = get_arg(real_cmd, 1);
         client_error_unknown_user(uuid);
