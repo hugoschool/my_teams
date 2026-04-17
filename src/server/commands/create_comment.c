@@ -19,7 +19,7 @@ static void send_event_all_clients(server_t *server, team_data_t *team,
     thread_data_t *thread, comment_data_t *comment)
 {
     for (unsigned int i = INITIAL_AMOUNT; i < server->clients->amount; i++) {
-        if (i == server->index || CLIENT_I(i)->login_step == LOGGED_OUT
+        if (CLIENT_I(i)->login_step == LOGGED_OUT
             || team_is_user_subscribed(team, CLIENT_I(i)->user) == false)
             continue;
         dprintf(*CLIENT_I(i)->fd, NEW_COMMENT" %s %s %s %s %ld %s"CRLF, comment->uuid,
