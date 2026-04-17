@@ -23,7 +23,7 @@ static void send_event_all_clients(server_t *server, team_data_t *team,
             || team_is_user_subscribed(team, CLIENT_I(i)->user) == false)
             continue;
         dprintf(*CLIENT_I(i)->fd, NEW_COMMENT" %s %s %s %s %ld %s"CRLF, comment->uuid,
-        team->uuid, thread->uuid, CLIENT_I(i)->user->uuid, strlen(comment->body), comment->body);
+        team->uuid, thread->uuid, CLIENT->user->uuid, strlen(comment->body), comment->body);
     }
 }
 
