@@ -98,7 +98,7 @@ void cmd_create(char *command, client_t * client)
             char *timestamp = get_arg(second_recv, 2);
             char *reply_len = get_arg(second_recv, 3);
             char *reply = read_bytes_starting_arg(second_recv, 4, atoi(reply_len));
-            client_print_reply_created(uuid, user_uuid, atoi(timestamp), reply);
+            client_print_reply_created(client->context.thread_uuid, user_uuid, atoi(timestamp), reply);
             super_free(4, user_uuid, timestamp, reply_len, reply);
             break;
         }
